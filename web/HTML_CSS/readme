@@ -1,0 +1,45 @@
+@media
+&:nth-child(3n)
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+CSS resets -http://learn.shayhowe.com/html-css/building-your-first-web-page/#using-css-resets
+            https://the-pastry-box-project.net/oli-studholme/2013-june-3
+            http://meyerweb.com/eric/tools/css/reset/
+            http://necolas.github.io/normalize.css/
+
+Block element - div
+Inline Elements - span
+
+HTML comments start with <!-- and end with -->. CSS comments start with /* and end with */.
+
+<strong> <b>
+<em> <i>
+
+<header> <hgroup> <nav> <article> <section> <aside> <footer> <time> <figure> <figcaption> <small>
+
+Encoding Special Characters - http://www.copypastecharacter.com/
+
+Linking to an Email Address - <a href="mailto:info@example.com">mail link</a> - https://yoast.com/dev-blog/guide-mailto-links/
+
+Cascading
+
+Selector Specificity
+    The type selector has the lowest specificity weight and holds a point value of 0-0-1.
+    The class selector has a medium specificity weight and holds a point value of 0-1-0.
+    The ID selector has a high specificity weight and holds a point value of 1-0-0.
+
+key selector - The selector farthest to the right, directly before the opening curly bracket
+prequalifier - Any selector to the left of the key selector
+
+CSS colors - sRGB - 4 primary ways to represent
+    1.  keywords                -   black, silver, gray, white, maroon, red, purple, ...
+    2.  hexadecimal notation    -   #ff6600 could also be written as #f60
+                                -   0 equals black and f equals white
+    3.  RGB                     -   rgb(255, 102, 0)
+                                -   rgba(255, 102, 0, 0.5) for transparency
+                                -   0 means transparent and 1 means opaque
+    4.  HSL values              -   hue, saturation, and lightness
+                                -   hsl(0, 100%, 25%)
+                                -   hsla(0, 100%, 25%, .25) for transparency
+https://kuler.adobe.com/
