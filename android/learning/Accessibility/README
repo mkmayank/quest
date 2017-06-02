@@ -1,0 +1,35 @@
+
+-   TalkBack
+        TalkBack is an Android screen reader made by Google.
+        It speaks out the contents of a screen based on what the user is doing.
+
+        Android framework widgets ( Toolbar, RecyclerView, ListView, Button ) have basic TalkBack support built in
+
+        -   content description
+            piece of text that describes the widget and is read by TalkBack
+
+            XML     -   android:contentDescription
+            code    -   someView.setContentDescription(someString)
+
+        -   widget focusable
+            Some widgets, such as Buttons and CheckBoxes, are focusable by default. Other widgets, such as TextViews and ImageViews, are not
+
+            android:focusable="true"
+
+        -   labels to provide context
+            tells TalkBack that the this view serves as a label to the view specified by the ID value
+
+            android:labelFor="@+id/crime_title"/>
+
+
+-   The recommended minimum size for all touch targets is 48dp
+
+-   Google’s Accessibility Scanner
+        analyzes apps and evaluates how accessible they are. It provides suggestions based on its findings.
+
+-   Contrast ratio of colors
+        based on their luminosity
+
+            randoma11y.com  -   list color combinations that meet accessibility standards for contrast
+            
+            The World Wide Web Consortium, an international community that develops open standards for web design, recommends a ratio of at least 4.5:1 for text that is 18 point or smaller.

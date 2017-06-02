@@ -1,0 +1,12 @@
+Open Android Studio’s preferences (from the Android Studio menu on Mac and from File → Settings
+on Windows). Expand Editor and then expand Code Style. Select Java, then choose the Code
+Generation tab.
+In the Naming table, select the Field row (Figure 2.3) and add m as the Name prefix for fields. Then add
+s as the Name prefix for static fields. (You will not be using the s prefix in the GeoQuiz project, but it
+will be useful in later projects.)
+
+What is the point of setting these prefixes? Now, when you ask Android Studio to generate a getter for
+mTextResId, it will create getTextResId() rather than getMTextResId() and isAnswerTrue() rather
+than isMAnswerTrue().
+Back in Question.java, right-click after the constructor and select Generate... and then Getter and
+Setter. Select mTextResId and mAnswerTrue and click OK to create a getter and setter for each variable.

@@ -1,0 +1,3 @@
+Android includes SQLite library in its standard library, along with some additional Java helper classes
+
+    android.database.sqlite 

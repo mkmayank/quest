@@ -1,0 +1,17 @@
+An activity would advertise itself as an appropriate activity for ACTION_VIEW via an intent filter in the manifest.
+e.g.
+    for browser app:
+
+<activity
+    android:name=".BrowserActivity"
+    android:label="@string/app_name" >
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:scheme="http" android:host="www.bignerdranch.com" />
+    </intent-filter>
+</activity>
+
+To respond to implicit intents, a DEFAULT category must be set explicitly in an intent filter.
+The action element in the intent filter tells the OS that the activity is capable of performing the job,
+and the DEFAULT category tells the OS that this activity should be considered for the job when the OS is asking for volunteers.

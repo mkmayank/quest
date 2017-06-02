@@ -1,0 +1,12 @@
+    -<screen_size> prefix
+
+
+layout-large/
+layout-land/
+layout-large-land/
+
+
+drawable-xhdpi/
+drawable-hdpi/
+drawable-mdpi/
+drawable-ldpi/

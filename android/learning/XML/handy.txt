@@ -1,0 +1,11 @@
+tools:text -
+This namespace allows to override any attribute on a widget for the purpose of displaying it differently in the Android Studio preview.
+The value will never show up in the real app. Handy!
+
+e.g.
+
+    <TextView
+        ...
+        tools:text="Answer"/>
+
+------------------------

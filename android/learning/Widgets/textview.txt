@@ -1,0 +1,7 @@
+
+TextView.setText(int)
+
+    mAnswerTextView = (TextView) findViewById(R.id.answer_text_view);
+    mAnswerTextView.setText(R.string.false_button);
+
+-------------------

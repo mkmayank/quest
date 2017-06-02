@@ -1,0 +1,4 @@
+Implicit intent
+    -   describe to the OS the job.
+    -   The OS then starts the activity that has advertised itself as capable of doing that job.
+    -   If the OS finds more than one capable activity, then the user is offered a choice.

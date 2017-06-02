@@ -1,0 +1,132 @@
+Starting an activity :
+
+    public void startActivity(Intent intent)
+
+When an activity calls startActivity(…), this call is sent to the OS( part ActivityManager ).
+The ActivityManager then creates the Activity instance and calls its onCreate(…) method.
+
+intent to tell the ActivityManager which activity to start, constructor:
+
+    public Intent(Context packageContext, Class<?> cls)
+
+The Context - tells the ActivityManager which application package the activity class can be found in.
+The Class   - specifies the activity class that the ActivityManager should start.
+
+e.g.
+    Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+    startActivity(i);
+
+----------------------------
+
+To pass data to second activity :
+
+use Intent Extra
+
+    In second activity
+        e.g.
+
+            private static final String EXTRA_ANSWER_IS_TRUE =
+                "com.bignerdranch.android.geoquiz.answer_is_true";
+
+            public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
+                Intent i = new Intent(packageContext, CheatActivity.class);
+                i.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+                return i;
+            }
+
+    In First Activity
+
+        //data to share
+        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+        Intent i = SecondActivity.newIntent(QuizActivity.this, answerIsTrue);
+        startActivity(i);
+
+------------------------------
+
+To retrieve the value from the extra ( in second Activity ) :
+
+    mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
+
+------------------------------
+
+Getting a result back from a child activity :
+
+to hear back from the child activity, call the following Activity method:
+
+    public void startActivityForResult(Intent intent, int requestCode)
+
+first parameter is the same intent as before
+second parameter is the request code
+
+The request code is a user-defined integer that is sent to the child activity and then received back by the parent.
+It is used when an activity starts more than one type of child activity and needs to know who is reporting back.
+
+e.g.
+
+    private static final int REQUEST_CODE_CHEAT = 0;
+    ...
+    boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+    Intent i = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
+    startActivityForResult(i, REQUEST_CODE_CHEAT);
+
+
+    Setting a result :
+
+    two methods to call in the child activity to send data back to the parent:
+
+        public final void setResult(int resultCode)
+        public final void setResult(int resultCode, Intent data)
+
+        result code is one of two predefined constants:
+        Activity.RESULT_OK or Activity.RESULT_CANCELED
+        ( RESULT_FIRST_USER , as an offset when defining your own result codes.)
+
+        Calling setResult(...) is not required of the child activity.
+        A result code is always returned to the parent if the child activity was started with startActivityForResult(...) .
+        If setResult(...) is not called, then when the user presses the Back button the parent will receive Activity.RESULT_CANCELED .
+
+    Sending back an intent :
+
+    e.g.
+
+        private static final String EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown";
+        ...
+        private void setAnswerShownResult(boolean isAnswerShown) {
+            Intent data = new Intent();
+            data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
+            setResult(RESULT_OK, data);
+        }
+
+        ...
+
+        // to let the parent activity decode the extra
+        public static boolean wasAnswerShown(Intent result) {
+            return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
+        }
+
+    Handling a result :
+
+    when the user presses the Back button to return to the QuizActivity , the ActivityManager calls on parent Activity :
+
+        protected void onActivityResult(int requestCode, int resultCode, Intent data)
+
+    The parameters are the original request code from QuizActivity and the result code and intent passed into setResult(...) .
+
+    e.g.
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }
+
+            if (requestCode == REQUEST_CODE_CHEAT) {
+                if (data == null) {
+                    return;
+                }
+                mIsCheater = CheatActivity.wasAnswerShown(data);
+            }
+        }
+
+-------------------------
+A call to Activity.finish() in ChildActivity would also pop the CheatActivity off the stack.

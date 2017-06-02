@@ -1,0 +1,6 @@
+Enable VT-x in your BIOS security settings, ensure that your linux distro has working KVM module.
+/dev/kvm is not found
+
+egrep -c '(vmx|svm)' /proc/cpuinfo
+sudo apt-get install cpu-checker
+sudo kvm-ok

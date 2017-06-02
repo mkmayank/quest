@@ -1,0 +1,21 @@
+right-click res/values/ and select New → Values resource file
+Enter strings for the File name. Leave the Source set option set to main. Make sure Directory name is set to values.
+Select Locale in the Available qualifiers list and click the >> button to move Locale to the Chosen qualifiers section.
+Select language in the Language list.
+
+The language configuration qualifiers are taken from ISO 639-1 codes, and each consists of two characters.
+
+directory will be like
+
+res/values-hi/ for hindi
+
+
+TRANSLATIONS EDITOR
+
+right-click on one of the strings.xml files in the project tool window and select Open Translations Editor
+
+TARGETING A REGION
+
+language-plus-region qualifier
+e.g.
+    -es-rES -   the qualifier for Spanish spoken in Spain

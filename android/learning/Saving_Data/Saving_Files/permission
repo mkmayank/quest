@@ -1,0 +1,24 @@
+To write to the external storage    :
+
+    permission -    WRITE_EXTERNAL_STORAGE
+
+    <manifest ...>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        ...
+    </manifest>
+
+---------------------------------
+
+To read to the external storage :
+    permission -    READ_EXTERNAL_STORAGE
+
+    <manifest ...>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        ...
+    </manifest>
+
+WRITE_EXTERNAL_STORAGE permission has permission to read the external storage as well
+
+---------------------------------
+
+internal storage - don't require permission

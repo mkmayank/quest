@@ -1,0 +1,35 @@
+getFilesDir()
+
+    -   Returns a File representing an internal directory for the app
+
+getCacheDir()
+    -   Returns a File representing an internal directory for the app's temporary cache files
+    -   should delete each file once it is no longer needed
+    -   should implement a reasonable size limit for the amount of memory to use at any given time, such as 1MB
+    -   system may delete cache files without warning
+
+-----------------------------------
+
+To create/write a new file :
+
+    File file = new File(context.getFilesDir(), filename);
+
+To create/write a new file :
+
+    File file = File.createTempFile(fileName, null, context.getCacheDir());
+
+-----------------------------------
+
+// to write text to file
+
+    String filename = "myfile";
+    String string = "Hello world!";
+    FileOutputStream outputStream;
+
+    try {
+        outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+        outputStream.write(string.getBytes());
+        outputStream.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }

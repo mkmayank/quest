@@ -1,0 +1,8 @@
+-  Deleting :
+
+    // Define 'where' part of query.
+    String selection = FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
+    // Specify arguments in placeholder order.
+    String[] selectionArgs = { "MyTitle" };
+    // Issue SQL statement.
+    db.delete(FeedEntry.TABLE_NAME, selection, selectionArgs);

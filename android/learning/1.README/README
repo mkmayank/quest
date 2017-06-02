@@ -1,0 +1,62 @@
+
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+"wrap_content"
+-----------------------------------
+android:orientation="horizontal"
+android:gravity="center"
+-----------------------------------
+android:id="@+id/edit_message"
+"@string/edit_message"
+
+@ is required to refer to any resource object from XML.
+followed by the resource type (id in this case), a slash, then the resource name (edit_message).
++ before the resource type is needed only when defining a resource ID for the first time.
+-----------------------------------
+string resource file at res > values > strings.xml.
+<string name="edit_message">Enter a message</string>
+-----------------------------------
+
+android:layout_weight
+
+The default weight for all views is 0.
+specifying any weight value > 0 to only one view, fills whatever space remains
+
+Setting the width to zero (0dp) improves layout performance if another attribute is also calculating width
+
+-----------------------------------
+android:onClick="sendMessage"
+
+public void sendMessage(View view) {}
+-----------------------------------
+
+Intent : is an object that provides runtime binding between separate components (such as two activities).
+
+public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
+Intent intent = new Intent(this, DisplayMessageActivity.class);
+intent.putExtra(EXTRA_MESSAGE, message);
+startActivity(intent);
+
+-----------------------------------
+startActivity() - starts the intent
+-----------------------------------
+
+putExtra() method adds value to the intent. An Intent can carry data types as key-value pairs called extras.
+keys - The name must include a package prefix. This ensures the keys are unique, in case your app interacts with other apps.
+
+-----------------------------------
+
+Intent intent = getIntent();
+String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
+getIntent() - grabs the intent that started the activity. Every Activity is invoked by an Intent, regardless of how the user navigated there.
+getStringExtra() - retrieves the data from the intent
+-----------------------------------
+
+TextView textView = new TextView(this);
+textView.setTextSize(40);
+textView.setText(message);
+-----------------------------------
+ViewGroup layout = (ViewGroup) findViewById(R.id.activity_display_message);
+layout.addView(textView);

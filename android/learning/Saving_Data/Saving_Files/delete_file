@@ -1,0 +1,8 @@
+call delete() on opened file reference
+
+    myFile.delete();
+
+If the file is saved on internal storage,
+can also ask the Context to locate and delete a file by calling deleteFile():
+
+    myContext.deleteFile(fileName);

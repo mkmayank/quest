@@ -1,0 +1,10 @@
+android:orientation
+
+- values :
+    horizontal
+    vertical
+
+e.g.
+    android:orientation="horizontal"
+
+    android:orientation="vertical"

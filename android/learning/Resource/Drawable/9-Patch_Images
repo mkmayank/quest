@@ -1,0 +1,10 @@
+- A 9-patch image file is specially formatted so that Android knows which portions can and cannot be scaled.
+
+A 9-patch image is like a regular PNG image in everything except two aspects:
+    -   Its filename ends with .9.png
+    -   it has an additional one-pixel border around the edge.
+        This border is used to specify the location of the center square of the 9-patch.
+        Border pixels are drawn black to indicate the center and transparent to indicate the edges.
+
+
+We can create a 9-patch using any image editor, with the draw9patch tool

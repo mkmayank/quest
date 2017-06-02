@@ -1,0 +1,27 @@
+- default strings file - strings.xml
+- we can name a strings file anything.
+- can have multiple strings files in a project
+- file must be located in res/values/
+- root element must be a resources root element, and contains child string elements
+
+e.g.
+    <resources>
+        <string name="app_name">GeoQuiz</string>
+        <string name="hello_world">Hello world!</string>
+        <string name="question_text">
+            Constantinople is the largest city in Turkey.
+        </string>
+        <string name="true_button">True</string>
+        <string name="false_button">False</string>
+        <string name="action_settings">Settings</string>
+    </resources>
+
+
+- using string
+    in xml
+        android:text="@string/true_button"
+    in code
+     setTitle(R.string.app_name);
+
+unmatched string resource in XML    -   the app will display the resource ID of the resource
+unmatched string resource in Java   -   the app will crash

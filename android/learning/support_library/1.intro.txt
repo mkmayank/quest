@@ -1,0 +1,11 @@
+To use the support library, list it as a dependency in project ( app/build.gradle )
+
+File → Project Structure -> app -> Dependencies -> + Library dependency -> choose library -> OK
+
+or
+
+https://developer.android.com/topic/libraries/support-library/packages.html
+
+add compile 'dependency name' in build.gradle
+e.g.
+     compile 'com.android.support:recyclerview-v7:25.3.1'

@@ -1,0 +1,18 @@
+An intent is an object that a component can use to communicate with the OS.
+
+intent to tell the ActivityManager which activity to start, constructor:
+
+    public Intent(Context packageContext, Class<?> cls)
+
+The Context - tells the ActivityManager which application package the activity class can be found in.
+The Class   - specifies the activity class that the ActivityManager should start.
+
+
+explicit intent - to start activities within same application.
+implicit intent - to start an activity in another application.
+
+-------------------------
+
+Activity.getIntent() always returns the Intent that started the activity
+
+    mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);

@@ -1,0 +1,9 @@
+getWritableDatabase() and getReadableDatabase() are expensive to call when the database is closed
+should leave your database connection open for as long as you possibly need to access it
+it is optimal to close the database in the onDestroy() of the calling Activity
+
+@Override
+protected void onDestroy() {
+    mDbHelper.close();
+    super.onDestroy();
+}

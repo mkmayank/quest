@@ -1,0 +1,45 @@
+Extras are arbitrary data that the calling activity can include with an intent.
+The OS forwards the intent to the recipient activity, which can then access the extras and retrieve the data.
+An extra is structured as a key-value pair
+
+To add an extra to an intent, use Intent.putExtra(…).
+
+    public Intent putExtra(String name, boolean value)
+
+Intent.putExtra(…) comes in many flavors, but it always has two arguments.
+The first argument is always a String key
+the second argument is the value, whose type will vary.
+It returns the Intent itself, so you can chain multiple calls if you need to.
+
+-----------------------------
+
+Extra Key :
+    private static final String EXTRA_ANSWER_IS_TRUE =
+        "com.bignerdranch.android.geoquiz.answer_is_true";
+
+    we should define keys for extras on the activities that retrieve and use them.
+    Using package name as a qualifier for extra, prevents name collisions with extras from other apps
+    define in second activity
+
+-----------------------------
+
+Now you could return to FirstActivity and put the extra on the intent, but there is a better approach.
+There is no reason for FirstActivity, or any other code in your app, to know the implementation details of what SecondActivity expects as extras on its Intent.
+Instead, we can encapsulate that work into a newIntent(…) method.
+
+    public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
+        Intent i = new Intent(packageContext, SecondActivity.class);
+        i.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+        return i;
+    }
+
+To retrieve the value from the extra :
+
+    public boolean getBooleanExtra(String name, boolean defaultValue)
+
+The first argument is the name of the extra.
+The second argument is a default value if the key is not found.
+
+    mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
+
+Activity.getIntent() always returns the Intent that started the activity

@@ -1,0 +1,8 @@
+mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                mCrime.setSolved(isChecked);
+            }
+});

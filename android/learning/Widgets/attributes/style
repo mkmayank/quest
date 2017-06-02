@@ -1,0 +1,12 @@
+-   A style is an XML resource that contains attributes that describe how a widget should look and behave.
+
+-   res/values/styles.xml
+    e.g.
+        <style name="BigTextStyle">
+            <item name="android:textSize">20sp</item>
+            <item name="android:padding">3dp</item>
+        </style>
+
+-   usage
+    e.g.
+        @style/BigTextStyle

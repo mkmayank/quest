@@ -1,0 +1,6 @@
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    ...
+}
+The Build.VERSION.SDK_INT constant is the device’s version of Android
+
+When parsing XML resources, Android ignores XML attributes that aren’t supported by the current device.

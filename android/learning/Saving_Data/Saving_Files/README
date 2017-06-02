@@ -1,0 +1,21 @@
+Internal storage:
+
+    -   always available.
+    -   private
+    -   files are removed when app is uninstalled
+    -   best to be sure that neither the user nor other apps can access your files
+
+External storage:
+
+    -   not always available
+    -   world-readable
+    -   files are removed when app is uninstalled only if save them in the directory from getExternalFilesDir()
+    -   best place for files that don't require access restrictions
+
+    Public files :
+        -   freely available to other apps and to the user
+        -   remain available after uninstall
+
+    Private files :
+        -   don't provide value to the user outside the app
+        -   deleted after uninstall

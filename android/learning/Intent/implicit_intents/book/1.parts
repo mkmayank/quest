@@ -1,0 +1,27 @@
+Parts :
+
+-   the action to perform
+    -   constants from the Intent class.
+        e.g.
+            Intent.ACTION_VIEW  -   to view a URL
+            Intent.ACTION_SEND  -   to send something
+            ACTION_CALL
+            ACTION_DIAL
+
+-   the location of any data
+    -   e.g.
+            the URL of a web page
+            URI to a file
+            content URI pointing to a record in a ContentProvider
+
+-   the type of data that the action is for
+    -   This is a MIME type,
+        e.g.
+            text/html
+            audio/mpeg3
+
+-   optional categories
+    -   If the action is used to describe what to do, the category usually describes where, when, or how you are trying to use an activity.
+        e.g.
+            android.intent.category.LAUNCHER    -   indicate that an activity should be displayed in the top-level app launcher
+            android.intent.category.INFO        -   indicates an activity that shows information about a package to the user but should not show up in the launcher

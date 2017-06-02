@@ -1,0 +1,23 @@
+interface       -   ViewPager.PageTransformer
+single method   -   transformPage (View page, float position)
+parameter       -   position
+
+setPageTransformer  -   to set PageTransformer on viewPager
+--------------------------------
+
+transformPage() -   called at each screen's transition, once for each visible page ( i.e. 3 )
+
+position    -   indicates where a given page is located relative to the center of the screen
+            -   dynamic property that changes as the user scrolls through the pages
+            -   [,-1)       -   page is way off-screen to the left
+            -   [-1 , 1]    -   visible
+            -   (1,]        -   page is way off-screen to the right
+
+
+https://developer.android.com/training/animation/screen-slide.html#depth-page
+---------------------------------------
+
+setAlpha(alpha);
+setTranslationX(translationX);
+setScaleX(scale);
+setScaleY(scale);

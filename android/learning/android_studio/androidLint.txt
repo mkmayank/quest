@@ -1,0 +1,7 @@
+Analyze → Inspect Code
+
+Clean your project
+Build → Clean Project
+
+Sync your project with Gradle
+Tools → Android → Sync Project with Gradle Files

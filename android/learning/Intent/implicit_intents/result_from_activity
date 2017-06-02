@@ -1,0 +1,22 @@
+startActivityForResult( intent , request_code );
+
+    e.g.
+    startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
+
+    recieve result
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == PICK_CONTACT_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // now do something
+            }
+        }
+    }
+
+-   request code    -   which we passed to startActivityForResult()
+-   result code     -   either RESULT_OK if the operation was successful
+                        or RESULT_CANCELED if the user backed out or the operation failed for some reason
+-   Intent data     -   result data

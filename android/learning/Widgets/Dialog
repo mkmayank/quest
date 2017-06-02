@@ -1,0 +1,80 @@
+-   android.support.v7.app.AlertDialog
+-   android.support.v4.app.DialogFragment
+
+-   AlertDialog, a subclass of Dialog. It is the all-purpose Dialog subclass which is most often used.
+-   When using an AlertDialog, it is a good idea to wrap it in an instance of DialogFragment, a subclass of Fragment
+
+-   DialogFragment includes the following method:
+    -   method :
+        -   public Dialog onCreateDialog(Bundle savedInstanceState)
+
+-   AlertDialog.Builder class
+    -   provides a fluent interface for constructing an AlertDialog instance.
+    -   methods :
+        -   public AlertDialog.Builder setTitle(int titleId)
+        -   public AlertDialog.Builder setPositiveButton(int textId, DialogInterface.OnClickListener listener)
+---------------------------------------------
+
+-   create subclass of DialogFragment
+    -   extends DialogFrament
+    -   public Dialog onCreateDialog(Bundle savedInstanceState)
+    e.g.
+        public class DatePickerFragment extends DialogFragment {
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.date_picker_title)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
+            }
+        }
+
+-   show DialogFragment
+    -   public void show(FragmentManager manager, String tag)
+    -   public void show(FragmentTransaction transaction, String tag)
+    e.g.
+
+        private static final String DIALOG_DATE = "DialogDate";
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
+
+-   set Dialog's content
+    -   public AlertDialog.Builder setView(View view)
+
+    -   layout /res/layout/dialog_date.xml
+        e.g.
+            <DatePicker xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/dialog_date_picker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:calendarViewShown="false">
+            </DatePicker>
+
+    - In onCreateDialog(Bundle), inflate the view and then set it on the dialog
+        e.g.
+            View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
+
+            return new AlertDialog.Builder(getActivity())
+                .setView(v)
+                .setTitle(R.string.date_picker_title)
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
+
+-------------------------------------
+.setPositiveButton(android.R.string.ok,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int year = mDatePicker.getYear();
+                int month = mDatePicker.getMonth();
+                int day = mDatePicker.getDayOfMonth();
+                Date date = new GregorianCalendar(year, month, day).getTime();
+                sendResult(Activity.RESULT_OK, date);
+            }
+        })

@@ -1,0 +1,8 @@
+e.g
+
+    @LayoutRes
+    protected int getLayoutResId() {
+        return R.layout.activity_fragment;
+    }
+
+Denotes that an integer parameter, field or method return value is expected to be a layout resource reference

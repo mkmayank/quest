@@ -1,0 +1,16 @@
+- A resource is a piece of your application that is not code – things like image files, audio files, and XML files.
+- in a subdirectory of the app/res
+
+- To access a resource in code, use its resource ID
+e.g.
+    - code
+        R.layout.activity_quiz
+        R.string.app_name
+
+    - XML
+        android:id="@+id/edit_message"
+        "@string/edit_message"
+
+        @ is required to refer to any resource object from XML.
+        followed by the resource type (id in this case), a slash, then the resource name (edit_message).
+        + before the resource type is needed only when defining a resource ID for the first time.

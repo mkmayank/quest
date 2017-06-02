@@ -1,0 +1,22 @@
+Add an Intent Filter to manifest
+
+Action  :
+    -   A string naming the action to perform ( full string name for the action )
+    -   <action>
+
+Data    :
+    -   A description of the data associated with the intent (  MIME type, URI prefix, URI scheme )
+    -   <data> element
+
+Category:
+
+<activity android:name="ShareActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="text/plain"/>
+        <data android:mimeType="image/*"/>
+    </intent-filter>
+</activity>
+
+can have multiple intent-filter

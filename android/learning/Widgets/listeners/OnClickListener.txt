@@ -1,0 +1,23 @@
+View.OnClickListener
+
+- it is Interface
+- has one method onClick(View)
+    e.g.
+        mTrueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Does nothing yet, but soon!
+            }
+        });
+
+----------------------
+
+private class CrimeHolder extends implements View.OnClickListener {
+    ...
+    itemView.setOnClickListener(this);
+    ...
+    @Override
+    public void onClick(View view) {
+        // Does nothing yet, but soon!
+    }
+}

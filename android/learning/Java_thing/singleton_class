@@ -1,0 +1,16 @@
+A singleton is a class that allows only one instance of itself to be created.
+
+public class CrimeLab {
+    private static CrimeLab sCrimeLab;
+
+    public static CrimeLab get(Context context) {
+        if (sCrimeLab == null) {
+            sCrimeLab = new CrimeLab(context);
+        }
+        return sCrimeLab;
+    }
+
+    private CrimeLab(Context context) {
+
+    }
+}

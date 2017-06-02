@@ -1,0 +1,4 @@
+Read from Shared Preferences :
+
+    int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
+    long highScore = sharedPref.getInt(getString(R.string.saved_high_score), defaultValue);

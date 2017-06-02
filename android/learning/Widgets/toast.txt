@@ -1,0 +1,9 @@
+public static Toast makeText(Context context, int resId, int duration)
+Toast.show()
+
+e.g.
+    Toast.makeText(
+        QuizActivity.this,
+        R.string.incorrect_toast,
+        Toast.LENGTH_SHORT
+    ).show();

@@ -1,0 +1,52 @@
+-   Every fragment instance can have a Bundle object attached to it.
+-   This bundle contains key-value pairs that work just like the intent extras of an Activity.
+-   Each pair is known as an argument.
+
+-   To create fragment arguments :
+    -   first create a Bundle object.
+    -   use type-specific “put” methods of Bundle (similar to those of Intent) to add arguments to the bundle:
+    e.g.
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MY_OBJECT, myObject);
+        args.putInt(ARG_MY_INT, myInt);
+        args.putCharSequence(ARG_MY_STRING, myString);
+
+-   Attaching arguments to a fragment :
+    -   Fragment.setArguments(Bundle)
+    -   add static method named newInstance() to the Fragment class. This method creates the fragment instance and bundles up and sets its arguments.
+    e.g.
+
+        private static final String ARG_CRIME_ID = "crime_id";
+
+        public static CrimeFragment newInstance(UUID crimeId) {
+            Bundle args = new Bundle();
+            args.putSerializable(ARG_CRIME_ID, crimeId);
+
+            CrimeFragment fragment = new CrimeFragment();
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+---------------------------------------
+public class CrimeActivity extends SingleFragmentActivity {
+    public private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
+    ...
+    @Override
+    protected Fragment createFragment() {
+        UUID crimeId = (UUID) getIntent()
+                .getSerializableExtra(EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
+    }
+}
+
+
+----------------------------------------
+getting
+
+@Override
+public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);    
+
+}

@@ -1,0 +1,46 @@
+FileProvider class :
+
+1.  adding FileProvider declaration in AndroidManifest.xml
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.bignerdranch.android.criminalintent.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+        </provider>
+
+        exported="false"        -   keep anyone from using this provider except app or anyone you grant permission to.
+        grantUriPermissions     -   ability to grant other apps permission to write to URIs on this authority sent them out in an intent
+
+2.  tell your FileProvider which files it is exposing
+
+        Right-click app/res folder in the project tool window
+        select New → Android resource file
+        For Resource type, select XML,
+        then enter files for the name.
+
+        xml/files.xml
+        replace its contents with the following:
+
+            <paths>
+                <files-path name="crime_photos" path="."/>
+            </paths>
+
+
+        This XML file is a description that says, “Map the root path of my private storage as crime_photos.”
+        We will not use the crime_photos name – FileProvider uses that internally.
+
+3.  Hooking up the paths description (AndroidManifest.xml)
+
+        <provider
+        ...>
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/files"/>
+        </provider>
+
+
+4.  Finding photo file location
+
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, 'file_name');

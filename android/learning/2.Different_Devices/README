@@ -1,0 +1,115 @@
+https://developer.android.com/guide/topics/resources/providing-resources.html
+-----------------------------------------
+
+Supporting Different Languages :
+
+extract UI strings from app code and keep them in an external file.
+res/values/strings.xml - holds string values
+
+values-<ISO language code>
+e.g.
+    MyProject/
+        res/
+           values/
+               strings.xml
+           values-es/
+               strings.xml
+           values-fr/
+               strings.xml
+
+Add the string values for each locale into the appropriate file.
+Android loads the appropriate resources according to the locale settings of the device at run time.
+---------------------------------------------
+
+Supporting Different Screens :
+
+screens     : size and density
+sizes       : small, normal, large, xlarge
+densities   : low (ldpi), medium (mdpi), high (hdpi), extra high (xhdpi)
+
+layout-<screen_size>
+
+e.g.
+    MyProject/
+        res/
+            layout/              # default (portrait)
+                main.xml
+            layout-land/         # landscape
+                main.xml
+            layout-large/        # large (portrait)
+                main.xml
+            layout-large-land/   # large landscape
+                main.xml
+
+create a unique layout XML file for each screen size to support.
+The file names must be exactly the same, but their contents are different in order to provide an optimized UI for the corresponding screen size.
+Android automatically scales your layout in order to properly fit the screen.
+
+size scale :
+xhdpi: 2.0
+hdpi: 1.5
+mdpi: 1.0 (baseline)
+ldpi: 0.75
+This means that if xhdpi a 200x200 image then hdpi a 150x150 ,mdpi a 100x100, ldpi a 75x75.
+
+drawable-<screen_density>
+
+Then, place the files in the appropriate drawable resource directory:
+e.g.
+    MyProject/
+        res/
+            drawable-xhdpi/
+                awesomeimage.png
+            drawable-hdpi/
+                awesomeimage.png
+            drawable-mdpi/
+                awesomeimage.png
+            drawable-ldpi/
+                awesomeimage.png
+                
+Any .png, .jpg, or .gif file you add to a res/drawable folder will be automatically assigned a resource ID.
+filenames must be lowercase and have no spaces
+
+Any reference @drawable/awesomeimage, the system selects the appropriate bitmap based on the screen's density.
+
+ldpi resources aren’t always necessary. On providing hdpi assets, the system scales them down by one half to properly fit ldpi screens.
+---------------------------------------------
+
+Supporting Different Platform Versions :
+
+    1. Specify Minimum and Target API Levels
+
+    minSdkVersion    - lowest API level with which app is compatible
+    targetSdkVersion - highest API level against which app is designed and tested
+
+    should set the targetSdkVersion value to match the latest Android version available.
+
+    -------------------------------------
+
+    2. Check System Version at Runtime
+
+    Build constant class - unique code for each platform version
+
+    e.g.
+    // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    Android ignores XML attributes that aren’t supported by the current device. So you can safely use XML attributes that are only supported by newer versions.
+
+    -------------------------------------
+
+    3. Use Platform Styles and Themes
+
+    themes - These themes can be applied to app within the manifest file.
+
+    e.g.
+        <activity android:theme="@android:style/Theme.Dialog">
+
+    To apply own custom theme defined in /res/values/styles.xml:
+        <activity android:theme="@style/CustomTheme">
+
+    To apply a theme to entire app (all activities),
+        <application android:theme="@style/CustomTheme">

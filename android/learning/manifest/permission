@@ -1,0 +1,23 @@
+<manifest ... >
+    <uses-permission android:name="android.permission.INTERNET" />
+...
+</manifest>
+
+-------------------------------
+
+To write to the external storage
+    permission - WRITE_EXTERNAL_STORAGE
+
+    <manifest ...>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        ...
+    </manifest>
+
+-------------------------------
+
+for upto api level 18
+<manifest ...>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="18" />
+    ...
+</manifest>

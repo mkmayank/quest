@@ -1,0 +1,8 @@
+-   android.support.v7.app.AlertDialog
+-   android.support.v4.app.DialogFragment
+
+-   AlertDialog, a subclass of Dialog. It is the all-purpose Dialog subclass which is most often used.
+-   When using an AlertDialog, it is a good idea to wrap it in an instance of DialogFragment, a subclass of Fragment
+
+
+-

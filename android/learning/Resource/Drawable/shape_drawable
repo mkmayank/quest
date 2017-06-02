@@ -1,0 +1,36 @@
+
+- res/drawable/button_beat_box_normal.xml
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="oval">
+
+        <solid
+            android:color="@color/dark_blue"/>
+
+    </shape>
+
+- res/drawable/button_beat_box_pressed.xml
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="oval">
+
+        <solid
+            android:color="@color/red"/>
+
+    </shape>
+
+state list drawable
+
+- res/drawable/button_beat_box.xml
+
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:drawable="@drawable/button_beat_box_pressed"
+            android:state_pressed="true"/>
+        <item android:drawable="@drawable/button_beat_box_normal" />
+    </selector>
+
+-------------------------------------------
+
+<style name="BeatBoxButton" parent="android:style/Widget.Holo.Button">
+    <item name="android:background">@drawable/button_beat_box</item>
+</style>

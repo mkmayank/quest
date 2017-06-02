@@ -1,0 +1,23 @@
+File getFilesDir()
+    -   returns a handle to the directory for private application files
+
+FileInputStream openFileInput(String name)
+    -   opens an existing file for input (relative to the files directory)
+
+FileOutputStream openFileOutput(String name, int mode)
+    -   opens a file for output, possibly creating it (relative to the files directory)
+
+File getDir(String name, int mode)
+    -   gets (and possibly creates) a subdirectory within the files directory
+
+String[] fileList()
+    -   gets a list of file names in the main files directory, such as for use with openFileInput(String)
+
+File getCacheDir()
+    -   returns a handle to a directory you can use specifically for storing cache files;
+    -   should take care to keep this directory tidy and use as little space as possible
+
+
+these files are private
+only our own application can read or write to them
+As long as no other app needs to access those files, these methods are sufficient.

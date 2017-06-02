@@ -1,0 +1,17 @@
+res/. Each directory's name should adhere to the following format:
+
+    <resource type>-b+<language code>[+<country code>]
+
+
+e.g.
+
+MyProject/
+    res/
+       values/
+           strings.xml
+       values-b+es/
+           strings.xml
+       mipmap/
+           country_flag.png
+       mipmap-b+es+ES/
+           country_flag.png

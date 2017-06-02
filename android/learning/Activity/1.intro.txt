@@ -1,0 +1,48 @@
+Every instance of Activity has a lifecycle. During this lifecycle, an activity transitions between three
+states: running, paused, and stopped. For each transition, there is an Activity method that notifies the
+activity of the change in its state.
+onResume()
+onPause()
+onStart()
+onStop()
+onCreate()
+onDestroy()
+
+---------------------------
+public class QuizActivity extends AppCompatActivity {
+
+    private Button mTrueButton;
+    private Button mFalseButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //inflating widgets and putting them on screen
+        setContentView(R.layout.activity_quiz);
+    }
+}
+
+AppCompatActivity - subclass of Android’s Activity class that provides compatibility support for older versions of Android.
+----------------------------
+
+Never call any of the Activity lifecycle methods yourself. Override them in activity subclasses, and Android calls them at the appropriate time.
+
+
+----------------------------
+
+Launching   : onCreate() -> onStart() -> onResume()
+
+Back Button : onPause() -> onStop() -> onDestroy()
+
+Home Button : onPause() -> onStop()
+
+no onDestoy() called
+However, a stopped activity’s survival is not guaranteed. When the system needs to reclaim memory, it will destroy stopped activities.
+
+Recent Button : onStart() -> onResume()
+
+Rotation : onPause() -> onStop() -> onDestroy() -> onCreate() -> onStart() -> onResume()
+
+
+-------------------------------

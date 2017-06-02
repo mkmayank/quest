@@ -1,0 +1,10 @@
+the only secure way to offer a file from app to another app
+    -   content URI                     -   send the receiving app the file's content URI and
+    -   temporary access permissions    -   grant temporary access permissions to that URI
+
+Content URIs with temporary URI access permissions
+    -   apply only to receiving app
+    -   expire automatically
+
+The Android FileProvider component
+    -   getUriForFile() -   for generating a file's content URI

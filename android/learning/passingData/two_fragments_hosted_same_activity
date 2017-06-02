@@ -1,0 +1,71 @@
+-   Add a newInstance() method
+
+    public class DatePickerFragment extends DialogFragment {
+
+        private static final String ARG_DATE = "date";
+
+        private DatePicker mDatePicker;
+
+        public static DatePickerFragment newInstance(Date date) {
+            Bundle args = new Bundle();
+            args.putSerializable(ARG_DATE, date);
+
+            DatePickerFragment fragment = new DatePickerFragment();
+            fragment.setArguments(args);
+            return fragment;
+        }
+        ...
+    }
+
+-   Setting a target fragment
+
+    public void setTargetFragment(Fragment fragment, int requestCode)
+
+    -   The FragmentManager keeps track of the target fragment and request code
+    -   retrieve them by calling on the fragment that has set the target.
+        -   getTargetFragment()
+        -   getTargetRequestCode()
+
+        e.g.
+
+        private static final int REQUEST_DATE = 0;
+
+        DatePickerFragment dialog = DatePickerFragment.newInstance( mCrime.getDate());
+        dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+
+-   Sending data to the target fragment
+
+        public class DatePickerFragment extends DialogFragment {
+
+            public static final String EXTRA_DATE =
+                    "com.bignerdranch.android.criminalintent.date";
+            ...
+
+            private void sendResult(int resultCode, Date date) {
+                if (getTargetFragment() == null) {
+                    return;
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_DATE, date);
+
+                getTargetFragment()
+                        .onActivityResult(getTargetRequestCode(), resultCode, intent);
+            }
+        }
+
+- 
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }
+
+            if (requestCode == REQUEST_DATE) {
+                Date date = (Date) data
+                        .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+                mCrime.setDate(date);
+                mDateButton.setText(mCrime.getDate().toString());
+            }
+        }

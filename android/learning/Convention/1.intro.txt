@@ -1,0 +1,36 @@
+instance variable : m prefix
+e.g.
+    private Button mTrueButton;
+    private Button mFalseButton;
+
+---------------------------------
+
+static variable : s prefix
+e.g.
+    private static CrimeLab sCrimeLab;
+
+---------------------------------
+
+class name : begin with uppercase letter
+e.g.
+    public class Print{
+        ...
+    }
+
+----------------------------------
+
+package name : “reverse DNS”
+It keeps package names unique and distinguishes applications from each other on a device and on Google Play
+e.g.
+    com.mapank.android.firstapplication
+
+---------------------------------
+
+activity name : Activity suffix on the class name
+e.g.
+    QuizActivity
+
+---------------------------------
+layout name : reverses the order of the activity name, is all lowercase, and has underscores between words
+e.g.
+    activity_quiz

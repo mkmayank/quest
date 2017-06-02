@@ -1,0 +1,63 @@
+ASKING ANDROID FOR A CONTACT    -
+-   implicit intent's action Intent.ACTION_PICK
+-   The data for contacts is at ContactsContract.Contacts.CONTENT_URI
+
+We expect a result back from the started activity, so we will pass the intent via startActivityForResult(…) along with a request code
+
+    // sending implicit intent
+
+    private static final int REQUEST_CONTACT = 1;
+
+    final Intent pickContact = new Intent(Intent.ACTION_PICK,
+            ContactsContract.Contacts.CONTENT_URI);
+
+    startActivityForResult(pickContact, REQUEST_CONTACT);
+
+
+    // recieving the data
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CONTACT && data != null) {
+            Uri contactUri = data.getData();
+            // Specify which fields you want your query to return
+            // values for
+            String[] queryFields = new String[] {
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+            // Perform your query - the contactUri is like a "where"
+            // clause here
+            Cursor c = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+
+            try {
+                // Double-check that you actually got results
+                if (c.getCount() == 0) {
+                    return;
+                }
+
+                // Pull out the first column of the first row of data -
+                // that is your suspect's name
+                c.moveToFirst();
+                String suspect = c.getString(0);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
+            } finally {
+                c.close();
+            }
+        }
+    }
+
+
+Guarding against no contacts app
+
+-   if the OS cannot find a matching activity, then the app will crash
+
+    PackageManager packageManager = getActivity().getPackageManager();
+
+    if (packageManager.resolveActivity(pickContact,
+            PackageManager.MATCH_DEFAULT_ONLY) == null) {
+        mSuspectButton.setEnabled(false);
+    }
+
+PackageManager knows about all the components installed on your Android device, including all of its activities

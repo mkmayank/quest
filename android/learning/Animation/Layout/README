@@ -1,0 +1,7 @@
+android:animateLayoutChanges="true" -   enable animations
+
+e.g.
+    <LinearLayout android:id="@+id/container"
+        android:animateLayoutChanges="true"
+        ...
+    />

@@ -1,0 +1,17 @@
+save public files on the external storage :
+
+    getExternalStoragePublicDirectory()
+        -   to get a File representing the appropriate directory on the external storage
+        -   takes an argument specifying the type of file, such as DIRECTORY_MUSIC or DIRECTORY_PICTURES
+
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        albumName
+                    );
+        if (!file.mkdirs()) {
+            Log.e(LOG_TAG, "Directory not created");
+        }
+        return file;
+    }

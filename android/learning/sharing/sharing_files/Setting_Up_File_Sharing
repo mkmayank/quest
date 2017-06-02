@@ -1,0 +1,46 @@
+-   Specify the FileProvider
+-   Specify Sharable Directories
+
+-   Specify the FileProvider
+    - define in manifest
+        -   specifies the authority to use in generating content URI
+        -   name of an XML file that specifies the directories app can share.
+
+        e.g.
+        <manifest   xmlns:android="http://schemas.android.com/apk/res/android"
+                    package="com.example.myapp">
+            <application
+                ...>
+                <provider
+                    android:name="android.support.v4.content.FileProvider"
+                    android:authorities="com.example.myapp.fileprovider"
+                    android:grantUriPermissions="true"
+                    android:exported="false">
+                    <meta-data
+                        android:name="android.support.FILE_PROVIDER_PATHS"
+                        android:resource="@xml/filepaths" />
+                </provider>
+                ...
+            </application>
+        </manifest>
+
+-   Specify Sharable Directories
+    e.g.
+        res/xml/filepaths.xml
+
+        <paths>
+            <files-path path="images/" name="myimages" />
+        </paths>
+
+        -   <paths> element can have multiple children
+            -   <files-path>    -   internal storage directories
+            -   <external-path> -   external storage directoriese
+            -   <cache-path>    -   internal cache directory
+
+---------------------------------
+
+The XML file is the only way to specify the directories to share.
+We can't programmatically add a directory.
+
+URI for files/images/default_imag.jpg :
+    content://com.example.myapp.fileprovider/myimages/default_image.jpg

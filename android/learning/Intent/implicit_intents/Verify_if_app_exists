@@ -1,0 +1,10 @@
+if there is no app available on the device that can handle the intent, app will crash
+
+    queryIntentActivities() -   get a list of activities capable of handling Intent
+
+    PackageManager packageManager = getPackageManager();
+    List activities =   packageManager.queryIntentActivities(
+                            intent,
+                            PackageManager.MATCH_DEFAULT_ONLY
+                        );
+    boolean isIntentSafe = activities.size() > 0;

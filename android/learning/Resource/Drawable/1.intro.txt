@@ -1,0 +1,27 @@
+- filenames must be lowercase and have no spaces
+- file must be located in res/drawable
+
+- using string
+    in xml
+        android:drawableRight="@drawable/awesomeimage"
+    in code
+
+
+ e.g.
+     MyProject/
+         res/
+             drawable-xhdpi/
+                 awesomeimage.png
+             drawable-hdpi/
+                 awesomeimage.png
+             drawable-mdpi/
+                 awesomeimage.png
+             drawable-ldpi/
+                 awesomeimage.png
+
+     Any .png, .jpg, or .gif file you add to a res/drawable folder will be automatically assigned a resource ID.
+     Any reference @drawable/awesomeimage, the system selects the appropriate bitmap based on the screen's density.
+
+
+putting default drawable resources in res/drawable/ is not necessary
+Android scales available resources according to screen and density

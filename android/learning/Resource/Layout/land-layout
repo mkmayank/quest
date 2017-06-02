@@ -1,0 +1,7 @@
+- right-click the res directory and select New → Android resource directory
+- Select layout in the Resource type dropdown. Leave the Source set option set to main
+- Select Orientation in the Available qualifiers list and click the >> button to move Orientation to the Chosen qualifiers section.
+- ensure
+    Screen orientation dropdown -   Landscape
+    Directory                   -   layout-land
+- Click OK and Android Studio will create the res/layout-land/ folder.

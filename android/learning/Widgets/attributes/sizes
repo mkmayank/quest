@@ -1,0 +1,26 @@
+px  -   pixel
+        one onscreen pixel
+        do not scale appropriately with device display density
+        not recommended
+
+dp  -   density-independent pixel (dip)
+        1/160th of an inch on a device’s screen
+        same size regardless of screen density
+        recommended for layout dimensions, like margins, padding
+
+sp  -   scale-independent pixel
+        density-independent pixels that also take into account the user’s font size preference
+        recommended for text size
+
+pt   -  point
+        1/72 of an inch
+        not recommended
+
+mm   -  millimeters
+        not recommended
+
+in   -  inch
+        not recommended
+
+
+Android will translate these values into pixels at runtime.

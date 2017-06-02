@@ -1,0 +1,9 @@
+setResult() -   to specify the result code and result Intent
+finish()    -   to close (and destroy) your activity
+
+Intent result = new Intent("com.example.RESULT_ACTION", Uri.parse("content://result_uri"));
+setResult(Activity.RESULT_OK, result);
+finish();
+
+If the originating activity had called startActivityForResult(),
+then the system delivers it the result we supply to setResult(); otherwise, the result is ignored.

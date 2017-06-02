@@ -1,0 +1,14 @@
+Manifest :
+
+    <manifest ... >
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19" />
+    ...
+    </manifest>
+
+------------------------------
+
+Code    :
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+
+    }

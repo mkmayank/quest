@@ -1,0 +1,10 @@
+SharedPreferences APIs  -   for relatively small collection of key-values to save
+
+Methods :
+    getSharedPreferences()
+        -   multiple shared preference files identified by name
+        -   can call this from any Context in your app
+
+    getPreferences()
+        -   only one shared preference file for the activity
+        -   use this from an Activity if you need to use

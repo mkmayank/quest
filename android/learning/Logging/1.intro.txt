@@ -1,0 +1,29 @@
+android.util.Log class sends log messages to a shared system-level log
+
+public static int d(String tag, String msg)
+
+    - d stands for “debug” and refers to the level of  the log message.
+    - first parameter identifies the source of th message
+    - second parameter is the contents of the message.
+
+The first string is typically a TAG constant with the class name as its value.
+This makesit easy to determine the source of a particular message.
+
+Log.d(TAG, "onCreate(Bundle) called");
+
+e.g.,
+
+import android.util.Log;
+
+public class QuizActivity extends AppCompatActivity {
+    private static final String TAG = "QuizActivity";
+    ...
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate(Bundle) called");
+        setContentView(R.layout.activity_quiz);
+        ...
+    }
+}

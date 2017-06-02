@@ -1,0 +1,13 @@
+/res/values/strings.xml
+
+<plurals name="subtitle_plural">
+    <item quantity="one">%1$d crime</item>
+    <item quantity="other">%1$d crimes</item>
+</plurals>
+
+
+getQuantityString method to correctly pluralize the string.
+
+int crimeSize = crimeLab.getCrimes().size();
+String subtitle = getResources()
+    .getQuantityString(R.plurals.subtitle_plural, crimeSize, crimeSize);

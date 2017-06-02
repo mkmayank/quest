@@ -1,0 +1,205 @@
+- RecyclerView is a subclass of ViewGroup.
+- It displays a list of child View objects, one for each item in the list of items.
+
+- RecyclerView’s only responsibilities are recycling views and positioning them onscreen.
+- To get the views in the first place, it works with two classes:
+    -   an Adapter subclass
+    -   a ViewHolder subclass
+
+- ViewHolder
+    -   It holds on to a View
+    -   itemView - holds a reference to the entire View passed into super(view)
+    -   A RecyclerView never creates Views. It always creates ViewHolders, which bring their itemViews .
+
+    -   ViewHolder typical class
+
+            public class ListRow extends RecyclerView.ViewHolder {
+                public ImageView mThumbnail;
+
+                public ListRow(View view) {
+                    super(view);
+
+                    mThumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                }
+            }
+
+    -   ViewHolder typical usage
+
+            ListRow row = new ListRow(inflater.inflate(R.layout.list_row, parent, false));
+            View view = row.itemView;
+            ImageView thumbnailView = row.mThumbnail;
+
+- Adapters
+    -   An adapter is a controller object that sits between the RecyclerView and the data set that the RecyclerView should display.
+    -   RecyclerView does not create ViewHolders itself. Instead, it asks an adapter.
+    -   The adapter is responsible for:
+            -   creating the necessary ViewHolders
+            -   binding ViewHolders to data from the model layer
+    -    abstract methods
+            -   getItemCount()
+            -   onCreateViewHolder(ViewGroup, int)
+            -   onBindViewHolder(ViewHolder, int)
+
+- When the RecyclerView needs a view object to display, it will have a conversation with its adapter.
+    1.  getItemCount()
+            -   asks how many objects are in the list
+    2.  onCreateViewHolder(ViewGroup, int)
+            -   to create a new ViewHolder, along with : a View to display.
+    3.  onBindViewHolder(ViewHolder, int)
+            -   The RecyclerView will pass a ViewHolder into this method along with the position.
+            -   The adapter will look up the model data for that position and bind it to the ViewHolder’s View.
+            -   To bind it, the adapter fills in the View to reflect the data in the model object.
+    4.  place on screen
+
+- onCreateViewHolder(ViewGroup, int) will happen a lot less often than onBindViewHolder(ViewHolder, int).
+- Once enough ViewHolders have been created, RecyclerView stops calling onCreateViewHolder(…).
+- It saves time and memory by recycling old ViewHolders.
+
+----------------------------------------------
+- add dependency in build.gradle
+    e.g.
+         compile 'com.android.support:recyclerview-v7:25.3.1'
+
+- add recyclerview to layout file
+    e.g.
+         <android.support.v7.widget.RecyclerView
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/crime_recycler_view"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+        />
+
+- code to use the above RecyclerView
+    e.g.
+
+        private RecyclerView mCrimeRecyclerView;
+
+            mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
+            mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    //RecyclerView requires a LayoutManager to work. If you forget to give it one, it will crash.
+    //RecyclerView does not position items on the screen itself. It delegates that job to the LayoutManager.
+    //The LayoutManager positions every item and also defines how scrolling works.
+    //There are a few built-in LayoutManagers to choose from, and can find more as third-party libraries. You are using the //LinearLayoutManager, GridLayoutManager
+
+- layout file for Each item displayed on the RecyclerView
+    e.g.
+
+        res/layout/list_item_crime.xml
+
+- define the ViewHolder that will inflate and own layout
+    e.g.
+
+        private class CrimeHolder extends RecyclerView.ViewHolder {
+            public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+                super(inflater.inflate(R.layout.list_item_crime, parent, false));
+            }
+        }
+
+- create adapter and implement adapter abstract methods
+    e.g.
+
+        private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+
+            private List<Crime> mCrimes;
+
+            public CrimeAdapter(List<Crime> crimes) {
+                mCrimes = crimes;
+            }
+
+            @Override
+            public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+                return new CrimeHolder(layoutInflater, parent);
+            }
+
+            @Override
+            public void onBindViewHolder(CrimeHolder holder, int position) {
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return mCrimes.size();
+
+                }
+        }
+
+- create a CrimeAdapter and set it on the RecyclerView
+    e.g.
+
+        private CrimeAdapter mAdapter;
+
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        List<Crime> crimes = crimeLab.getCrimes();
+
+        mAdapter = new CrimeAdapter(crimes);
+        mCrimeRecyclerView.setAdapter(mAdapter);
+
+- bind data to views in Viewholder
+    e.g.
+
+        private class CrimeHolder extends RecyclerView.ViewHolder {
+
+            private TextView mTitleTextView;
+            private TextView mDateTextView;
+
+            private Crime mCrime;
+
+            public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+                super(inflater.inflate(R.layout.list_item_crime, parent, false));
+
+                mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
+                mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            }
+
+            public void bind(Crime crime) {
+
+                mCrime = crime;
+                mTitleTextView.setText(mCrime.getTitle());
+                mDateTextView.setText(mCrime.getDate().toString());
+            }
+        }
+
+- call the bind method in onBindViewHolder
+    e.g.
+
+        @Override
+        public void onBindViewHolder(CrimeHolder holder, int position) {
+            Crime crime = mCrimes.get(position);
+            holder.bind(crime);
+        }
+
+-----------------------------------
+Always be efficient in your onBindViewHolder(…)
+-----------------------------------
+animation on movement
+mRecyclerView.getAdapter().notifyItemMoved(0, 5);
+-----------------------------------
+
+-   update data of adapter
+
+    -   notifyDataSetChanged()
+    e.g.
+        @Override
+        public void onResume() {
+            super.onResume();
+            updateUI();
+        }
+
+        private void updateUI() {
+            CrimeLab crimeLab = CrimeLab.get(getActivity());
+            List<Crime> crimes = crimeLab.getCrimes();
+
+            if (mAdapter == null) {
+                mAdapter = new CrimeAdapter(crimes);
+                mCrimeRecyclerView.setAdapter(mAdapter);
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+    -   notifyItemChanged()
+        -   reload single item in the list
+----------------------------------------

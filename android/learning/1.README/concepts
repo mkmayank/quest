@@ -1,0 +1,45 @@
+Activity
+    -   Lifecycle
+Fragment
+    -   Lifecycle
+
+Intent
+    -   explicit
+    -   implicit
+Bundle
+Fragment Args
+SharedPreferences
+
+broadcast intent
+
+Fragment Manager
+    -   Lifecycle
+
+RETAINING A FRAGMENT
+
+inflating view
+
+passing data Activity to Activity   and back
+passing data Activity to Fragment   and back
+passing data Fragment to Activity   and back
+passing data Fragment to Fragment   and back
+
+IntentService
+
+Widgets
+
+annotation
+
+qualifier
+
+Resources
+    Drawable
+    Layout
+    Menu
+    Values
+        String
+
+Accessibility
+
+MVVM
+Testing

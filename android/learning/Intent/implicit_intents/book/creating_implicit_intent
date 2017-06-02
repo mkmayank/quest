@@ -1,0 +1,35 @@
+sending plain text  :
+
+    -   implicit intent’s action will be ACTION_SEND.
+    -   It will not point to any data or have any categories
+    -   it will specify a type of text/plain
+
+    Intent i = new Intent(Intent.ACTION_SEND);
+
+    i.setType("text/plain");
+    i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+    i.putExtra(Intent.EXTRA_SUBJECT,
+        getString(R.string.crime_report_subject));
+
+    startActivity(i);
+
+Any activity responding to this intent will know these constants and what to do with the associated values.
+
+-------------------------------------
+
+create a chooser :  to be shown every time an implicit intent is used to start an activity
+    -   heading shown on chooser
+
+    public static Intent createChooser(Intent target, String title)
+
+    e.g.
+    Intent i = new Intent(Intent.ACTION_SEND);
+
+    i.setType("text/plain");
+    i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+    i.putExtra(Intent.EXTRA_SUBJECT,
+        getString(R.string.crime_report_subject));
+
+    i = Intent.createChooser(i, getString(R.string.send_report));
+
+    startActivity(i);

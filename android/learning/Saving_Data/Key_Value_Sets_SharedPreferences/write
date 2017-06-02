@@ -1,0 +1,5 @@
+Write to Shared Preferences :
+
+    SharedPreferences.Editor editor = sharedPref.edit();
+    editor.putInt(getString(R.string.saved_high_score), newHighScore);
+    editor.commit();

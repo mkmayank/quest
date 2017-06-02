@@ -1,0 +1,9 @@
+Widgets are the building blocks use to compose a UI.
+A widget can show text or graphics, interact with the user, or arrange other widgets on the screen.
+e.g. Buttons, text input controls, checkboxes
+
+-----------------------------------------
+
+public View findViewById(int id) - to get a reference to an inflated widget
+e.g.
+    mTrueButton = (Button) findViewById(R.id.true_button);

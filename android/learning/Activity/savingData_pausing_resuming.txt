@@ -1,0 +1,42 @@
+- override the Activity method:
+    protected void onSaveInstanceState(Bundle outState)
+    This method is normally called by the system before onPause() , onStop() , and onDestroy() .
+    The default implementation of onSaveInstanceState(...) directs all of the activity’s views to save their state as data in the Bundle object.
+
+- A Bundle is a structure that maps string keys to values of certain limited types.
+
+e.g.
+    private static final String KEY_INDEX = "index";
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+
+        //saving state
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    to retrieve state in onCreate or anywhere
+
+    if (savedInstanceState != null) {
+        mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+    }
+
+----------------------------
+
+Android will never destroy a running activity to reclaim memory – the activity must be in the paused or stopped state to be destroyed. If an activity is paused or stopped, then its onSaveInstanceState(...) method has been called.
+When onSaveInstanceState(...) is called, the data is saved to the Bundle object. That Bundle object is then stuffed into your activity’s activity record by the OS.
+
+----------------------------
+
+When the user presses the Back button, your activity really gets destroyed, once and for all.
+At that point, your activity record is discarded.
+Activity records are also typically discarded on reboot and may also be discarded if they are not used for a long time.
+
+----------------------------
+
+Override onSaveInstanceState(Bundle)
+    - to stash small, transient-state data that belongs to the current activity in your Bundle.
+Override onStop()
+    - to save any permanent data, such as things the user is editing, because activity may be killed at any time after this method returns.

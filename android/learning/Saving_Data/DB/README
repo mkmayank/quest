@@ -1,0 +1,4 @@
+-   Each application’s sandbox directory is a child of the device’s /data/data directory
+-   named after the application package
+    e.g.
+    /data/data/com.mapank.android.criminalintent.

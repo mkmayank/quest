@@ -1,0 +1,82 @@
+-   must use ViewPager’s full package name (android.support.v4.view.ViewPager)
+
+        /res/layout/activity_crime_pager.xml
+
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/crime_view_pager"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+-   A ViewPager requires a PagerAdapter.
+-   FragmentStatePagerAdapter - subclass of PagerAdapter
+-   2 simple methods: getCount() and getItem(int)
+
+-   code
+
+    -   create activity
+    -   get fragmentManager
+    -   setAdapter
+    -   implement getItem() , getCount() methods
+
+    public class CrimePagerActivity extends AppCompatActivity{
+
+        private ViewPager mViewPager;
+        private List<Crime> mCrimes;
+
+        @Override
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView( R.layout.activity_crime_pager );
+
+            mViewPager = (ViewPager) this.findViewById( R.id.crime_view_pager );
+            mCrimes = CrimeLab.get(this).getCrimes();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            mViewPager.setAdapter(new FragmentStatePagerAdapter( fragmentManager ) {
+                @Override
+                public Fragment getItem(int position) {
+                    Crime crime = mCrimes.get(position);
+                    return CrimeFragment.newInstance(crime.getId());
+                }
+
+                @Override
+                public int getCount() {
+                    return mCrimes.size();
+                }
+            });
+
+            for (int i = 0; i < mCrimes.size(); i++) {
+                if (mCrimes.get(i).getId().equals(crimeId)) {
+                    mViewPager.setCurrentItem(i);
+                    break;
+                }
+            }
+        }
+    }
+--------------------------------------------
+ViewPager loads the item currently onscreen plus one neighboring page in each direction so that the response to a swipe is immediate.
+We tweak how many neighboring pages are loaded by calling setOffscreenPageLimit(int).
+
+mViewPager.setCurrentItem(i);
+to set current item
+
+--------------------------------------------
+Adapter :
+FragmentStatePagerAdapter
+FragmentPagerAdapter
+
+FragmentStatePagerAdapter :
+    -   unneeded fragment is destroyed
+    -   it will save out fragment’s Bundle from onSaveInstanceState(Bundle) when it is destroyed
+    -   When the user navigates back, the new fragment will be restored using that instance state
+    -   frugal with memory
+
+FragmentPagerAdapter :
+    -   destroys the fragment’s view, but leaves the fragment instance alive in the FragmentManager
+    -   calls detach(Fragment) on the transaction, instead of remove(Fragment)
+
+---------------------------------------------
+PagerTitleStrip
+PagerTabStrip

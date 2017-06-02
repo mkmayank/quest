@@ -1,0 +1,39 @@
+- res/values/styles.xml
+
+e.g
+    <resources>
+
+        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+            <item name="colorAccent">@color/colorAccent</item>
+        </style>
+
+        <style name="BeatBoxButton">
+            <item name="android:background">@color/dark_blue</item>
+        </style>
+
+    </resources>
+
+- using styles
+    in XML
+        style="@style/BeatBoxButton"
+    in code
+
+- Styles also support inheritance:
+    -   A style can inherit and override attributes from another style
+    e.g.
+        <style name="BeatBoxButton.Strong">
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        - recommended
+
+        or
+
+        <style name="StrongBeatBoxButton" parent="@style/BeatBoxButton">
+            <item name="android:textStyle">bold</item>
+        </style>
+
+    using
+        style="@style/BeatBoxButton.Strong"

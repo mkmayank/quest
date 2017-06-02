@@ -1,0 +1,20 @@
+Create New Class dialog, enter database.CrimeDbSchema.
+This will put the CrimeDbSchema.java file in its own database package
+which we will use to organize all database-related code.
+
+-   Defining DB Schema :
+
+    public class CrimeDbSchema {
+        public static final class CrimeTable {
+            public static final String NAME = "crimes";
+
+            public static final class Cols {
+                public static final String UUID = "uuid";
+                public static final String TITLE = "title";
+                public static final String DATE = "date";
+                public static final String SOLVED = "solved";
+            }
+        }
+    }
+
+refer to the column named “title” in a Java-safe way: CrimeTable.Cols.TITLE

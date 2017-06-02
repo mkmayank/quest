@@ -1,0 +1,6 @@
+When APK splitting is enabled, mipmaps are not pruned from the APKs. Otherwise, mipmaps are identical to drawables.
+
+new projects in Android Studio are set up to use a mipmap resource for their launcher icon
+
+It is recommended to put just launcher icon in the various mipmap directories.
+All other images belong in the drawable directories

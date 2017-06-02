@@ -1,0 +1,31 @@
+Android supports five log levels :
+
+ERROR   -   Log.e(...)
+WARNING -   Log.w(...)
+INFO    -   Log.i(...)
+DEBUG   -   Log.d(...)
+VERBOSE -   Log.v(...)
+
+each of the logging methods has two signatures:
+1. which takes a tag string and a message string
+2. that takes those two arguments plus an instance of Throwable , which makes it easy to log information about a particular exception that your application might throw.
+
+---------------
+
+e.g.
+
+    // Log a message at "debug" log level
+    Log.d(TAG, "Current question index: " + mCurrentIndex);
+
+    ---------------
+
+    Question question;
+    try {
+        question = mQuestionBank[mCurrentIndex];
+    } catch (ArrayIndexOutOfBoundsException ex) {
+    
+        // Log a message at "error" log level, along with an exception stack trace
+        Log.e(TAG, "Index was out of bounds", ex);
+    }
+
+----------------

@@ -1,0 +1,46 @@
+camera Intent   :
+
+    -   implicit intent’s action will be ACTION_IMAGE_CAPTURE.
+    -   It will not point to any data or have any categories
+    -   it will not specify a type
+
+
+        File filesDir = mContext.getFilesDir();
+        mPhotoFile = new File(filesDir, 'file_name');
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        boolean canTakePhoto = mPhotoFile != null &&
+                captureImage.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+
+        private static final int REQUEST_PHOTO= 2;
+
+        Uri uri = FileProvider.getUriForFile(getActivity(),
+                    "com.bignerdranch.android.criminalintent.fileprovider",
+                    mPhotoFile);
+        captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+        List<ResolveInfo> cameraActivities = getActivity()
+                .getPackageManager().queryIntentActivities(captureImage,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo activity : cameraActivities) {
+            getActivity().grantUriPermission(activity.activityInfo.packageName,
+                    uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+
+        startActivityForResult(captureImage, REQUEST_PHOTO);
+
+
+ACTION_IMAGE_CAPTURE is defined in the MediaStore class.
+MediaStore defines the public interfaces used in Android for interacting with common media – images, videos, and music.
+
+By default, ACTION_IMAGE_CAPTURE will fire up the camera application and take a picture,
+but it will not be a full-resolution picture. Instead,
+it will take a small-resolution thumbnail picture and
+stick it inside the Intent object returned in onActivityResult(…).
+
+For a full-resolution output, we need to tell it where to save the image on the filesystem.
+This can be done by passing a Uri pointing to where we want to save the file in MediaStore.EXTRA_OUTPUT.
+This Uri will point at a location serviced by FileProvider.

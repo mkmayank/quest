@@ -1,0 +1,18 @@
+-   Updating :
+
+    SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+    // New value for one column
+    ContentValues values = new ContentValues();
+    values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+
+    // Which row to update, based on the title
+    String selection = FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
+    String[] selectionArgs = { "MyTitle" };
+
+    int count = db.update(
+                    FeedReaderDbHelper.FeedEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs
+                );

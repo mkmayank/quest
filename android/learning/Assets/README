@@ -1,0 +1,24 @@
+New → Folder → Assets Folder
+New → Directory
+
+- Assets are accessed using the AssetManager class
+- can get an AssetManager from any Context.
+
+    private AssetManager mAssets;
+
+    public BeatBox(Context context) {
+        mAssets = context.getAssets();
+    }
+
+
+    try {
+        soundNames = mAssets.list(SOUNDS_FOLDER);
+        Log.i(TAG, "Found " + soundNames.length + " sounds");
+    } catch (IOException ioe) {
+        Log.e(TAG, "Could not list assets", ioe);
+        return;
+    }
+
+
+Uri -   file:///android_asset/thumbnail_images/one.jpg
+        for assets/thumbnail_images/one.jpg

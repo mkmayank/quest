@@ -1,0 +1,18 @@
+-   Writing :
+
+    -   ContentValues   -   Writes and updates to databases are done with the assistance of this class
+
+   ContentValues values = new ContentValues();
+
+   values.put(CrimeTable.Cols.UUID, crime.getId().toString());
+   values.put(CrimeTable.Cols.TITLE, crime.getTitle());
+   values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
+   values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+
+   mDatabase.insert(CrimeTable.NAME, null, values);
+
+   String uuidString = crime.getId().toString();
+
+   mDatabase.update(CrimeTable.NAME, values,
+            CrimeTable.Cols.UUID + " = ?",
+            new String[] { uuidString });

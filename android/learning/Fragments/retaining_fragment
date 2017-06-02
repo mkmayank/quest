@@ -1,0 +1,26 @@
+
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+
+            ...
+        }
+By default, the retainInstance property of a fragment is false
+
+
+Retained fragments take advantage of the fact that a fragment’s view can be destroyed and re-created without having to destroy the fragment itself.
+
+A retained fragment is not destroyed, but it is detached from the dying activity. This puts the fragment in a retained state. The fragment still exists, but it is not hosted by any activity
+
+
+The retained state is only entered into when two conditions are met:
+
+setRetainInstance(true) has been called on the fragment
+
+the hosting activity is being destroyed for a configuration change (typically rotation)
+
+A fragment is only in the retained state for an extremely brief interval – the time between being detached from the old activity and being reattached to the new activity that is immediately created.
+
+not recommend using this mechanism unless you absolutely need to, for a couple of reasons :

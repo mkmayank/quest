@@ -1,0 +1,7 @@
+<ImageButton
+    android:id="@+id/next_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/next_button"
+    android:src="@drawable/arrow_right"
+/>

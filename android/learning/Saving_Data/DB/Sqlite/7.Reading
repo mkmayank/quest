@@ -1,0 +1,40 @@
+-   Reading :
+
+    Reading in data from SQLite is done using the query(…) method
+
+        public Cursor query(
+            String table,
+            String[] columns,
+            String where,
+            String[] whereArgs,
+            String groupBy,
+            String having,
+            String orderBy,
+            String limit
+        )
+
+        Cursor cursor = mDatabase.query(
+                    CrimeTable.NAME,
+                    null, // columns - null selects all columns
+                    whereClause,
+                    whereArgs,
+                    null, // groupBy
+                    null, // having
+                    null  // orderBy
+            );
+
+    String uuidString = cursor.getString(cursor.getColumnIndex(CrimeTable.Cols.UUID));
+    String title = cursor.getString(cursor.getColumnIndex(CrimeTable.Cols.TITLE));
+    long date = cursor.getLong(cursor.getColumnIndex(CrimeTable.Cols.DATE));
+    int isSolved = cursor.getInt(cursor.getColumnIndex(CrimeTable.Cols.SOLVED));
+
+    public class CrimeCursorWrapper extends CursorWrapper {
+        public CrimeCursorWrapper(Cursor cursor) {
+            super(cursor);
+        }
+    }
+
+
+-   to close connection
+
+        cursor.close();

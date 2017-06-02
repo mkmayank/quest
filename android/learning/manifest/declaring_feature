@@ -1,0 +1,14 @@
+When app uses a feature like the camera – or near-field communication, or any other feature that may vary from device to device – it is strongly recommended to tell Android about it.
+This allows other apps (like the Google Play Store) to refuse to install your app if it uses a feature the device does not support.
+
+<uses-feature> tag to AndroidManifest.xml
+
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bignerdranch.android.criminalintent" >
+
+    <uses-feature android:name="android.hardware.camera"
+                  android:required="false"
+        />
+
+android:required="false"    -   tell Android that app can work fine without the camera, but that some parts will be disabled as a result.

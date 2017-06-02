@@ -1,0 +1,68 @@
+-   Menus are a type of resource similar to layouts
+-   res/menu
+-   right-click on the res directory and select New → Android resource file.
+    Change the Resource type to Menu, name the menu resource , and click OK
+
+-------------------------------------------
+e.g.
+    <menu xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item
+            android:id="@+id/new_crime"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="@string/new_crime"
+            app:showAsAction="ifRoom|withText"/>
+    </menu>
+
+-------------------------------------------
+
+-   showAsAction
+    -   refers to whether the item will appear in the toolbar itself or in the overflow menu
+    -   ifRoom and withText, so the item’s icon and text will appear in the toolbar if there is room.
+        If there is room for the icon but not the text, then only the icon will be visible.
+        If there is no room for either, then the item will be relegated to the overflow menu.
+    -   always
+        -   not recommended; it is better to use ifRoom and let the OS decide.
+    -   never
+        -   Using never is a good choice for less-common actions
+
+--------------------------------------------
+
+menus are managed by callbacks from the Activity class.
+When the menu is needed, Android calls the Activity method onCreateOptionsMenu(Menu).
+
+Fragment -
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    public boolean onOptionsItemSelected(MenuItem item)
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime_list, menu);
+    }
+
+
+    -   The FragmentManager is responsible for calling Fragment.onCreateOptionsMenu(Menu, MenuInflater)
+    -   when the activity receives its onCreateOptionsMenu(…) callback from the OS.
+    -   Must explicitly tell the FragmentManager that your fragment should receive a call to onCreateOptionsMenu(...)
+
+        -   public void setHasOptionsMenu(boolean hasMenu)
+
+         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+        }
+
+    -
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.new_crime:
+                    ...
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
+-------------------------------------

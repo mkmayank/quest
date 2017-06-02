@@ -1,0 +1,6 @@
+// Assume thisActivity is the current activity
+int permissionCheck = ContextCompat.checkSelfPermission(thisActivity,
+        Manifest.permission.WRITE_CALENDAR);
+
+If has the permission, the method returns PackageManager.PERMISSION_GRANTED
+If the app does not have the permission, the method returns PERMISSION_DENIED

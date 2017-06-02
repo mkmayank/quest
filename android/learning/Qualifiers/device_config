@@ -1,0 +1,24 @@
+The device configurations for which Android provides configuration qualifiers to target resources are:
+
+in preference order:
+
+
+mobile country code (MCC), optionally followed by mobile network code (MNC)
+language code, optionally followed by region code
+layout direction
+smallest width
+available width
+available height
+screen size
+screen aspect
+round screen (API level 23 and above)
+screen orientation
+UI mode
+night mode
+screen density (dpi)
+touchscreen type
+keyboard availability
+primary text input method
+navigation key availability
+primary non-touch navigation method
+API level

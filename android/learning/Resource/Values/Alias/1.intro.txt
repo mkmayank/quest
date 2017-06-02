@@ -1,0 +1,34 @@
+-   An alias resource is a resource that points to another resource.
+-   Alias resources live in res/values/
+-   by convention, are defined in a refs.xml file.
+
+res/values/refs.xml
+
+    <resources>
+
+      <item name="activity_masterdetail" type="layout">@layout/activity_fragment</item>
+
+    </resources>
+
+resource ID: R.layout.activity_masterdetail
+the alias’s type attribute is what determines the inner class of the ID.
+Even though the alias itself is in res/values/, its ID is in R.layout.
+
+
+right-click res/values/ and create a new values resource file
+name the file refs.xml and check that its directory is values
+select Smallest Screen Width under Available qualifiers and click the >> button to move it over to the right
+
+
+res/values-sw600dp/refs.xml ( for larger devices )
+
+    <resources>
+
+      <item name="activity_masterdetail" type="layout">@layout/activity_twopane</item>
+
+    </resources>
+
+The sw stands for “smallest width,” but refers to the screen’s smallest dimension
+independent of the device’s current orientation.
+
+-sw600dp qualifier  -   “Use this resource on any device whose smallest dimension is 600dp or greater.

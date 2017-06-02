@@ -1,0 +1,100 @@
+-   controller object that an activity can deputize to perform tasks.
+        the task is managing a UI. The UI can be an entire screen or just one part of the screen.
+-   A fragment managing a UI is known as a UI fragment.
+        A UI fragment has a view of its own that is inflated from a layout file.
+-   The activity’s view contains a spot where the fragment’s view will be inserted
+
+-------------------------------------------------
+
+native implementation of fragments  - built into the device
+support implementation of fragments - built into a library include in application
+
+-------------------------------------------------
+
+- Lifecycle :
+
+    - fragment lifecycle methods are called by the hosting activity, not the OS
+    - OS knows nothing about the fragments
+    - Fragments are the activity’s internal business
+
+    - Fragment's Lifecycle methods are public
+    - similar to an activity, a fragment has a bundle to which it saves and retrieves its state Fragment.onSaveInstanceState(Bundle)
+
+onAttach(Context) -> onCreate(Bundle) -> onCreateView(…) -> onActivityCreated(Bundle) -> onStart() -> onResume()
+-------------------------------------------------
+
+    -   Create layout file in layout folder :
+        e.g.
+            fragment_crime.xml
+
+    -   Create java class  in java folder:
+        e.g.
+            CrimeFragment.java
+
+    -   make it a subclass of Fragment
+        e.g.
+            public class CrimeFragment extends Fragment {
+
+            }
+
+    -   override onCreate method
+        e.g.
+            public class CrimeFragment extends Fragment {
+
+                @Override
+                public void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                }
+            }
+
+    -   inflate the layout for the fragment’s view
+        e.g.
+            public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+
+            e.g.
+            @Override
+            public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+                View v = inflater.inflate(R.layout.fragment_crime, container, false);
+                return v;
+            }
+
+            // 1st parameter is layout id
+            // 2nd parameter is parent
+            // 3rd parmeter tells inflater whether to add the inflated view to the view’s parent.
+------------------------------------------------------
+
+- Fragment refernces has to call on view
+    e.g.
+
+        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        mTitleField = (EditText) v.findViewById(R.id.crime_title);
+
+        i.e v.findViewById instead of this.findViewById
+
+-----------------------------------------------------
+
+A good rule of thumb is to have no more than two or three fragments on the screen at a time
+
+-----------------------------------------------------
+
+YAGNI stands for “You Aren’t Gonna Need It,”
+
+-----------------------------------------------------
+
+getActivity()
+-   Return the Activity this fragment is currently associated with.
+
+-----------------------------------------------------
+
+Fragment.startActivityForResult(Intent, int)
+-   is similar to the Activity with the same name.ith the same name.
+-   Fragment has its own startActivityForResult(…) and onActivityResult(…) methods, it does not have any setResult(…) methods.
+-   Instead, you tell the host activity to return a value.
+    e.g.
+    
+        public class CrimeFragment extends Fragment {
+            ...
+            public void returnResult() {
+                getActivity().setResult(Activity.RESULT_OK, null);
+            }
+        }

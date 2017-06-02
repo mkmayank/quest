@@ -1,0 +1,22 @@
+
+getIntent()
+intent.getData()
+intent.getType()
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    setContentView(R.layout.main);
+
+    // Get the intent that started this activity
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+
+    // Figure out what to do based on the intent type
+    if (intent.getType().indexOf("image/") != -1) {
+        // Handle intents with image data ...
+    } else if (intent.getType().equals("text/plain")) {
+        // Handle intents with text ...
+    }
+}

@@ -1,0 +1,22 @@
+transitions framework
+
+
+The framework has the following features:
+
+-   Group-level animations      -   Applies one or more animation effects to all of the views in a view hierarchy.
+-   Transition-based animation  -   Runs animations based on the changes between starting and ending view property values.
+-   Built-in animations         -   Includes predefined animations
+-   Resource file support       -   Loads view hierarchies and built-in animations from layout resource files.
+-   Lifecycle callbacks         -   Defines callbacks that provide finer control over the animation and hierarchy change process.
+
+-----------------------------------
+
+-   scenes
+-   transitions
+-   transition managers
+Steps :
+1.  create scenes for the view hierarchies in app that we plan to change between
+2.  create a transition for each animation to use
+3.  use transition manager to start the animation between two view hierarchies, by specifying
+        the transition to use and
+        the ending scene

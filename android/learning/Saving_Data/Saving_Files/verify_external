@@ -1,0 +1,15 @@
+should always verify that the external storage is available before accessing it :
+
+    getExternalStorageState()   -   query the external storage state
+
+    /* for read and write */
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
+
+    /* for at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+    }
