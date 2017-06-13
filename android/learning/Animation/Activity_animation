@@ -1,0 +1,17 @@
+https://developer.android.com/training/material/animations.html#Transitions
+
+
+An enter transition             - how views in an activity enter the scene
+An exit transition              - how views in an activity exit the scene
+A shared elements transition    - how views that are shared between two activities transition between these activities.
+
+enter and exit transitions:
+explode - Moves views in or out from the center of the scene.
+slide   - Moves views in or out from one of the edges of the scene.
+fade    - Adds or removes a view from the scene by changing its opacity.
+
+shared elements transitions:
+changeBounds            - Animates the changes in layout bounds of target views.
+changeClipBounds        - Animates the changes in clip bounds of target views.
+changeTransform         - Animates the changes in scale and rotation of target views.
+changeImageTransform    - Animates changes in size and scale of target images.

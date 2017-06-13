@@ -1,7 +1,13 @@
+http://learn.shayhowe.com/html-css
+
 @media
 &:nth-child(3n)
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+*,
+*:before,
+*:after {}
 
 CSS resets -http://learn.shayhowe.com/html-css/building-your-first-web-page/#using-css-resets
             https://the-pastry-box-project.net/oli-studholme/2013-june-3
@@ -16,7 +22,7 @@ HTML comments start with <!-- and end with -->. CSS comments start with /* and e
 <strong> <b>
 <em> <i>
 
-<header> <hgroup> <nav> <article> <section> <aside> <footer> <time> <figure> <figcaption> <small>
+<header> <hgroup> <nav> <article> <section> <aside> <footer> <time> <figure> <figcaption> <small> <code>
 
 Encoding Special Characters - http://www.copypastecharacter.com/
 
@@ -43,3 +49,28 @@ CSS colors - sRGB - 4 primary ways to represent
                                 -   hsl(0, 100%, 25%)
                                 -   hsla(0, 100%, 25%, .25) for transparency
 https://kuler.adobe.com/
+
+display - block, inline, inline-block, and none
+
+Box Model
+width, height, padding, border, margin
+    Inline-level elements cannot have a fixed size, thus the width and height properties are only relevant to non-inline elements
+    inline-level elements do not accept vertical margins, top and bottom
+
+margin: 20px;               -   all
+margin: 10px 20px;          -   top,bottom right,left
+margin: 10px 20px 0 15px;   -   top right bottom left ( clockwise )
+
+Box Sizing
+    box-sizing  -  content-box, padding-box, border-box
+        content-box -   default ( additive design ) size of an element begins with the width and height properties, and then any padding, border, or margin property values are added on from there
+        padding-box -   includes any padding property values within the width and height of an element
+        border-box  -   includes any padding or border property values within the width and height of an element
+
+Most common vendor prefixes :
+    Mozilla Firefox: -moz-
+    Microsoft Internet Explorer: -ms-
+    Webkit (Google Chrome and Apple Safari): -webkit-
+
+pseudo-classes
+https://www.w3schools.com/css/css_pseudo_classes.asp

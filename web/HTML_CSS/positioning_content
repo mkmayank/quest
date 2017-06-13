@@ -1,0 +1,37 @@
+http://learn.shayhowe.com/html-css/positioning-content/
+
+float   -   remove element from the normal flow of a page, and position it to the left or right of its parent element
+
+float: left;
+float: right;
+
+element will float all the way to the edge of its parent element. If there isn’t a parent element, the floated element will then float all the way to the edge of the page.
+the width of floated element is default to the width of the content within it
+
+Clearing float
+    clear: left;
+    clear: right;
+    clear: both;
+    to clear float, applied to element appearing after floated element
+
+Containing float
+//clearfix
+
+    .group:before,
+    .group:after {
+      content: "";
+      display: table;
+    }
+    .group:after {
+      clear: both;
+    }
+    .group {
+      clear: both;
+      *zoom: 1;
+    }
+
+set parent class as group
+
+Removing Spaces Between Inline-Block Elements - remove space between html
+
+====================

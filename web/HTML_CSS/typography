@@ -1,0 +1,32 @@
+http://learn.shayhowe.com/html-css/working-with-typography/
+
+font : font-style font-variant font-weight font-size/line-height font-family
+
+A forward slash, /, separator is needed between the font-size and line-height property values.
+
+text-indent
+
+text-shadow:  horizontal offset, vertical offset, a blur and a color
+
+text-transform - none, capitalize, uppercase, lowercase, and inherit
+
+letter-spacing
+word-spacing
+
+Web-Safe Fonts http://learn.shayhowe.com/html-css/working-with-typography/#web-safe-fonts
+
+Embedding Web Fonts
+@font-face {
+  font-family: "Lobster";
+  src: local("Lobster"), url("lobster.woff") format("woff");
+}
+body {
+  font-family: "Lobster", "Comic Sans", cursive;
+}
+https://fonts.google.com/
+
+
+Including Citations & Quotes http://learn.shayhowe.com/html-css/working-with-typography/#citations-quotes
+    <cite>: Used to reference a creative work, author, or resource
+    <q>: Used for short, inline quotations
+    <blockquote>: Used for longer external quotations
