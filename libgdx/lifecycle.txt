@@ -1,0 +1,30 @@
+https://github.com/libgdx/libgdx/wiki/The-life-cycle
+
+public class MyGame implements ApplicationListener {
+   public void create () {
+   }
+
+   public void render () {
+   }
+
+   public void resize (int width, int height) {
+   }
+
+   public void pause () {
+   }
+
+   public void resume () {
+   }
+
+   public void dispose () {
+   }
+}
+
+==================================================
+https://github.com/libgdx/libgdx/tree/master/gdx/src/com/badlogic/gdx
+
+https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/ApplicationListener.java
+https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/ApplicationAdapter.java
+https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/Game.java
+https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/Screen.java
+==================================================
