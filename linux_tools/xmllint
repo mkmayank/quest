@@ -1,0 +1,34 @@
+===========================================
+apt-get install libxml2-utils
+===========================================
+
+$ xmllint --xpath "string(//footag)"  <( echo '<footag>TastyGoodness</footag>' )
+TastyGoodness
+
+-----
+cat xml
+<?xml version="1.0" encoding="utf-8"?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+  <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/responseschema/2006">
+    <Culture>en:us</Culture>
+    <User>
+      <DisplayName></DisplayName>
+      <EMailAddress>1@mayankshi.com</EMailAddress>
+    </User>
+    <Action>
+      <Settings>
+        <Server>
+          <Type>MobileSync</Type>
+          <Url>https://m.one.com</Url>
+          <Name>https://m.one.com</Name>
+        </Server>
+      </Settings>
+    </Action>
+  </Response>
+</Autodiscover>
+
+$ xmllint --xpath "//*[name()='Url']/text()"  xml
+https://m.one.com
+
+$ xmllint --xpath "//*[name()='EMailAddress']/text()|//*[name()='Type']/text()|//*[name()='Url']/text()|//*[name()='Name']/text()" xml
+1@mayankshi.comMobileSynchttps://m.one.comhttps://m.one.com
