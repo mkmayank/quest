@@ -1,0 +1,66 @@
+curl LIST is default
+
+// list of folders
+$ curl "imaps://imap.one.com/" --user "1@mayankshi.com:logout"
+* LIST (\HasChildren) "." "INBOX"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.New"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.New folder"
+* LIST (\HasChildren \UnMarked) "." "INBOX.Trash"
+* LIST (\HasChildren \UnMarked) "." "INBOX.Trash.fir se change"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.Trash.fir se change.rara"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.Sent"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.F2"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.F1"
+* LIST (\HasNoChildren \UnMarked) "." "INBOX.Drafts"
+
+// capability
+$ curl "imaps://imap.one.com" -X CAPABILITY -u "1@mayankshi.com:logout"
+* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS BINARY MOVE NOTIFY
+
+// create folder
+$ curl "imaps://imap.one.com" --user "1@mayankshi.com:logout" --request "CREATE INBOX.curlFolder1"
+
+// delete folder
+$ curl "imaps://imap.one.com" --user "1@mayankshi.com:logout" -X "DELETE INBOX.curlFolder1"
+
+// examine folder
+$ curl "imaps://imap.one.com" --user "1@mayankshi.com:logout"  -X "EXAMINE INBOX"
+* FLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk)
+* OK [PERMANENTFLAGS ()] Read-only mailbox.
+* 6 EXISTS
+* 0 RECENT
+* OK [UNSEEN 2] First unseen.
+* OK [UIDVALIDITY 1471662009] UIDs valid
+* OK [UIDNEXT 47] Predicted next UID
+* OK [HIGHESTMODSEQ 131] Highest
+
+// login :)
+$ curl "imaps://imap.one.com"  -X "LOGIN 1@mayankshi.com logout"  -vvvv
+* Rebuilt URL to: imaps://imap.one.com/
+*   Trying 46.30.211.111...
+* Connected to imap.one.com (46.30.211.111) port 993 (#0)
+* found 173 certificates in /etc/ssl/certs/ca-certificates.crt
+* found 697 certificates in /etc/ssl/certs
+* ALPN, offering http/1.1
+* SSL connection using TLS1.2 / ECDHE_RSA_AES_128_GCM_SHA256
+* 	 server certificate verification OK
+* 	 server certificate status verification SKIPPED
+* 	 common name: *.one.com (matched)
+* 	 server certificate expiration date OK
+* 	 server certificate activation date OK
+* 	 certificate public key: RSA
+* 	 certificate version: #3
+* 	 subject: OU=Domain Control Validated,OU=Hosted by One.com A/S,OU=EssentialSSL Wildcard,CN=*.one.com
+* 	 start date: Wed, 29 Mar 2017 00:00:00 GMT
+* 	 expire date: Thu, 29 Mar 2018 23:59:59 GMT
+* 	 issuer: C=GB,ST=Greater Manchester,L=Salford,O=COMODO CA Limited,CN=COMODO RSA Domain Validation Secure Server CA
+* 	 compression: NULL
+* ALPN, server did not agree to a protocol
+< * OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN] Dovecot ready.
+> A001 CAPABILITY
+< * CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN
+< A001 OK Pre-login capabilities listed, post-login capabilities have more.
+> A002 LOGIN 1@mayankshi.com logout
+< * CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS BINARY MOVE NOTIFY
+< A002 OK Logged in
+* Connection #0 to host imap.one.com left intact
