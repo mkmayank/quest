@@ -1,0 +1,74 @@
+curl LIST is default
+
+// list
+$ curl "pop3://pop.one.com" -u "1@mayankshi.com:logout"  -vvv
+* Rebuilt URL to: pop3://pop.one.com/
+*   Trying 46.30.211.110...
+* Connected to pop.one.com (46.30.211.110) port 110 (#0)
+< +OK Dovecot ready.
+> CAPA
+< +OK
+< CAPA
+< TOP
+< UIDL
+< RESP-CODES
+< PIPELINING
+< AUTH-RESP-CODE
+< STLS
+< USER
+< SASL PLAIN
+< .
+> AUTH PLAIN
+< +
+> MUBtYXlhbmtzaGkuY29tADFAbWF5YW5rc2hpLmNvbQBsb2dvdXQ=
+< +OK Logged in.
+> LIST
+< +OK 7 messages:
+1 1563
+2 1745
+3 2263
+4 89446
+5 2067
+6 2067
+7 1780
+* Connection #0 to host pop.one.com left intact
+
+
+// RETR
+$ curl "pop3://pop.one.com" -u "1@mayankshi.com:logout" -X "RETR 1"
+Return-Path: <1@mayankshi.com>
+Delivered-To: 1@mayankshi.com
+Received: from mx5.public.one.com ([10.246.18.25])
+	by mail186.local.one.com (Dovecot) with LMTP id /SSIHeJzZFnQdAAAtZOnGQ
+	for <1@mayankshi.com>; Tue, 11 Jul 2017 06:45:04 +0000
+X-HalOne-ID: 7792edbb-6604-11e7-bb21-b82a72d82f61
+Received: from mailrelay6.public.one.com (unknown [91.198.169.200])
+	by mx5.public.one.com (Halon) with ESMTPS
+	id 7792edbb-6604-11e7-bb21-b82a72d82f61;
+	Tue, 11 Jul 2017 06:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+	d=mayankshi.com; s=20140924;
+	h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding;
+	bh=I+jT5bA6MtIn6yhfiHJaGFNezp46Imgw94zvUbhAb0w=;
+	b=dCtfZInfN7e1atFgkQJsqGqvKDUycqtHIWTygsUN7qEXhTJ+TepWHQJIZVz9k+TrfM3gIN0VQTnNV
+	 zttivxyRSI5hsQhEJHWxhCfB6+seoIhNQp06d0cdBKmq379OivC87pXKudguwebfqLpHvvGc/yZiVI
+	 wZpIP9taRvLVeQe4=
+X-HalOne-WOD: 2b0a4cef45007b19ef9c9911dfdf0e6f628c655f
+Received: from [172.16.33.130] (unknown [46.30.211.31])
+	by smtpfilter3.public.one.com (Halon) with ESMTPSA
+	id 76222102-6604-11e7-be78-b82a72d06996;
+	Tue, 11 Jul 2017 06:45:01 +0000 (UTC)
+To: 1@mayankshi.com
+From: mayank <1@mayankshi.com>
+Subject: hello
+Message-ID: <90032479-73ab-2e38-206c-b149ebb1aa6d@mayankshi.com>
+Date: Tue, 11 Jul 2017 12:15:00 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+
+hehehe
