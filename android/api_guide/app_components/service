@@ -1,0 +1,6 @@
+-	These are the three different types of services:
+		1.	Scheduled
+		2.	Started
+		3.	Bound
+
+-	call to startService()
