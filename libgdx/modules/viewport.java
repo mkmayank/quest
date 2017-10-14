@@ -1,6 +1,7 @@
 =================================================
 
 // A viewport always manages a Camera's viewportWidth and viewportHeight.
+// Manages a Camera and determines how world coordinates are mapped to and from the screen.
 // https://github.com/libgdx/libgdx/wiki/Viewports
 =================================================
 
@@ -18,6 +19,9 @@ public void resize(int width, int height) {
 }
 =================================================
 
-
+mCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+mCamera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
+mCamera.update();
+mViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, mCamera);
 
 =================================================

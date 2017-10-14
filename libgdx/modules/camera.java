@@ -1,3 +1,7 @@
+=================================================
+// https://github.com/libgdx/libgdx/wiki/Orthographic-camera
+=================================================
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 private OrthographicCamera camera;

@@ -1,0 +1,10 @@
+=================================================================
+https://tools.ietf.org/html/rfc5465
+
+NOTIFY SET [STATUS] {mailbox to watch} {Events about which to notify the client}
+
+Events
+
+MailBox
+=================================================================
+rlwrap -g LOGIN openssl s_client -connect <host>:<port> -quiet -crlf

@@ -1,0 +1,14 @@
+https://nbsoftsolutions.com/blog/introduction-to-imap
+===============================================================
+
+openssl s_client -connect ${HOST}:${PORT:-993} -quiet -crlf
+
+rlwrap -g LOGIN openssl s_client -connect <host>:<port> -quiet -crlf
+
+rlwrap is used for happy typing and -g LOGIN to forget login regex
+
+===============================================================
+
+IMAP command need to sendy with tag
+https://tools.ietf.org/html/rfc3501#section-2.2.1
+===============================================================
