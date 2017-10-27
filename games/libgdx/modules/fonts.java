@@ -15,3 +15,14 @@
 // libgdx supports only bitmap fonts
 
 =================================================
+
+// https://github.com/libgdx/libgdx/wiki/Distance-field-fonts
+// https://github.com/libgdx/libgdx/wiki/Color-Markup-Language
+
+=================================================
+
+private BitmapFont mBitmapFont;
+mBitmapFont = new BitmapFont();
+mBitmapFont.draw(mGame.batch, "This Game is AWESOME!", 0, 0);
+
+=================================================
