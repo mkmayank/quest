@@ -8,3 +8,5 @@ Events
 MailBox
 =================================================================
 rlwrap -g LOGIN openssl s_client -connect <host>:<port> -quiet -crlf
+
+NOTIFY SET (mailboxes INBOX.F2 (messagenew)) (mailboxes INBOX.F1 (messagenew))
