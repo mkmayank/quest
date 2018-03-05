@@ -1,0 +1,77 @@
+-   http://httpd.apache.org/docs/2.4/install.html
+
+Download : http://httpd.apache.org/download.cgi
+
+Extract :
+    $ gzip -d httpd-2.4.29.tar.gz
+    $ tar xvf httpd-2.4.29.tar
+
+APR (Apache portable runtime) and APR-UTIL is required to compile apache
+Download APR :
+    $ gzip -d apr-1.6.3.tar.gz
+    $ tar xf apr-1.6.3.tar
+    $ cp -r apr-1.6.3 httpd-2.4.29/srclib/apr
+
+Download APR-UTIL :
+    $ gzip -d apr-util-1.6.1.tar.gz
+    $ tar xf apr-util-1.6.1.tar.gz
+    $ cp apr-util-1.6.1 -r httpd-2.4.29/srclib/apr-util
+
+Configure :
+    $ ./configure --prefix=/home/mayank/Documents/learning/apache1 --with-included-apr
+
+    http://httpd.apache.org/docs/2.4/programs/configure.html
+    To find out which modules are compiled by default, run ./configure -h
+    look under Optional Features
+        if disable-xxx is there -> enabled by default
+        if enable-xxx is there -> disable by default
+
+Build :
+    $ make
+
+Install :
+    $ make install
+
+Run :
+    $ ./bin/apachectl start
+    $ ./bin/apachectl stop
+
+==============================
+
+directories of mods and sites enabled are symlinked to other snippets of configuration files
+The a2enmod/a2ensite scripts just manipulate these symlinks.
+
+All modules are loaded from httpd.conf file, can be disabled by commenting out the appropiate LoadModule statement.
+https://serverfault.com/questions/56394/how-do-i-enable-apache-modules-from-the-command-line-in-redhat
+
+==============================
+
+$ ./configure --prefix=/home/mayank/Documents/learning/apache/apache1 \
+    --with-included-apr --enable-so --enable-rewrite --with-port=8081
+
+==============================
+
+-   There is no reload in apache, apache need to be restarted( graceful restart) to reload conf changes
+
+==============================
+
+In versions prior to 2.4, MPMs must be chosen during configuration, and compiled into the server.
+
+in conf --with-mpm=MODULE NAME
+To change MPM, the binary must be rebuilt.
+http://httpd.apache.org/docs/2.2/mpm.html
+
+In version 2.4, MPM can be built as DSO and hence can be changed during runtime
+http://httpd.apache.org/docs/2.4/mpm.html#dynamic
+
+./configure --prefix=/home/mayank/Documents/learning/apache/apache2 --with-included-apr \
+--enable-mpms-shared='prefork worker event' --with-mpm=prefork --with-port=8082
+
+==============================
+
+./bin/httpd -V  # show compile settings
+./bin/httpd -M  # show all loaded modules
+
+==============================
+
+The recommended method of invoking the httpd executable is to use the apachectl control script.

@@ -1,0 +1,16 @@
+http://httpd.apache.org/docs/2.4/vhosts/name-based.html
+
+<VirtualHost *:80>
+    # This first-listed virtual host is also the default for *:80
+    ServerName www.example.com
+    ServerAlias example.com
+    DocumentRoot "/www/domain"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName other.example.com
+    DocumentRoot "/www/otherdomain"
+</VirtualHost>
+
+==========================
+http://httpd.apache.org/docs/2.4/vhosts/mass.html

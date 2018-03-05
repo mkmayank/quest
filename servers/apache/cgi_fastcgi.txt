@@ -1,0 +1,38 @@
+CGI :
+    -   Common Gateway interface
+    -   https://stackoverflow.com/questions/2089271/what-is-common-gateway-interface-cgi
+    -   requires new process to be spawned on every request
+
+FastCGI :
+    -   https://blog.layershift.com/which-php-mode-apache-vs-cgi-vs-fastcgi/
+    -   http://people.apache.org/~jim/ApacheCons/ApacheCon2001/xml-ca/files/F18-FastCGI/f18fastcgi.html
+    -   OpenMarket developed FastCGI
+    -   It is a protocol
+    -   one process is spawned and it keeps on ,listening for further request
+    -   FastCGI applications can be run on different machines than webserver is running
+    -   FastCGI can be implemented in any language that supports network sockets
+    -   Cannot use PHP directives in .htaccess
+    -   Files are owned by users
+    -   statoc content is processed without interpreter
+
+mod_php :
+    -   apache module
+    -   apache executes the php code, php code executes in apache process space
+    -   Can use PHP directives in .htaccess
+    -   need php interpreter for even static content(non php)
+    -   files are owned by apache
+
+=========================
+
+Like CGI
+    FastCGI is also language-independent
+    FastCGI runs applications in processes isolated from the core Web server
+    FastCGI is not tied to the internal architecture of any Web server
+
+==========================
+
+FPM :
+    -   FastCGI process manager
+    -   http://php.net/manual/en/install.fpm.php
+    -   PHP FastCGI implementation
+    -   ability to start workers with different uid/gid/chroot/environment, listening on different ports and using different php.ini (replaces safe_mode)

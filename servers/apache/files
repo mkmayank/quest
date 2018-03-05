@@ -1,0 +1,11 @@
+magic file :
+    -   contains instructions for determining MIME type based on the first few bytes of a file
+    -    e.g.
+        >12 belong      5       audio/basic
+        >12 belong      6       audio/basic
+        >12 belong      7       audio/basic
+
+        >12 belong      23      audio/x-adpcm
+        0   string      II      image/tiff
+
+===============================

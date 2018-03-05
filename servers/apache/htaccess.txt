@@ -1,0 +1,6 @@
+.htaccess :
+    -   any name can be specified in the AccessFileName directive
+    -   Directives placed in .htaccess files apply to the directory where file is placed and all sub-directories
+    -   follow the same syntax as the main configuration files
+    -   it is read on every request, changes made in these files take immediate effect.
+    -   AllowOverride directive in the main configuration files controls what directives may be placed in it

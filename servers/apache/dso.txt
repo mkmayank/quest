@@ -1,0 +1,23 @@
+DSO :
+    -   Dynamic shared object
+    -   https://amir.rachum.com/blog/2016/09/17/shared-libraries/
+
+Apache modules are compiled as DSO , so that ther won't be need to recompile whole apache server,
+just that DSO need to be updated or compiled again
+
+===========================
+
+Build and install a third-party Apache httpd module, say mod_foo.c,
+into its own DSO mod_foo.so outside of the Apache httpd source tree using apxs:
+    $ cd /path/to/3rdparty
+    $ apxs -cia mod_foo.c
+
+===========================
+Advantages:
+    -   The server package is more flexible at run-time
+    -   The server package can be easily extended with third-party modules even after installation
+    -   Easier Apache httpd module prototyping, because with the DSO/apxs pair you can both work outside the Apache httpd source tree and only need an apxs -i command followed by an apachectl restart to bring a new version of your currently developed module into the running Apache HTTP Server.
+
+Disadvantages:
+    -   20% slower at startup time because of the symbol resolving overhead the Unix loader now has to do.
+    -   5% slower at execution time under some platforms, because position independent code (PIC) sometimes needs complicated assembler tricks for relative addressing, which are not necessarily as fast as absolute addressing

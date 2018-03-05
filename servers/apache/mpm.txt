@@ -1,0 +1,44 @@
+MPM :
+    -   Multi-Processing Modules
+    -   https://httpd.apache.org/docs/2.4/mpm.html
+    -   https://httpd.apache.org/docs/2.4/mod/
+    -   responsible for
+        -   binding to network ports,
+        -   accepting requests, and
+        -   dispatching children to handle the requests
+    -   one and only one MPM must be loaded into the server at any time
+    -   Benefits :
+        -   Apache httpd can support a wide variety of operating systems
+        -   The server can be customized for the needs of the particular site
+
+==========================
+
+Modules :
+    Netware	mpm_netware
+    OS/2	mpmt_os2
+    Unix	prefork, worker, or event, depending on platform capabilities
+    Windows	mpm_winnt
+
+==========================
+
+prefork :
+    -   https://httpd.apache.org/docs/2.4/mod/prefork.html
+    -   non-threaded, pre-forking web server
+    -   a single parent control process manages the size of the server pool, responsible for launching child processes and serve them when requests arive
+    -   most important directive : MaxRequestWorkers
+    -   child process can be launced by less-privileged user
+
+worker :
+    -   https://httpd.apache.org/docs/2.4/mod/worker.html
+    -   hybrid multi-process multi-threaded server
+    -   most important directives
+        -   ThreadsPerChild -   number of threads deployed by each child process
+        -   MaxRequestWorkers - maximum total number of threads that may be launched
+    -   a sinle parent control process is responsible for launching child processes
+    -   each child process creates a fixed number of server threads and listener thread which listens for connections and passes them to a server thread for processing when they arrive
+
+event :
+    -   https://httpd.apache.org/docs/2.4/mod/event.html
+    -   hybrid multi-process multi-threaded server
+    -   tries to fix the 'keep alive problem' in HTTP
+    -   consistent socket are listend by listener threads and work is done by worker threads and worker thread can be freed , when no more work to do but connection is still alive
