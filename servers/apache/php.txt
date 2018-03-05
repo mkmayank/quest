@@ -1,0 +1,14 @@
+1.  Download php
+2.  Extract
+3.  Configure
+    -   $ ./configure --prefix=/home/mayank/Documents/learning/apache/php1 \
+          --with-apxs2=/home/mayank/Documents/learning/apache/apache1/bin/apxs --with-curl --with-openssl
+4.  Build
+    -   $ make
+5.  Install ( it will install php in apache module directory as specifed during configure)
+    -   $ make install
+
+6. Add to apache conf to tell apache to execute *.php file as php file
+        <FilesMatch \.php$>
+            SetHandler application/x-httpd-php
+        </FilesMatch>

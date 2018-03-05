@@ -1,0 +1,3 @@
+-   Nginx was written with an explicit goal of outperforming the Apache web server
+-   serves static files, Nginx uses dramatically less memory than Apache
+-   No override systemwide access settings on a per-file basis (like .htacess in apache)
