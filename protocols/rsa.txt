@@ -1,0 +1,5 @@
+RSA (Rivest–Shamir–Adleman)
+    -   public-key cryptosystem
+    -   encryption key is public and it is different from the decryption key which is kept secret (private)
+    -   asymmetry is based on "factoring problem"
+        -   practical difficulty of the factorization of the product of two large prime numbers

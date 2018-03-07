@@ -1,0 +1,22 @@
+chef-client
+    -   runs locally on every node that is under management by Chef
+    -   bring the node into the expected state, including:
+        -   Registering and authenticating the node with the Chef server
+        -   Building the node object
+        -   Synchronizing cookbooks
+        -   Compiling the resource collection by loading each of the required cookbooks,
+            including recipes, attributes, and all other dependencies
+        -   Taking the appropriate and required actions to configure the node
+        -   Looking for exceptions and notifications, handling each as required
+
+==================================
+
+Ohai ( tool )
+    -   to collect system configuration data
+    -   run by the chef-client at the beginning of every Chef run to determine system state
+    -   includes many built-in plugins to detect common configuration details
+    -   custom plugins can also be written
+    -   e.g. attributes Ohai collects
+            -   Operating System, Network, Memory, Disk, CPU, Kernel, Host names, FQDN, ...
+    -   Attributes collected by Ohai are automatic level attributes
+    -   these attributes are used to ensure that these attributes remain unchanged after the chef-client is done configuring the node
