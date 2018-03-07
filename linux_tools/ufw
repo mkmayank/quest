@@ -1,0 +1,4 @@
+Uncomplicated Firewall (UFW)
+    -   program for managing a netfilter firewall designed to be easy to use
+    -   it uses a CLI consisting of a small number of simple commands
+    -   uses iptables for configuration

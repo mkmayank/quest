@@ -1,0 +1,5 @@
+    -   iptables stores its information in RAM, meaning it's non-persistent.
+
+
+    $ sudo iptables-save > /etc/iptables.conf
+    $ sudo iptables-restore < /etc/iptables.conf

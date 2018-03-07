@@ -1,0 +1,30 @@
+Netfilter
+    -   kernel's packet filtering framework
+    -   allows specific kernel modules to register callback functions with the kernel's networking stack
+    -   filtering and modification rules, are called for every packet
+
+=================
+History :
+    -   Rusty Russell started the netfilter/iptables project in 1998;
+    -   he had also authored the project's predecessor, ipchains.
+    -   As the project grew, he founded the Netfilter Core Team (or simply coreteam) in 1999.
+    -   The software they produce (netfilter) uses the (GPL) license, and in March 2000 it was merged into version 2.3.x of the Linux kernel mainline
+
+==================
+NetFilter Hooks
+
+There are 5 netfilter hooks that programs can register with :
+
+    -   NF_IP_PRE_ROUTING   - triggered by any incoming traffic very soon after entering the network stack
+
+    -   NF_IP_LOCAL_IN      - triggered after local system destined incoming packet has been routed
+
+    -   NF_IP_FORWARD       - triggered after incoming packet to be forwarded to another host has been routed
+
+    -   NF_IP_LOCAL_OUT     - triggered by any locally created outbound traffic as soon it hits the network stack
+
+    -   NF_IP_POST_ROUTING  - triggered by any outgoing/forwarded traffic after routing has taken place and just before being put out on the wire
+
+Each module will be called according to priority number and will return a decision to the netfilter framework for the packet.
+
+==================
