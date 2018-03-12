@@ -1,0 +1,33 @@
+BIOS -> Basic Input/Output System
+
+    -   it is the first software run when powered on
+    -   In History BIOS provided a hardware abstraction layer,
+        but now most OS do not use the BIOS after loading, instead access the hardware directly
+    -   a failed BIOS upgrade can brick the motherboard permanently
+    -   Unified Extensible Firmware Interface (UEFI) is a successor to BIOS
+
+
+    -   BIOS of the original IBM PC XT had no interactive user interface
+    -   from mid-1990s, BIOS ROM includes a "BIOS configuration/setup utility" (BCU)
+        accessible at system power-up by a particular key sequence
+        This allows user to set system configuration options.
+        configuration information is saved in EEPROM, CMOS RAM or, in the earliest PCs, DIP switches
+
+=======================
+
+1.  System startup :
+    -   cold boot =>    the full power-on self-test (POST) is run
+        warm boot =>    a flag value is stored in nonvolatile BIOS memory ("CMOS") before the processor is reset
+                        BIOS startup code detects this flag and does not run the POST ( this saves time )
+
+    -   POST checks, identifies, and initializes system devices
+
+2.  Boot process :
+    -   BIOS interrupt INT 19h (bootstrap loader) to start boot processing
+        https://en.wikipedia.org/wiki/BIOS_interrupt_call
+
+    -   BIOS selects candidate boot devices using information collected by POST and BCU
+    -   BIOS proceeds to test each device sequentially until a bootable device is found
+            BIOS loads the first sector (boot sector) from the disk into RAM at memory address 0x0000:0x7C00 (exactly 1 KiB below the 32 KiB mark) to check , if bootable
+
+    -   BIOS transfers control to the loaded sector with a jump instruction to its 1st byte at address 0x0000:0x7C00
