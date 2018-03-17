@@ -1,0 +1,19 @@
+.dockerignore
+    -   define patterns to exclude files and directories that match patterns in it while building image
+
+    -   newline-separated list of patterns similar to the file globs of Unix shells
+    -   Matching is done using Go’s filepath.Match rules
+
+    -   #   -   comment ( if first character in line )
+    -   **  -   matches any number of directories
+        e.g.
+            **/*.go
+            # will exclude all files that end with .go
+
+    -   !   -   to make exceptions to exclusions ( at start of line )
+        e.g.
+            *.md
+            !README.md
+            # All markdown files except README.md are excluded from the context
+
+    -   patterns override patterns in previous lines
