@@ -1,0 +1,42 @@
+*   keep small images
+    -   Start with an appropriate base image
+        e.g.
+            official openjdk image                          # smaller
+            vs
+            generic ubuntu image and installing openjdk     # bigger
+
+    -   minimizing the number of RUN commands in Dockerfile to reduce the number of layers in image
+        e.g.
+            RUN apt-get -y update && apt-get install -y python  # create a single layer
+            vs
+            RUN apt-get -y update
+            RUN apt-get install -y python                       # create two layers
+
+    -   If multiple images have lot in common, create base image with the shared components, and base unique images on that
+        Docker only needs to load the common layers once, and they are cached
+
+    -   use production image as the base image for the debug image
+        Additional testing or debugging tooling can be added on top of the production image
+
+    -   always tag images while building with useful tags
+
+=======================
+
+*   presist application data
+    -   Avoid storing application data in container’s writable layer using storage drivers
+    -   Instead, store data using volumes
+    -   use secrets to store sensitive application data used by services
+    -   use configs for non-sensitive data such as configuration files
+
+=======================
+
+*   Use swarm services when possible rather than standalone container
+    -   services
+            -   can handles redeploying (config changes) the individual service containers in a non-disruptive way
+            -   store secrets and configs are avaialble
+
+=======================
+
+    -   Always run an NTP client on the Docker host and within each container process
+    -   and sync them all to the same NTP server
+    -   ensure that each Docker node syncs its clocks to the same time source as the containers   

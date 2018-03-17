@@ -12,7 +12,7 @@ Install
 $ docker-machine create --driver virtualbox myvm1
 $ docker-machine create --driver virtualbox myvm2
 
-*   to run command on vm
+*   to run command on vm / ssh to machine
 
         $ docker-machine ssh myvm1 "<COMMAND>"
 

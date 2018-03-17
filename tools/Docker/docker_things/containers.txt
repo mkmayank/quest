@@ -1,0 +1,4 @@
+container
+    -   a runtime instance of an image--what the image becomes in memory when executed
+
+$ docker container ls   # List all running containers

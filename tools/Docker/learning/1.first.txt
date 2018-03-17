@@ -1,3 +1,0 @@
-$ mkdir first
-$ cd first/
-$ vi Dockerfile
