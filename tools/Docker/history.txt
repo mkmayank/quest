@@ -1,0 +1,5 @@
+    -   started in France as an internal project within dotCloud, a platform-as-a-service company
+    -   debuted to the public in Santa Clara at PyCon in 2013
+    -   released as open source in March 2013
+    -   Docker [version 0.9, 2014] dropped LXC as the default execution environment
+        and replaced it with its own libcontainer library [Go] and now runC

@@ -1,0 +1,4 @@
+stack
+    -   a group of interrelated services that share dependencies, and can be orchestrated and scaled together
+
+$ docker stack deploy -c docker-compose.yml getstartedlab

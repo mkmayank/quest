@@ -1,0 +1,40 @@
+/etc/docker/daemon.json         -   default location of the configuration file
+--config-file daemon flag       -   to provide different config file
+
+===================
+
+*   run docker from another user without sudo
+
+    -   docker daemon binds to a Unix socket instead of a TCP port
+    -   docker daemon always runs as the root user
+
+    -   /var/run/docker.sock group ownership is docker and has sticky bit (root)
+
+    $ sudo usermod -aG docker $USER # to alow user to run docker cli
+
+====================
+
+*   enable Docker to accept requests from remote hosts
+
+    $ sudo vi /lib/systemd/system/docker.service
+        ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375     #   add -H option with arg
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker
+
+    or # doesn't worked for me
+    add following in /etc/docker/daemon.json
+    {
+        "hosts": ["fd://", "tcp://0.0.0.0:2375"]
+    }
+
+====================
+
+*   add dns
+
+    {
+        "dns": ["8.8.8.8", "8.8.4.4"]
+    }
+
+====================
+
+GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"

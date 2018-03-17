@@ -1,0 +1,2 @@
+docker-compose.yml
+    -   defines how Docker containers should behave in production

@@ -1,0 +1,17 @@
+Docker
+    -   Docker Daemon run hota hai machine pe
+    -   Docker containers spawn karta hai, unki bridging kartaa hai, network establish karta hai aapas me
+    -   contaieners image se bantey hai
+    -   image me sara code or Dockerfile hoti hai, jo btataai hai kii kiaa kiaa karnaa hai image me
+    -   image bananae ke liye docker build command use kartey h
+    -   docker daemon socket yaa tcp pe sunta hai , ispe baat karney ke liye docker client se kar saktey hai
+
+    -   bahut saare containers ko diff machines me , different tarike sedeploy karne ke liye swarm bnaa skatey hai
+        or iski conf yml file docker-compose me likh saktey h
+
+    -   docker kaa fyaada yeh hai kii applicaion code ke saath env variables or saaraa os bhi image me save kartey h
+        to testing or production environment same hotaa hai
+
+    -   ek simply image ko run karne ke liye docker run <IMAGE_TAG> se kar saktey hai
+
+======================

@@ -1,0 +1,28 @@
+Docker CE on Ubuntu supports
+    -   overlay2 and aufs storage drivers
+    -   overlay2 is preferred over aufs
+
+*   overlay is supported in linux lernel 4+ versions
+
+=========================
+
+$ sudo apt-get update
+
+$ sudo apt-get install \
+    apt-transport-https \       #   https download transport for APT
+    ca-certificates \           #   Common CA certificates
+    curl \
+    software-properties-common  #   manages the apt repositories
+
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - # adding docker's official GPG key
+$ sudo apt-key finger # verify docker GPG's key
+$ sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \ # for distribution name
+   stable"
+$ sudo apt-get update
+$ sudo apt-get install docker-ce
+
+$ apt-cache madison docker-ce   #   to check docker-ce avaialble candiates to install
+
+$ sudo docker run hello-world   #   run hello world docker , ta da..

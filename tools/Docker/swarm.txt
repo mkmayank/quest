@@ -1,0 +1,13 @@
+swarm
+    -   a group of machines that are running Docker and joined into a cluster
+    -   after joining a swarm, machines are referred to as nodes
+    -   Swarm managers are the only machines in a swarm that can execute commands, or
+        authorize other machines to join the swarm as workers
+
+$ docker swarm init     #   to init swarm mode
+
+$ docker swarm init --advertise-addr <IP>               #   to make swarm manager
+$ docker swarm join --token <TOKEN> <IP:PORT>           #   to make swarm worker
+$ docker node ls                                        #   to see swarm nodes
+$ docker swarm join-token worker"                       #   to see swarm token of worker
+$ docker swarm join-token manager"                      #   to see swarm token of manager

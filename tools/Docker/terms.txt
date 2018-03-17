@@ -1,0 +1,66 @@
+image
+    -   an executable package that includes everything needed to run an application
+        --the code, a runtime, libraries, environment variables, and configuration files
+    -   a read-only template with instructions for creating a Docker container
+
+container
+    -   a runtime instance of an image--what the image becomes in memory when executed
+
+swarm
+    -   a group of machines that are running Docker and joined into a cluster
+
+stack
+    -   a group of interrelated services that share dependencies, and can be orchestrated and scaled together
+
+Docker Machine
+    -   tool that lets install Docker Engine on virtual hosts, and manage the hosts with docker-machine commands
+
+==================
+https://www.ubuntu.com/containers
+https://en.wikipedia.org/wiki/Operating-system-level_virtualization
+https://en.wikipedia.org/wiki/Linux_namespaces
+https://en.wikipedia.org/wiki/Union_mount
+https://en.wikipedia.org/wiki/OverlayFS
+https://github.com/opencontainers/runc
+http://web.archive.org/web/20150326185901/http://blog.dotcloud.com/under-the-hood-linux-kernels-on-dotcloud-part
+https://stackoverflow.com/questions/16047306/how-is-docker-different-from-a-normal-virtual-machine
+runC
+AUFS
+LXC
+LXD
+nuke
+libcontainer library
+libvirt
+systemd-nspawn
+cgroup
+apparmor
+netlink
+capabilities linux
+selinux
+Raft Consensus Algorithm
+chroot
+fannetworking
+gpg
+bridge
+dnsmasq
+macvlan
+https://www.docker.com/use-cases/cicd
+boot2docker.iso
+source of truth
+
+
+
+Docker Compose
+    -   is a tool for defining and running multi-container Docker applications.[71] It uses YAML files to configure the application's services and performs the creation and start-up process of all the containers with a single command. The docker-compose CLI utility allows users to run commands on multiple containers at once, for example, building images, scaling containers, running containers that were stopped, and more.[72] Commands related to image manipulation, or user-interactive options are not relevant in Docker Compose because they address one container.[73] The docker-compose.yml file is used to define an application's services and includes various configuration options. For example, the build option defines configuration options such as the Dockerfile path, the command option allows one to override default Docker commands, and more.[74] The first public version of Docker Compose (version 0.0.1) was released on 21 December 2013.[75] The first production-ready version (1.0) was made available on 16 October 2014.[76]
+
+Docker Swarm
+    -   provides native clustering functionality for Docker containers, which turns a group of Docker engines into a single, virtual Docker engine.[77] In Docker 1.12 and higher, Swarm mode is integrated with Docker Engine.[78] The swarm CLI utility allows users to run Swarm containers, create discovery tokens, list nodes in the cluster, and more.[79] The docker node CLI utility allows users to run various commands to manage nodes in a swarm, for example, listing the nodes in a swarm, updating nodes, removing nodes from the swarm, and more.[80] Docker manages swarms using the Raft Consensus Algorithm. According to Raft, for an update to be performed, the majority of Swarm nodes need to agree on the update.[81][82]
+
+
+    $ docker run --rm -it alpine ping -c4 <my_internal_host>
+
+
+https://stackoverflow.com/questions/47301434/sudo-docker-machine-command-not-found
+https://docs.docker.com/docker-for-aws/why/#skip-the-boilerplate-and-maintenance-work
+
+docker compose

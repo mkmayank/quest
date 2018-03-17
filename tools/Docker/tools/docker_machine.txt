@@ -1,0 +1,31 @@
+Docker Machine
+    -   tool that lets install Docker Engine on virtual hosts, and manage the hosts with docker-machine commands
+
+=====================
+Install
+    Download the binary
+    $ curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine && \
+    sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+
+=====================
+
+$ docker-machine create --driver virtualbox myvm1
+$ docker-machine create --driver virtualbox myvm2
+
+*   to run command on vm
+
+        $ docker-machine ssh myvm1 "<COMMAND>"
+
+*   to view vm machines
+
+        $ docker-machine ls
+
+*   to configures current shell to talk to the Docker daemon on the vm
+
+        $ docker-machine env myvm1          #   to see variables to be setted
+        $ eval $(docker-machine env myvm1)  #   to set variables
+
+*   to unset variables
+
+        $ eval $(docker-machine env -u)
+=====================
