@@ -1,2 +1,0 @@
-Dockerfile
-    -   defines what goes on in the environment inside container

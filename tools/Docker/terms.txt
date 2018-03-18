@@ -15,6 +15,13 @@ stack
 Docker Machine
     -   tool that lets install Docker Engine on virtual hosts, and manage the hosts with docker-machine commands
 
+cache busting
+    -   RUN apt-get update && apt-get install -y
+    -   installs the latest package versions with no further coding or manual intervention
+
+version pinning
+    -   cache-busting by specifying a package version
+
 ==================
 https://www.ubuntu.com/containers
 https://en.wikipedia.org/wiki/Operating-system-level_virtualization
@@ -61,7 +68,10 @@ Docker Swarm
 
 https://stackoverflow.com/questions/47301434/sudo-docker-machine-command-not-found
 https://docs.docker.com/docker-for-aws/why/#skip-the-boilerplate-and-maintenance-work
+https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016
 
 docker compose
 volumes
 bind mounts
+https://hub.docker.com/_/alpine/
+alpine

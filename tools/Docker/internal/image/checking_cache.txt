@@ -1,0 +1,20 @@
+
+    -   Docker looks for an existing image in its cache that it can reuse, rather than creating a new (duplicate) image
+    -   --no-cache=true option to turn off cache in docker build
+
+    -   each instruction is checked if any child image from base image already built or in cache
+
+    -   mostly, comparing the instruction in the Dockerfile with one of the child images is sufficient
+
+    -   For ADD and COPY instructions, checksum for each file (content + metadata) is calculated and checked
+        last-modified and last-accessed times are not considered in checksums
+
+    -   Aside from the ADD and COPY commands, cache checking does not look at the files in the container
+        e.g,
+            RUN apt-get -y update
+            files updated in the container are not examined
+            just the command string itself is used to find a match
+
+
+Layman:
+agar docker ko beech me koi image mil jaay cache me to wo use use karegaa aagey kii instructions ke liye
