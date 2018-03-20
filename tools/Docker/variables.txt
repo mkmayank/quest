@@ -1,1 +1,5 @@
 DOCKER_HOST
+
+
+
+DOCKER_API_VERSION='1.27'   -   version of the API to be used

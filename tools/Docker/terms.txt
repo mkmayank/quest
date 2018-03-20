@@ -55,6 +55,7 @@ https://www.docker.com/use-cases/cicd
 boot2docker.iso
 source of truth
 ntp
+gosu
 
 Docker Compose
     -   is a tool for defining and running multi-container Docker applications.[71] It uses YAML files to configure the application's services and performs the creation and start-up process of all the containers with a single command. The docker-compose CLI utility allows users to run commands on multiple containers at once, for example, building images, scaling containers, running containers that were stopped, and more.[72] Commands related to image manipulation, or user-interactive options are not relevant in Docker Compose because they address one container.[73] The docker-compose.yml file is used to define an application's services and includes various configuration options. For example, the build option defines configuration options such as the Dockerfile path, the command option allows one to override default Docker commands, and more.[74] The first public version of Docker Compose (version 0.0.1) was released on 21 December 2013.[75] The first production-ready version (1.0) was made available on 16 October 2014.[76]

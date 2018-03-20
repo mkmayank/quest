@@ -27,3 +27,22 @@ Best practices :
                 -   avoid RUN apt-get upgrade or dist-upgrade
                 -   update only particular package
                 -   clean the apt cache rm -rf /var/lib/apt/lists/*
+        -   pipe |
+                -   to fail piped command due to an error at any stage in the pipe prepend set -o pipefail
+                    e.g.
+                        RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
+
+                    reason :
+                    Docker executes commands using the /bin/sh -c interpreter
+                    which only evaluates the exit code of the last operation in the pipe to determine success
+
+    -   EXPOSE  -   should use the common, traditional port
+
+    -   prefer COPY over ADD
+    -   using ADD to fetch packages from remote URLs is strongly discouraged; use curl or wget instead
+        Reason, we can delete the files we not needed
+
+    -   Avoid installing or using sudo since it has unpredictable TTY and signal-forwarding behavior
+    -   to reduce layers and complexity, avoid switching USER back and forth frequently
+
+    -   For clarity and reliability, always use absolute paths for your WORKDIR
