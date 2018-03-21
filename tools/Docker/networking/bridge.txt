@@ -1,0 +1,2 @@
+*   Docker creates a default bridge network automatically
+    and newly-started containers connect to it unless otherwise specified
