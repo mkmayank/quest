@@ -1,0 +1,13 @@
+    -   2004    -   Hudson's creation started in summer at Sun Microsystem
+    -   2005    -   first released in java.net
+    -   2007    -   Hudson became known as a better alternative to CruiseControl and other open-source build-servers
+
+    -   2010    -   issue arose in the Hudson community with respect to the infrastructure used,
+                    which grew to encompass questions over the stewardship and control by Oracle
+                    Oracle claimed right to the name "Hudson"
+
+    -   2011    -   call for votes was made to change the project name from "Hudson" to "Jenkins"
+                    Jenkins and Hudson continue as two independent projects, each claiming the other is the fork
+
+    -   2013    -   Jenkins outgrow Hudson on GitHub with number of contributors/repository/stars
+    -   2016    -   version 2 was released with the Pipeline plugin enabled by default

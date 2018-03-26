@@ -8,3 +8,8 @@ Jenkins
 
 Pipeline
     -   definition of Jenkins Pipeline is written into a text file (Jenkinsfile) which is checked into a project’s source control repository
+
+============================
+
+    -   Jenkins supports the master/slave mode
+        The workload of building projects are delegated to multiple slave nodes
