@@ -1,0 +1,7 @@
+    -   2014    -   announced by by Google
+                -   development and design are heavily influenced by Google's Borg system
+                -   original codename for Kubernetes within Google was Project Seven
+                -   seven spokes on the wheel of the Kubernetes logo is a nod to that codename
+
+    -   2015    -   Kubernetes v1.0 was released
+                -   Google partnered with the Linux Foundation to form the Cloud Native Computing Foundation

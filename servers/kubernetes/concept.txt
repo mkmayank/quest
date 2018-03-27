@@ -1,0 +1,24 @@
+*   Kubernetes cluster consists machines ( virtual, physical any)
+        1.  Master  -   one machine is Master       -   manage the cluster
+        2.  Nodes   -   other machines are nodes    -   workers that run applications
+
+        Master
+            manages actvities like :
+                scheduling applications
+                maintaining applications' desired state
+                scaling applications
+                rolling out new updates, ...
+
+        Node
+            each node has to has
+                1.  Kubelet -   agent for managing the node and communicating with the K8s master
+                2.  container application   -   such as Docker or rkt
+
+    layman :
+    kubernets machines kaa cluster hotaa hai, ek machine master hoti hai , or baaki sab nodes hotey hai
+    master pure cluster ko manager kartaa hai, or hum iss ko command kar saktey hai kuch kar waane ke liye
+    node pe kubelet installed honaa chaiye jo node pe containers chawaayegaa or master se baat karegaa
+    node pe container tool bhi honaa chaye, jise kubernets use karegaa
+    master se baat karney ke liye command line tool hai kuberctl
+=====================
+*   

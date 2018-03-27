@@ -1,0 +1,70 @@
+1.  Install Virtual Box
+2.  Install kuberctl [ ek binary file hai ]
+
+    $   curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    $   chmod +x ./kubectl
+    $   sudo mv ./kubectl /usr/local/bin/kubectl
+
+3.  Install Minikube [ ek binary file hai ]
+
+    $   curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.25.2/minikube-linux-amd64
+    $   chmod +x minikube
+    $   sudo mv minikube /usr/local/bin/
+
+4.  start minikube cluster
+
+    $   minikube start
+        #   creates and configures a virtual machine that runs a single-node Kubernetes cluster
+        #   also configures kubectl installation to communicate with this cluster
+        #   dowloaded iso
+        #   inside this machine docker is already installed and running , some containers are also running
+
+5.  set the kubectl context, so that it can talk to minikube
+    $   kubectl config use-context minikube
+    $   kubectl cluster-info
+
+6.  open Kubernetes dashboard in a browser
+    $   minikube dashboard
+
+7.  create a hello world program
+8.  create a dockerfile
+9.  build docker image [ to let talk dokcer to vm docker daemon , eval $(minikube docker-env)]
+    $   docker build -t hello-node:v1 .
+
+10. create deployment
+    $   kubectl run hello-node --image=hello-node:v1 --port=8080
+    $   kubectl get deployments
+    $   kubectl get pods
+    $   kubectl get events
+    $   kubectl config view
+
+11. create service
+    -   by default Pod is only accessible by its internal IP address within the Kubernetes cluster
+    $   kubectl expose deployment hello-node --type=LoadBalancer
+    $   kubectl get services
+
+12. update docker image
+13. build image
+14. update image of deployment
+    $   kubectl set image deployment/hello-node hello-node=hello-node:v2
+
+15. list the currently supported addons
+    $   minikube addons list
+16. enable addons
+    $   minikube addons enable heapster
+17. view the Pod and Service you just created:
+    $   kubectl get po,svc -n kube-system
+
+18. delete services, deployement
+    $   kubectl delete service hello-node
+    $   kubectl delete deployment hello-node
+
+19. delete docker images
+    $   docker rmi hello-node:v1 hello-node:v2 -f
+
+20. stop minikube vm
+    $   minikube stop
+    $   eval $(minikube docker-env -u)
+
+21. delete minkube
+    $   minikube delete
