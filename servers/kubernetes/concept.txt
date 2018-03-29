@@ -346,7 +346,25 @@
                     -   K8s master component
                     -   roles
                         1.  assigns CIDR ( Classless Inter-Domain Routing ) (if turned on) when node registered
-                        2.  keeping the node controller’s internal list of nodes up to date with the cloud provider’s list of available machines.
+                        2.  keeping the node controller’s internal list of nodes up to date with the cloud provider’s list of available machines
+                        3.  monitoring the node's health
+                2.  kubectl
+                3.  kubelet
+
+        -   Self registration of nodes
+                -   kubelet attempt to register itself with the API server
+                -   kubelet options to self registered
+                    --register-node ( true by default)
+                    --kubeconfig
+                    --cloud-provider
+                    --node-ip
+                    --node-lables
+                    --node-status-update-frequency
+
+        -   Marking a node as unschedulable will prevent new pods from being scheduled to that node, but will not affect any existing pods on the node
+            This is useful as a preparatory step before a node reboot, etc
+
+                $   kubectl cordon $NODENAME        #   to mark node unschedulable
 
 
         ***************************
@@ -354,5 +372,15 @@
         -   If Status of the Ready condition is “Unknown” or “False” for longer than the pod-eviction-timeout (default 5 mins)
             then all of the Pods on the node are scheduled for deletion by the Node Controller
             If not reachable to node, the pods which are scheduled for deletion may continue to run on the partitioned node
+
+        -   When running in a cloud environment, whenever a node is unhealthy, the node controller asks the cloud provider if the VM for that node is still available. If not, the node controller deletes the node from its list of nodes.
+
+        -   any kubelet is authorized to create/modify any node resource, but in practice it only creates/modifies its own
+
+=====================
+
+*8  
+
+        ***************************
 
 =====================
