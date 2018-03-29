@@ -1,7 +1,8 @@
-*   Kubernetes cluster consists machines ( virtual, physical any)
+*1  Kubernetes cluster consists machines ( virtual, physical any)
         1.  Master  -   one machine is Master       -   manage the cluster
         2.  Nodes   -   other machines are nodes    -   workers that run applications
 
+        ***************************
         Master
             manages actvities like :
                 scheduling applications
@@ -14,11 +15,344 @@
                 1.  Kubelet -   agent for managing the node and communicating with the K8s master
                 2.  container application   -   such as Docker or rkt
 
+        ***************************
     layman :
     kubernets machines kaa cluster hotaa hai, ek machine master hoti hai , or baaki sab nodes hotey hai
     master pure cluster ko manager kartaa hai, or hum iss ko command kar saktey hai kuch kar waane ke liye
     node pe kubelet installed honaa chaiye jo node pe containers chawaayegaa or master se baat karegaa
     node pe container tool bhi honaa chaye, jise kubernets use karegaa
     master se baat karney ke liye command line tool hai kuberctl
+
 =====================
-*   
+
+*2  Processes :
+        Master is a collection of three processess :
+            1.  kube-apiserver          -   validates and configures data for the api objects ( pods, services, ...)
+                                            services REST operations and let components interact to it
+
+            2.  kube-controller-manager -   daemon that embeds the core control loops shipped with Kubernetes
+
+            3.  kube-scheduler          -   watches newly created pods that have no node assigned, and selects a node for them to run on
+
+        Non-master nodes runs two processess :
+            1.  kubelet     -   communicates with the Kubernetes Master
+                                works in terms of a PodSpec
+                                ensures that the containers described in PodSpecs are running and healthy
+
+            2.  kube-proxy  -   enables the Kubernetes service abstraction
+                                maintains network rules on the host and performs connection forwarding
+
+        ***************************
+
+    -   Typically master processes are all run on a single machine and do not run user containers on same machine
+        The master can also be replicated for availability and redundancy
+
+    -   controller  -   control loop that watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state
+                        e.g.    replication controller, endpoints controller, namespace controller, and serviceaccounts controller
+
+    -   PodSpec     -   a YAML or JSON object that describes a pod
+
+    -   There are 4 ways that a container manifest can be provided to the Kubelet
+            1.  ApiServer:      from an PodSpec from the apiserver
+
+            2.  File:           Path passed as a flag on the command line
+                                monitored periodically for updates ( 20s default )
+
+            3.  HTTP endpoint:  HTTP endpoint passed as a parameter on the command line
+                                monitored periodically for updates ( 20s default )
+
+            4.  HTTP server:    listen for HTTP and respond to a simple API to submit a new manifest
+
+=====================
+
+*3  basic Kubernetes objects include:
+        Pod
+        Service
+        Volume
+        Namespace
+
+    Controllers :
+
+        ReplicaSet
+        Deployment
+        StatefulSet
+        DaemonSet
+        Job
+
+=====================
+
+*4  Components
+        Master :
+            1.  kube-apiserver
+
+            2.  etcd                    -   Consistent and highly-available key value store used as Kubernetes’ backing store for all cluster data
+                                        -   https://github.com/coreos/etcd/blob/master/Documentation/docs.md
+
+            3.  kube-scheduler
+
+            4.  kube-controller-manager -   runs controllers
+
+            5.  cloud-controller-manager-   runs controllers that interact with the underlying cloud providers
+                                        -   runs cloud-provider-specific controller loops only
+
+        Node :
+            1.  kubelet
+            2.  kube-proxy
+            3.  container runtime
+
+        Addons :    extend the functionality of Kubernetes
+            1.  DNS
+            2.  Web UI (Dashboard)
+            3.  Container Resource Monitoring
+            4.  Cluster level logging
+
+        ***************************
+
+    -   Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.
+
+    -   kube Controllers include:
+
+            1.  Node Controller                     :   Responsible for noticing and responding when nodes go down
+
+            2.  Replication Controller              :   Responsible for maintaining the correct number of pods for every replication controller object in the system
+
+            3.  Endpoints Controller                : Populates the Endpoints object (joins Services & Pods)
+
+            4.  Service Account & Token Controllers : Create default accounts and API access tokens for new namespaces
+
+    -   cloud-controller-manager allows cloud vendors code and the Kubernetes core to evolve being independent to each other
+
+    -   Controllers having cloud provider dependencies:
+
+            1.  Node Controller     : For checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding
+
+            2.  Route Controller    : For setting up routes in the underlying cloud infrastructure
+
+            3.  Service Controller  : For creating, updating and deleting cloud provider load balancers
+
+            4.  Volume Controller   : For creating, attaching, and mounting volumes, and interacting with the cloud provider to orchestrate volumes
+
+=====================
+
+*5. Objects
+        -   persistent entities in the Kubernetes system ???
+        -   represent the state of cluster
+        -   describe :
+            -   what containerized applications are running
+            -   resources available to applications
+            -   policies around how applications behave, ( restart, upgrades, fault-tolerance)
+
+        -   Every Kubernetes object includes two nested object fields that govern the object’s configuration:
+                1.  the object spec     -   describes the desired state for the object
+                                        -   provided by user
+                2.  the object status   -   describes the actual state of the object
+                                        -   supplied and updated by the Kubernetes system
+
+            At any given time, the Kubernetes Control Plane actively manages an object’s actual state to match the desired state
+
+        -   Creation of object :
+                -   provide the object spec as well as some basic information about the object (such as a name)
+                -   API expects spec in JSON in the request body
+                -   kubectl accepts spec in a YAML or JSON format, converts YAML to JSON when making the API request
+
+
+        -   .yaml file
+                -   apiVersion      -   version of the Kubernetes API
+                -   kind            -   kind of object to create
+                -   metadata        -   Data that helps uniquely identify the object, including a name, UID, and optional namespace
+                -   spec
+
+                e.g.
+                    apiVersion: apps/v1
+                    kind: Deployment
+                    metadata:
+                      name: nginx-deployment
+                    spec:
+                        ...
+
+                $ kubectl create -f file.yaml --record
+
+        -   All objects in the Kubernetes REST API are unambiguously identified by a Name and a UID
+                1.  Name
+                    -   user provides it
+                    -   conventions to have lower case alphanumeric characters, -, .
+                2.  UID
+                    -   K8s generates this
+                    -   distinct for every object over whole lifetime of a cluster
+                        intended to distinguish between historical occurrences of similar entities
+
+        -   Namespace
+                -   K8s supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces
+                -   Namespaces provide a scope for names. Names of resources need to be unique within a namespace, but not across namespaces.
+
+                        $   kubectl get namespaces
+
+                -   Kubernetes starts with 3 initial namespaces:
+                        1.  default     -   default namespace for objects with no other namespace
+                        2.  kube-system -   for objects created by the Kubernetes system
+                        3.  kube-public -   readable by all users, reserved for cluster usage, in case some resources should be visible and readable publicly throughout the whole cluster
+
+                -   Setting the namespace for a request
+
+                    -   temporarily
+
+                        $   kubectl --namespace=<insert-namespace-name-here> run nginx --image=nginx
+                        $   kubectl --namespace=<insert-namespace-name-here> get pods
+
+                    -   permanently for all subsequent kubectl commands in the context
+
+                        $   kubectl config set-context $(kubectl config current-context) --namespace=<insert-namespace-name-here>
+
+        -   Labels and Selectors
+                -   key/value pairs (user-defined) attached to objects
+                -   meaningful and relevant to users only and not to core system
+                -   used to organize and to select subsets of objects
+                -   can be attached to objects at creation time and subsequently added and modified at any time
+
+                    e.g.
+                    Example labels:
+                        "release" : "stable", "release" : "canary"
+                        "environment" : "dev", "environment" : "qa", "environment" : "production"
+                        "tier" : "frontend", "tier" : "backend", "tier" : "cache"
+                        "partition" : "customerA", "partition" : "customerB"
+                        "track" : "daily", "track" : "weekly
+
+                -   2 types of selectors
+                        1.  equality-based  -   Operators =,==,!=
+                                e.g.
+                                environment = production
+                                tier != frontend
+
+                        2.  set-based       -   Operators in, notin, exists ( only the key identifier )
+                                e.g.
+                                environment in (production, qa)
+                                tier notin (frontend, backend)
+                                partition,environment notin (qa)
+
+                        selectos can be mixed , like :
+                            partition in (customerA, customerB),environment!=qa
+
+                -   A label selector can be made of multiple requirements which are comma-separated ( && )
+
+                        e.g.
+
+                            $   kubectl get pods -l environment=production,tier=frontend
+                            $   kubectl get pods -l 'environment in (production),tier in (frontend)'
+
+                -   In YAML
+                        e.g.
+                            selector:
+                                component: redis
+
+            -   Annotations
+                    -   to attach arbitrary non-identifying metadata to objects
+                    -   annotations are not used to identify and select objects
+                    -   Annotations, like labels, are key/value maps:
+
+                            "annotations": {
+                              "key1" : "value1",
+                              "key2" : "value2"
+                            }
+
+
+        ***************************
+
+    layman status spec example:
+    agar humne deploymnet object banaya jisme humne 3 replica set kara , ye spec hai, K8s iss spec ko padegaa or 3 instance start karegaa taki status match kar sakey, agar kisi wajah se koi intanace down ho jaata hai, to uskaa status me replica 2 ho jaayegi to K8s fir se ek start karegaa taaki status ko spec se match kar sakey
+
+    layman namespace:
+    namespace se hum object baat saktey hai , taaki sirf ek namespace waale hee object aapas me baat kar sakey or naa kii dusrey namespace se, agar ek cluster me 2 yaa or differnet cheezey hai to namespace se unhe alag kiyaa jaa saktaa hai, jaise mutiple teams kaam kar rai hai ek cluster me to quota banane ke liye namespace bnaaye jaa saktey hai
+
+    layman labels:
+    labels objects kee grouping yaa usko kuch hamaari apni convetins dene ke liye hai, jaise kuch objects ko hum env:dev de saktey hai or kuch ko env:prod or fir dekh saktey hai kiii konsaa dev hai or konse prod
+
+=====================
+
+*6  Management
+        -   Kubernetes object should be managed using only one technique
+            Mixing and matching techniques for the same object results in undefined behavior
+
+        Techniques
+            1.  Imperative commands ( sidhe command line pe bolke bnaawaana )
+                -   operates directly on live objects in a cluster
+                -   user provides operations to the kubectl command as arguments or flags.
+                -   simplest way
+                -   provides no history of previous configurations
+
+                    e.g.
+                        kubectl run nginx --image nginx
+                        kubectl create deployment nginx --image nginx
+
+            2.  Imperative object configuration
+                -   using file containing definition of the object in YAML or JSON format
+                -   Updates to live objects must be reflected in configuration files, or they will be lost during the next replacement
+
+                    e.g.
+                        kubectl create -f nginx.yaml
+                        kubectl delete -f nginx.yaml -f redis.yaml
+
+            3.   Declarative object configuration
+                -   object configuration files stored locally, however the user does not define the operations to be taken on the files
+                -   Changes made directly to live objects are retained, even if they are not merged back into the configuration files
+
+                    e.g.
+                        kubectl apply -f configs/
+
+        ***************************
+        -   Imperative commands
+                https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/
+
+        -   Imperative object configuration
+                https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-config/
+
+        -   Declarative object configuration
+                https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/
+
+        -   Export the live object to a local object configuration file:
+
+                $   kubectl get <kind>/<name> -o yaml --export > <kind>_<name>.yaml
+
+=====================
+
+*7. Node
+
+        -   Node Status
+                1.  Addresses
+                    1.  HostName
+                    2.  ExternalIP
+                    3.  InternalIP
+
+                2.  Condition
+                    1.  OutOfDisk           -   if free space on the node for adding new pods
+                    2.  Ready               -   if node is healthy and ready to accept pods
+                    3.  MemoryPressure	    -   if the node memory is low
+                    4.  DiskPressure        -   if the disk capacity is low
+                    5.  NetworkUnavailable	-   if the network for the node is correctly configured
+                    6.  ConfigOK            -	if the kubelet is correctly configured
+
+                3.  Capacity
+                    1.  CPU
+                    2.  memory
+                    3.  max number of pods that can be scheduled onto the node
+
+                4.  Info
+                    general info, like kernel version, K8s version, docker version, OS name, ...
+
+        -   when Kubernetes creates a node, it is just creating an object that represents the node
+            After creation, Kubernetes will check whether the node is valid or not
+
+        -   3 components to interact with node :
+                1.  Node controller
+                    -   K8s master component
+                    -   roles
+                        1.  assigns CIDR ( Classless Inter-Domain Routing ) (if turned on) when node registered
+                        2.  keeping the node controller’s internal list of nodes up to date with the cloud provider’s list of available machines.
+
+
+        ***************************
+
+        -   If Status of the Ready condition is “Unknown” or “False” for longer than the pod-eviction-timeout (default 5 mins)
+            then all of the Pods on the node are scheduled for deletion by the Node Controller
+            If not reachable to node, the pods which are scheduled for deletion may continue to run on the partitioned node
+
+=====================

@@ -5,3 +5,6 @@
 
     -   2015    -   Kubernetes v1.0 was released
                 -   Google partnered with the Linux Foundation to form the Cloud Native Computing Foundation
+
+*   name Kubernetes originates from Greek, meaning helmsman or pilot
+    K8s is an abbreviation derived by replacing the 8 letters “ubernete” with “8”.
