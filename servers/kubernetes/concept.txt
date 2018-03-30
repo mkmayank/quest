@@ -393,12 +393,74 @@
                 4.  Volume Controller   : For creating, attaching, and mounting volumes, and interacting with the cloud provider to orchestrate volumes
 
         -   CCM runs
-                1.  Node controller
-                2.  Route controller
-                3.  Service controller
+                1.  Node controller                     :   initialize node by obtaining information about the nodes running in the cluster from the cloud provider
+                                                            In case a node becomes unresponsive, check the cloud to see if the node has been deleted from the cloud. If the node has been deleted from the cloud, delete the Kubernetes Node object
+
+                                                            API access : node   ->  get,list,create,update,patch,watch,delete
+
+                2.  Route controller                    :   configures routes in the cloud so that containers on different nodes can communicate with each other
+
+                                                            API access : node   ->  get
+
+                3.  Service controller                  :   listens to service create, update, and delete events
+
+                                                            API access : service    ->  create,list,get,watch,patch,update
+
                 4.  PersistentVolumeLabels controller   :   responsible for setting the zone and region labels on PersistentVolumes created in GCP and AWS clouds
 
-                Volume Controller was deliberatley chosen ot not be a part of CCM due to complexity
+                                                            API access : PersistentVolume   ->  get,list,watch,update
+
+                Core
+                    API access  :   Event   ->  Create,Patch,Update
+                                    ServiceAccount  ->  Create
+
+                Volume Controller was deliberatley chosen to not be a part of CCM due to complexity
+
+        ***************************
+
+        -   now cloud vendor's responsiblity to create or update CCM, k8s pe paisaa hai naa
+
+=====================
+
+*10 Containers
+    -   default pull policy is IfNotPresent which causes the Kubelet to skip pulling an image if it already exists
+        to always pull
+            1.  set the imagePullPolicy of the container to Always
+            2.  or  use :latest as the tag for the image to use
+            3.  or  enable the AlwaysPullImages admission controller
+
+    -   Variables available to containers :
+        -   hostname of a Container is the name of the Pod in which the Container is running
+        -   User defined environment variables from the Pod definition are available to the Container, as are any environment variables specified statically in the Docker image
+        -   list of all services that were running when a Container was created is available to that Container as environment variables
+
+    -   Container lifecycle hooks :
+            1.  PostStart       -   executes immediately after a container is created
+
+            2.  PreStop         -   called immediately before a container is terminated
+
+            Hook handler implementations :
+                1.  Exec    - Executes inside the cgroups and namespaces of the Container
+
+                2.  HTTP    - Executes an HTTP request against a specific endpoint on the Container
+
+            When a Container lifecycle management hook is called, the K8s management system executes the handler in the Container registered for that hook
+
+                -   Hook handler calls are synchronous within the context of the Pod containing the Container
+                    i.e.
+                        PostStart hook, the Container ENTRYPOINT and hook fire asynchronously. However, if the hook takes too long to run or hangs, the Container cannot reach a running state.
+                        if PreStop Hook hangs during execution, the Pod phase stays in a Terminating state and is killed after terminationGracePeriodSeconds of pod ends.
+                -   If a PostStart or PreStop hook fails, it kills the Container.
+
+                -   hook handlers should be as lightweight as possible
+
+            logs for a Hook handler are not exposed in Pod events
+            If a handler fails for some reason, it broadcasts an event
+                -   PostStart   ->  FailedPostStartHook event
+                -   PreStop     ->  FailedPreStopHook event
+
+            see events by running
+                $    kubectl describe pod <pod_name>
 
         ***************************
 
