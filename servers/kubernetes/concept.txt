@@ -465,3 +465,145 @@
         ***************************
 
 =====================
+
+11* Pod
+    -   smallest and simplest unit in the Kubernetes object model
+    -   Each Pod is meant to run a single instance of a given application
+        to run multiple instances, should use multiple Pods, one for each instance, generally referred to as replication
+        Replicated Pods are usually created and managed as a group by an abstraction called a Controller
+
+    Shared resources for constituent containers:
+        1.  Networking
+                -   Each Pod is assigned a unique IP address
+                -   Containers within a pod share an IP address and port space, and can find each other via localhost
+                -   Containers within a pod can communicate to each other using IPC
+
+        2.  Storage
+                -   All containers in the Pod can access the shared volumes, allowing those containers to share data
+                -   Volumes also allow persistent data in a Pod to survive in case one of the containers within needs to be restarted
+
+    Pod phase :
+        1.  Pending     :   Pod has been accepted by the Kubernetes system, but one or more of the Container images has not been created
+                            includes time before being scheduled as well as time spent downloading images over the network
+
+        2.  Running     :   Pod has been bound to a node, and all of the Containers have been created
+                            At least one Container is still running, or is in the process of starting or restarting
+
+        3.  Succeeded   :   All Containers in the Pod have terminated in success, and will not be restarted
+
+        4.  Failed      :   All Containers in the Pod have terminated, and at least one Container has terminated in failure
+                            i.e. the Container either exited with non-zero status or was terminated by the system
+
+        5.  Unknown     :   For some reason the state of the Pod could not be obtained
+
+    -   Pods with a phase of Succeeded or Failed for more than some duration (determined by the master) will expire and be automatically destroyed
+    -   once bound to a node, a Pod will never be rebound to another node
+
+    Pod conditions :
+        type:status
+        type :
+            1.  PodScheduled
+            2.  Ready
+            3.  Initialized
+            4.  Unschedulable
+        status :
+            True, False, and Unknown
+
+    Probe :
+        -   describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic
+        -   performed periodically by the kubelet on a Container
+
+        -   To perform a diagnostic, the kubelet calls a Handler implemented by the Container
+                1.  ExecAction      :   Executes command inside the Container
+                                        successful  ->  exit status code 0
+
+                2.  TCPSocketAction :   Performs a TCP check against the Container’s IP address on a specified port
+                                        successful  ->  port is open
+
+                3.  HTTPGetAction   :   Performs an HTTP Get request against the Container’s IP address on a specified port and path
+                                        successful  ->  status code is 2XX or 3XX
+
+        -   2 kinds of probes :
+                1.  livenessProbe   :   Indicates whether the Container is running
+                                        fail    ->  kubelet kills the Container, and the Container is subjected to its restart policy
+                                        If a Container does not provide a liveness probe, the default state is Success
+
+                2.  readinessProbe  :   Indicates whether the Container is ready to service requests
+                                        fails   ->  endpoints controller removes the Pod’s IP address from the endpoints of all Services that match the Pod
+                                        The default state of readiness before the initial delay is Failure
+                                        If a Container does not provide a readiness probe, the default state is Success
+
+    Restart policy :
+        1.  Always      -   default
+        2.  OnFailure
+        3.  Never
+        -   restartPolicy only refers to restarts of the Containers by the kubelet on the same node
+        -   Failed Containers are restarted with an exponential back-off delay (10s, 20s, 40s …) capped at 5 minutes, and is reset after ten minutes of successful execution
+
+    Controllers to choose
+        -   Pods that are expected to terminate         ->  Job
+        -   Pods that are not expected to terminate     ->  ReplicationController, ReplicaSet, Deployment
+        -   Pods that need to run one per machine       ->  DaemonSet
+
+    Init Containers
+        -   which are run before the app Containers are started
+            Init Containers are exactly like regular Containers, except:
+                1.  They always run to completion
+                2.  Each one must complete successfully before the next one is started
+
+        -   If an Init Container fails for a Pod, Kubernetes restarts the Pod repeatedly until the Init Container succeeds
+        -   Init Containers do not support readiness probes because they must run to completion before the Pod can be ready
+
+    Pod Preset
+        -   an API resource for injecting additional runtime requirements into a Pod at creation time
+        -   No resource definition from the Pod Preset will be applied to the initContainers field
+        -   K8s provides an admission controller (PodPreset) which, when enabled, applies Pod Presets to incoming pod creation requests
+
+            When a pod creation request occurs, the system does the following:
+                1.  Retrieve all PodPresets available for use
+                2.  Check if the label selectors of any PodPreset matches the labels on the pod being created.
+                3.  Attempt to merge the various resources defined by the PodPreset into the Pod being created.
+                    On error, throw an event documenting the merge error on the pod, and create the pod without any injected resources from the PodPreset.
+                4.  Annotate the resulting modified Pod spec to indicate that it has been modified by a PodPreset
+                    The annotation is of the form
+                        podpreset.admission.kubernetes.io/podpreset-<pod-preset name>: "<resource version>"
+
+        -   Disable Pod Preset for a specific pod
+                add an annotation in the Pod Spec of the form
+                    podpreset.admission.kubernetes.io/exclude: "true"
+
+        -   Enable Pod Preset
+                1.  enable the API type settings.k8s.io/v1alpha1/podpreset
+                        include settings.k8s.io/v1alpha1=true in the --runtime-config option for the API server
+
+                2.  enable the admission controller PodPreset
+                        include PodPreset in the --enable-admission-plugins option value specified for the API server
+
+                3.  defined Pod Presets
+
+    PodDisruptionBudget object (PDB)
+        -   limits the number pods of a replicated application that are down simultaneously from voluntary disruptions
+                e.g.
+                    a Deployment which has a spec.replicas: 5 is supposed to have 5 pods at any given time
+                    If its PDB allows for there to be 4 at a time,
+                    then the Eviction API will allow voluntary disruption of one, but not two pods, at a time
+        -   PDB cannot prevent involuntary disruptions ( i.e. general technical problems)
+            PDB helps in preventing admin manual accidents, like admin deleting some node,pod,.. without checking if it can be done
+        -   When a pod is evicted using the eviction API, it is gracefully terminated
+
+        ***************************
+
+    -   Layman
+            -   K8s containers ke saath direct deal naa karke pod object ke through deal kartaa hai, ek pod me ek yaa jaada containers ho saktey h
+            -   multiple pods ko manage karney ke liye controllers hotey h
+
+    -   Layman Pod preset
+            -    this is like humaaraa chef se configuration files me entry karnaa jo run time pe hee avialble hoti hai, jaise ips of some services depending on environment
+
+=====================
+
+12* 
+
+        ***************************
+
+=====================
