@@ -122,16 +122,6 @@
 
     -   cloud-controller-manager allows cloud vendors code and the Kubernetes core to evolve being independent to each other
 
-    -   Controllers having cloud provider dependencies:
-
-            1.  Node Controller     : For checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding
-
-            2.  Route Controller    : For setting up routes in the underlying cloud infrastructure
-
-            3.  Service Controller  : For creating, updating and deleting cloud provider load balancers
-
-            4.  Volume Controller   : For creating, attaching, and mounting volumes, and interacting with the cloud provider to orchestrate volumes
-
 =====================
 
 *5. Objects
@@ -379,7 +369,36 @@
 
 =====================
 
-*8  
+*8  Communication
+        1.  Node to Master ( apiserver )
+            -   listens via HTTPS with some authorization
+            -   secured
+
+        2.  Master ( apiserver ) to Node
+            -   unsecured
+                1.  apiserver to kubelet
+                2.  apiserver to node, pod, or service
+
+        ***************************
+
+=====================
+
+*9  Cloud controller manager
+        -   single point of integration with the cloud
+        -   Controllers having cloud provider dependencies:
+
+                1.  Node Controller
+                2.  Route Controller
+                3.  Service Controller
+                4.  Volume Controller   : For creating, attaching, and mounting volumes, and interacting with the cloud provider to orchestrate volumes
+
+        -   CCM runs
+                1.  Node controller
+                2.  Route controller
+                3.  Service controller
+                4.  PersistentVolumeLabels controller   :   responsible for setting the zone and region labels on PersistentVolumes created in GCP and AWS clouds
+
+                Volume Controller was deliberatley chosen ot not be a part of CCM due to complexity
 
         ***************************
 
