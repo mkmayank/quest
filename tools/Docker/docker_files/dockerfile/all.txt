@@ -1,0 +1,81 @@
+Usage :
+
+    docker build command needs :
+    1.  Dockerfile
+    2.  context     -   set of files at a specified location PATH or URL
+                        PATH is a directory on local filesystem
+                        URL is a Git repository location
+                        context is processed recursively
+
+    Context :
+    -   first thing a build process does is send the entire context (recursively) to the daemon
+    -   to increase the build’s performance, exclude files by adding a .dockerignore file to the context directory
+
+    Dockerfile :
+    -   Traditionally, the Dockerfile is called Dockerfile and located in the root of the context
+    -   to use other file
+
+        $   docker build -f /path/to/a/Dockerfile .
+
+    -   To tag the image into repositories after the build
+
+        $   docker build -t shykes/myapp:1.0.2 -t shykes/myapp:latest .
+
+
+    Docker daemon performs a preliminary validation of the Dockerfile and returns an error if the syntax is incorrect
+
+    Docker daemon runs the instructions in the Dockerfile one-by-one, committing the result of each instruction to a new image if necessary, before finally outputting the ID of new image
+
+    each instruction is run independently, and causes a new image to be created
+
+=============================
+Format :
+
+    -   case-insensitive
+    -   convention is to use instructions to be UPPERCASE
+    -   lines begin with # -> are comments, unless parse directive
+    -   Line continuation characters are not supported in comments
+
+=============================
+
+Parser directives ( # directive=value )
+    -   optional
+    -   affect the way in which subsequent lines in a Dockerfile are handled
+    -   do not add layers to the build, and will not be shown as a build step
+    -   single directive may only be used once
+
+    -   all parser directives must be at the very top of a Dockerfile
+            Once a comment, empty line or builder instruction has been processed, Docker no longer looks for parser directives
+
+    -   convention  ->  lowercase
+                    ->  include a blank line following any parser directives
+
+    -   Supported parser directive :
+        1.  escape
+
+        # escape=\ (backslash)
+            Or
+        # escape=` (backtick)
+
+        -   sets the character used to escape characters in a Dockerfile
+            default escape character is \
+            escape character is used both to escape characters in a line, and to escape a newline
+
+        -   this is to use for windows, because of \ as there path separator
+
+=============================
+Environment replacement
+
+    -   Environment variables can be used in certain instructions as variables
+    -   supported by :
+            ADD COPY ENV EXPOSE FROM LABEL STOPSIGNAL USER VOLUME WORKDIR ONBUILD
+    -   $variable_name or ${variable_name}
+    -   Environment variable substitution will use the same value for each variable throughout the entire instruction
+        e.g.
+            ENV abc=hello
+            ENV abc=bye def=$abc
+            ENV ghi=$abc
+
+            will result in def having a value of hello, not bye. However, ghi will have a value of bye
+
+=============================

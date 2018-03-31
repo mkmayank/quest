@@ -15,6 +15,8 @@
             files updated in the container are not examined
             just the command string itself is used to find a match
 
+    -   Build cache is only used from images that have a local parent chain
+    -   to use cache from specific imahe use --cache-from
 
 Layman:
 agar docker ko beech me koi image mil jaay cache me to wo use use karegaa aagey kii instructions ke liye
