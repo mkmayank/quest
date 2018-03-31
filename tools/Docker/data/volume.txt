@@ -1,0 +1,40 @@
+
+
+    Create a volume:
+
+        $ docker volume create my-vol
+
+    List volumes:
+
+        $ docker volume ls
+
+    Inspect a volume:
+
+        $ docker volume inspect my-vol
+
+    Remove a volume:
+
+        $ docker volume rm my-vol
+
+    Start a container with a volume
+        To mounts the volume myvol2 into /app/ in the container
+
+        $ docker run -d --name devtest --mount source=myvol2,target=/app nginx:latest
+
+            or
+
+        $ docker run -d --name devtest -v myvol2:/app nginx:latest
+
+    Read-only
+
+        $ docker run -d \
+            --name=nginxtest \
+            --mount source=nginx-vol,destination=/usr/share/nginx/html,readonly \
+            nginx:latest
+
+            or
+
+        $ docker run -d \
+            --name=nginxtest \
+            -v nginx-vol:/usr/share/nginx/html:ro \
+            nginx:latest
