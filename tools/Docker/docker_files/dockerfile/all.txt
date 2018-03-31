@@ -79,3 +79,10 @@ Environment replacement
             will result in def having a value of hello, not bye. However, ghi will have a value of bye
 
 =============================
+
+FROM    FROM <image> [AS <name>]
+
+    -   initializes a new build stage and sets the Base Image for subsequent instructions
+    -   ARG is the only instruction that may precede FROM in the Dockerfile
+
+RUN
