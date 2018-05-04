@@ -1,0 +1,6 @@
+
+    #   docker network create -d macvlan --subnet=192.168.20.0/24 --gateway=192.168.20.3 -o parent=eth0 my-macvlan
+    #   docker run --rm -itd  --network my-macvlan  --name my-alpine --ip 192.168.20.171 alpine:latest sh
+    #   docker exec my-alpine ping 8.8.8.8
+
+============================    
