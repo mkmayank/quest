@@ -79,8 +79,13 @@ NAME=eth0
 UUID=ae92faab-4e3f-42a6-a15f-8969157b7229
 ONBOOT=yes
 
-
+###################################################
 
 
 TO GENERATE MAC ADDRESS
 echo $FQDN|md5sum|sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
+
+###################################################
+
+start in background
+systemctl start systemd-nspawn@ipa
