@@ -1,0 +1,8 @@
+-   the order of execution for playbook is as follows
+        Any pre_tasks defined in the play.
+        Any handlers triggered so far will be run.
+        Each role listed in roles will execute in turn. Any role dependencies defined in the roles meta/main.yml will be run first, subject to tag filtering and conditionals.
+        Any tasks defined in the play.
+        Any handlers triggered so far will be run.
+        Any post_tasks defined in the play.
+        Any handlers triggered so far will be run.

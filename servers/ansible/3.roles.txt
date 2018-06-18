@@ -1,0 +1,106 @@
+Roles
+    -   Roles are ways of automatically loading certain vars_files, tasks, and handlers based on a known file structure
+
+    -   Roles expect files to be in certain directory names
+
+                roles/
+                   common/
+                     tasks/
+                     handlers/
+                     files/
+                     templates/
+                     vars/
+                     defaults/
+                     meta/
+                   webservers/
+                     tasks/
+                     defaults/
+                     meta/
+
+    -   Roles must include at least one of these directories, however it is perfectly fine to exclude any which are not being used
+    -   main.yml - each directory must contain a main.yml file
+
+        tasks       - contains the main list of tasks to be executed by the role.
+        handlers    - contains handlers, which may be used by this role or even anywhere outside this role.
+        defaults    - default variables for the role (see Variables for more information).
+        vars        - other variables for the role (see Variables for more information).
+        files       - contains files which can be deployed via this role.
+        templates   - contains templates which can be deployed via this role.
+        meta        - defines some meta data for this role
+
+
+    -   to use role in playbook:
+
+            - hosts: webservers
+              roles:
+                 - common
+                 - webservers
+
+    -   for each role 'x'
+        -   if roles/x/{handlers,tasks,vars,defaults,meta}/main.yml exists, they will be added to the play
+        -   copy, script, template or include tasks in the role can refrence files in dir roles/x/{files,templates,tasks}/ without having to path them relatively or absolutely
+
+    -   to use inline roles with tasks:
+
+                - hosts: webservers
+                  tasks:
+                  - debug:
+                      msg: "before we run our role"
+                  - import_role:
+                      name: example
+                  - include_role:
+                      name: example
+                  - debug:
+                      msg: "after we ran our role"
+
+    -   When roles are defined in the classic manner, they are treated as static imports and processed during playbook parsing
+
+    -   The name used for the role can be a simple name or it can be a fully qualified path:
+
+            - hosts: webservers
+              roles:
+                - { role: '/path/to/my/roles/common' }
+
+    -   Roles can accept parameters:
+
+            - hosts: webservers
+              tasks:
+              - include_role:
+                   name: foo_app_instance
+                vars:
+                  dir: '/opt/a'
+                  app_port: 5000
+
+    -   Ansible will only allow a role to execute once, even if defined multiple times, if the parameters defined on the role are not different for each definition
+        -   To make roles run more than once, there are two options:
+                1.  Pass different parameters in each role definition
+
+                  - hosts: webservers
+                    roles:
+                    - { role: foo, message: "first" }
+                    - { role: foo, message: "second" }
+
+                2.  Add allow_duplicates: true to the meta/main.yml file for the role
+
+                      # playbook.yml
+                      ---
+                      - hosts: webservers
+                        roles:
+                        - foo
+                        - foo
+
+                      # roles/foo/meta/main.yml
+                      ---
+                      allow_duplicates: true
+
+    -   Role dependencies allow automatically pull in other roles when using a role
+        Role dependencies are stored in the meta/main.yml file
+
+                      dependencies:
+                        - { role: common, some_parameter: 3 }
+                        - { role: apache, apache_port: 80 }
+                        - { role: postgres, dbname: blarg, other_parameter: 12 }
+
+    -   Ansible will search for roles in the following way:
+            A roles/ directory, relative to the playbook file.
+            in /etc/ansible/roles
