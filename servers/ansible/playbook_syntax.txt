@@ -1,0 +1,81 @@
+hosts
+    -   list of one or more groups or host patterns, separated by colons
+        https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html
+
+            - hosts: webservers
+              remote_user: root
+
+remote_user
+     -  name of the user account
+     -  Remote users can also be defined per task
+
+            - hosts: webservers
+              remote_user: root
+              tasks:
+                - name: test connection
+                  ping:
+                  remote_user: yourname
+
+    - to become root
+
+            - hosts: webservers
+              remote_user: yourname
+              become: yes
+
+    - to become root for particular task
+
+            - hosts: webservers
+              remote_user: yourname
+              tasks:
+                - service:
+                    name: nginx
+                    state: started
+                  become: yes
+                  become_method: sudo
+
+
+    - to become a user different than root:
+
+              - hosts: webservers
+                remote_user: yourname
+                become: yes
+                become_user: postgres
+
+    - to use other privilege escalation methods, like su:
+
+              - hosts: webservers
+                remote_user: yourname
+                become: yes
+                become_method: su
+
+order
+    -   to control the order in which hosts are run
+
+            - hosts: all
+              order: sorted
+              gather_facts: False
+              tasks:
+                - debug:
+                    var: inventory_hostname
+
+    -    possible values for order are:
+
+        -   inventory:  default
+        -   reverse_inventory:
+        -   sorted:
+        -   reverse_sorted:
+        -   shuffle:
+
+tasks
+    -   Each play contains a list of tasks
+    -   Tasks are executed in order, one at a time, against all machines matched by the host pattern, before moving on to the next task
+    -   When running the playbook, which runs top to bottom, hosts with failed tasks are taken out of the rotation for the entire playbook
+    -   goal of each task is to execute a module, with very specific argument
+    -   Modules should be idempotent
+    -   Every task should have a name
+
+            tasks:
+              - name: make sure apache is running
+                service:
+                  name: httpd
+                  state: started
