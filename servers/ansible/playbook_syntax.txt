@@ -79,3 +79,90 @@ tasks
                 service:
                   name: httpd
                   state: started
+
+    -   The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form
+
+            tasks:
+              - name: enable selinux
+                command: /sbin/setenforce 1
+
+  -     The command and shell module care about return codes, so if you have a command whose successful exit code is not zero :
+
+            tasks:
+              - name: run this command and ignore the result
+                shell: /usr/bin/somecommand || /bin/true
+
+            or
+
+            tasks:
+              - name: run this command and ignore the result
+                shell: /usr/bin/somecommand
+                ignore_errors: True
+
+   -    If the action line is getting too long for comfort you can break it on a space and indent any continuation lines:
+
+            tasks:
+              - name: Copy ansible inventory file to client
+                copy: src=/etc/ansible/hosts dest=/etc/ansible/hosts
+                        owner=root group=root mode=0644
+
+notify
+    -   notify actions are triggered at the end of each block of tasks in a play, and will only be triggered once even if notified by multiple different tasks
+
+            tasks:
+              - name: template configuration file
+                template:
+                  src: template.j2
+                  dest: /etc/foo.conf
+                notify:
+                  - restart memcached
+                  - restart apache
+
+handlers
+    -   Handlers are lists of tasks, not really any different from regular tasks, that are referenced by a globally unique name, and are notified by notifiers
+    -   If nothing notifies a handler, it will not run
+    -   Regardless of how many tasks notify a handler, it will run only once, after all of the tasks complete in a particular play.
+
+            handlers:
+                - name: restart memcached
+                  service:
+                    name: memcached
+                    state: restarted
+                - name: restart apache
+                  service:
+                    name: apache
+                    state: restarted
+
+listen
+    -   handlers can also “listen” to generic topics, and tasks can notify those topics as follows:
+
+            handlers:
+                - name: restart memcached
+                  service:
+                    name: memcached
+                    state: restarted
+                  listen: "restart web services"
+                - name: restart apache
+                  service:
+                    name: apache
+                    state:restarted
+                  listen: "restart web services"
+
+            tasks:
+                - name: restart everything
+                  command: echo "this task will restart the web services"
+                  notify: "restart web services"
+
+    -   Handler names and listen topics live in a global namespace
+
+meta
+    -   handlers notified within pre_tasks, tasks, and post_tasks sections are automatically flushed in the end of section where they were notified;
+    -   handlers notified within roles section are automatically flushed in the end of tasks section, but before any tasks handlers.
+
+    -   any queued up handlers would be processed early when the meta statement was reached
+    -   to flush all the handler commands immediately :
+
+            tasks:
+               - shell: some tasks go here
+               - meta: flush_handlers
+               - shell: some other tasks
