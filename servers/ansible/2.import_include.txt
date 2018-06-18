@@ -1,0 +1,56 @@
+    -   Ansible has two modes of operation for reusable content:
+            1.  dynamic     -   include
+            2.  static      -   import
+
+    -   any import* Task (import_playbook, import_tasks, etc.), it will be static
+    -   any include* Task (include_tasks, include_role, etc.), it will be dynamic
+
+    -   All import* statements are pre-processed at the time playbooks are parsed
+    -   All include* statements are processed as they encountered during the execution of the playbook
+
+
+import_playbook
+    -   The plays and tasks in each playbook listed will be run in the order they are listed, just as if they had been defined here directly.
+
+            - import_playbook: webservers.yml
+            - import_playbook: databases.yml
+
+import_tasks / include_tasks
+    -   A task file simply contains a flat list of tasks
+    -   task file
+    
+            # common_tasks.yml
+            - name: placeholder foo
+              command: /bin/foo
+            - name: placeholder bar
+              command: /bin/bar
+
+            tasks:
+            - import_tasks: common_tasks.yml
+            # or
+            - include_tasks: common_tasks.yml
+
+    -   to pass variables into imports and includes
+
+            tasks:
+            - import_tasks: wordpress.yml
+              vars:
+                wp_user: timmy
+            - import_tasks: wordpress.yml
+              vars:
+                wp_user: alice
+            - import_tasks: wordpress.yml
+              vars:
+                wp_user: bob
+
+    -   to use in handlrs :
+
+            # more_handlers.yml
+            - name: restart apache
+              service: name=apache state=restarted
+            And in your main playbook file:
+
+            handlers:
+            - include_tasks: more_handlers.yml
+            # or
+            - import_tasks: more_handlers.yml
