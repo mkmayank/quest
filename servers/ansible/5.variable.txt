@@ -1,0 +1,27 @@
+    -   to use variable
+
+            {{ variable_name }}
+
+    -   quote the whole line of variable
+
+                - hosts: app_servers
+                  vars:
+                    app_path: "{{ base_path }}/22"
+
+    -   Information discovered from remote systems: Facts
+            ansible hostname -m setup
+
+    -   Turning Off Facts
+        -   This has advantages in scaling Ansible in push mode with very large numbers of systems
+            In any play, just do this:
+
+                - hosts: whatever
+                  gather_facts: no
+
+    -   Ansible facts are a way of getting data about remote systems for use in playbook variables
+        these are discovered automatically by the setup module in Ansible
+
+    -   Facts.d
+            -   to provide variable on remote system
+            -   /etc/ansible/facts.d directory on remote system => any files in this directory ending in .fact, can be JSON, INI, or executable files returning JSON
+            -   An alternate directory can be specified using the fact_path play directive.
