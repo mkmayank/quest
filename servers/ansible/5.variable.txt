@@ -2,6 +2,12 @@
 
             {{ variable_name }}
 
+            {{ ansible_eth0["ipv4"]["address"] }}
+
+            {{ ansible_eth0.ipv4.address }}
+
+            {{ foo[0] }}
+
     -   quote the whole line of variable
 
                 - hosts: app_servers
@@ -21,7 +27,116 @@
     -   Ansible facts are a way of getting data about remote systems for use in playbook variables
         these are discovered automatically by the setup module in Ansible
 
-    -   Facts.d
-            -   to provide variable on remote system
-            -   /etc/ansible/facts.d directory on remote system => any files in this directory ending in .fact, can be JSON, INI, or executable files returning JSON
-            -   An alternate directory can be specified using the fact_path play directive.
+    -   Local facts: Facts.d
+        -   to provide variable on remote system
+        -   /etc/ansible/facts.d directory on remote system => any files in this directory ending in .fact, can be JSON, INI, or executable files returning JSON
+        -   An alternate directory can be specified using the fact_path play directive.
+
+                cat /etc/ansible/facts.d/preferences.fact # on remote machine
+
+                [general]
+                asdf=1
+                bar=2
+
+                $ ansible <hostname> -m setup -a "filter=ansible_local"
+
+                "ansible_local": {
+                        "preferences": {
+                            "general": {
+                                "asdf" : "1",
+                                "bar"  : "2"
+                            }
+                        }
+                 }
+
+                 {{ ansible_local.preferences.general.asdf }}
+
+        -   local facts are available under ansible_local
+
+        -   The key part in the key=value pairs will be converted into lowercase inside the ansible_local variable
+
+    -   playbook that is copying over a custom fact and then running it,
+        explicit call needed to re-run the setup moduleto use local fact in that particular play
+        Otherwise, it will be available in the next play that gathers fact information
+
+                - hosts: webservers
+                  tasks:
+                    - name: create directory for ansible custom facts
+                      file: state=directory recurse=yes path=/etc/ansible/facts.d
+                    - name: install custom impi fact
+                      copy: src=ipmi.fact dest=/etc/ansible/facts.d
+                    - name: re-read facts after adding custom fact
+                      setup: filter=ansible_local
+
+    -   it is possible for one server to reference variables about another
+
+                {{ hostvars['asdf.example.com']['ansible_os_family'] }}
+
+        -   Ansible must have already talked to ‘asdf.example.com’ in the current play, or another play up higher in the playbook
+
+        -   to save facts between playbook runs
+                1.  redis
+                        ansible.cfg
+
+                        [defaults]
+                        gathering = smart
+                        fact_caching = redis
+                        fact_caching_timeout = 86400
+
+                2.  jsonfile
+
+                        ansible.cfg
+
+                        [defaults]
+                        gathering = smart
+                        fact_caching = jsonfile
+                        fact_caching_connection = /path/to/cachedir
+                        fact_caching_timeout = 86400
+
+
+    -   Registered Variables
+        -   to save result of command into a variable
+
+                    - hosts: web_servers
+                      tasks:
+                         - shell: /usr/bin/foo
+                           register: foo_result
+                           ignore_errors: True
+
+                         - shell: /usr/bin/bar
+                           when: foo_result.rc == 5
+
+    -   Registered variables are valid on the host the remainder of the playbook run, which is the same as the lifetime of “facts” in Ansible
+
+    -   https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#magic-variables-and-how-to-access-information-about-other-hosts
+
+    -   Variable File Separation    -   vars_files
+
+                    - hosts: all
+                      remote_user: root
+                      vars:
+                        favcolor: blue
+                      vars_files:
+                        - /vars/external_vars.yml
+
+                      tasks:
+
+                      - name: this is just a placeholder
+                        command: /bin/echo foo
+
+
+                    vars/external_vars.yml
+
+                    somevar: somevalue
+                    password: magic
+
+    -   Passing Variables On The Command Line   -   --extra-vars (or -e)
+        -   ini, or json , or yaml
+
+            ansible-playbook release.yml --extra-vars "version=1.23.45 other_variable=foo"
+            or
+            ansible-playbook release.yml --extra-vars '{"version":"1.23.45","other_variable":"foo"}'
+            or
+            ansible-playbook arcade.yml --extra-vars '{"pacman":"mrs","ghosts":["inky","pinky","clyde","sue"]}'
+            or
+            ansible-playbook release.yml --extra-vars "@some_file.json"
