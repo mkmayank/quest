@@ -1,0 +1,8 @@
+to clear the cache and update all records:
+# sss_cache -E
+
+to clear all cached entries for a particular domain:
+# sss_cache -Ed domain
+
+to purge the records for specific account and leave the rest of the cache intact:
+# sss_cache -u user_name
