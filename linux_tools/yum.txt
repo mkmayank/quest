@@ -1,0 +1,8 @@
+yumdownloader --resolve python2-bcrypt
+ls -lhtr
+cp python2-bcrypt-3.1.4-4.el7.x86_64.rpm python2-six-1.9.0-0.el7.noarch.rpm /root/rhel75/
+createrepo -g /root/rhel75/groups.xml /root/rhel75/
+
+yum clean all
+
+yum install python2-bcrypt
