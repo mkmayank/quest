@@ -1,0 +1,18 @@
+vi /etc/systemd/system/service_name.service
+
+[Unit]
+Description=description of service
+After=network.target postfix.service
+
+[Service]
+User=mayank
+ExecStart=path to executable
+
+[Install]
+WantedBy=multi-user.target
+
+
+===================
+
+systemctl daemon-reload
+systemctl list-unit-files
