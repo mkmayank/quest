@@ -7,6 +7,7 @@ After=network.target postfix.service
 [Service]
 User=mayank
 ExecStart=path to executable
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
