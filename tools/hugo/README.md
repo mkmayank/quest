@@ -19,7 +19,7 @@ $ echo 'theme = "ananke"' >> config.toml
 $ hugo new posts/my-first-post.md
 
 # to start hugo server
-$ hugo server
+$ hugo server -D
 
 # to build static pages
 # Output will be in ./public/ directory by default (-d/--destination flag to change it, or set publishdir in the config file).
