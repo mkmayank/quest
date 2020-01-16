@@ -1,0 +1,28 @@
+* Data Structure
+* 2 primary data structure - Series (1-D) , Dataframe (2-D)
+* DataFrame is a container for Series, and Series is a container for scalars
+
+#######################
+
+>>> import pandas as pd
+
+* NaN (not a number) is the standard missing data marker used in pandas.
+
+#### Series
+* 1-D labeled array capable of holding any data type
+* The axis labels are collectively referred to as the index.
+>>> s = pd.Series(data, index=index)
+* data can be scalar, python dict , scalar
+* index is list of axis labels
+* If data is an ndarray, index must be the same length as data. If no index is passed, one will be created having values [0, ..., len(data) - 1].
+* If data is a scalar value, an index must be provided. The value will be repeated to match the length of index
+* Series acts very similarly to a ndarray, and is a valid argument to most NumPy functions , airthmetic operations like +, *
+* a pandas Series has a dtype.
+>>>in  s.dtype
+>>>out dtype('float64')
+* for actual array backing a Series, use Series.array
+* Series is like a fixed-size dict in that we can get and set values by index label
+* Using the get method, a missing label will return None or specified default
+>>> s.get('f', np.nan)
+* name argument allows to name a Series object, i.e. to the column. So that when we'll put that in a DataFrame, the column will be named according to the name parameter
+
