@@ -1,0 +1,568 @@
+Application layer - DNS, HTTP, Telnet, SSH, FTP, SNMP, SMTP, DHCP, RDP, NTP etc
+    Layer 7: Application Layer  - data
+    Layer 6: Presentation Layer
+    Layer 5: Session Layer
+
+Transport layer - TCP, UDP
+    Layer 4: Transport Layer - segment / segment for TCP . datagram for UDP
+
+Internet layer - IP, ICMP, ARP, RARP, IGMP
+    Layer 3: Network Layer  - datagram
+
+Link / Network Acess layer - Ethernet, Token Ring, FDDI, X.25, Frame Relay
+    Layer 2: Data Link Layer    -   frame
+    Layer 1: Physical Layer     -   bit, symbol
+
+================================================================
+* OSI model
+Open Systems Interconnection (OSI) model
+
+Application     -   allow access to network resources
+Presentation    -   translate, encrypt, and compress data
+Session         -   establish, manage, and terminate sessions
+Transport       -   provide reliable process to process message delivery and error recovery
+Network         -   move packets from source to destination to provide internetworking
+Deta Link       -   organize bits into frames, provides hop-to-hop delivery
+Physical        -   transmit bits over a medium, provide mechanical and electrical specifications
+
+================================================================
+Physical Layer (Layer 1)
+
+    responsible for moving individual bits from one (node) to the next.
+
+- Physical characteristics of interfaces and media ??? chapter 3
+- Representation of bits (stream of bits)
+    To be transmitted, bits must be encoded into signals—electrical or optical
+    defines the type of encoding (how 0s and 1s are changed to signals)
+- Data rate - transmission rate
+- Synchronization of bits
+- concerned with Line configuration
+    - e.g.
+        in point-to-point configuration two devices are connected through dedicated link
+        multippoint configuratin, link is hared between several devices
+- physical topology
+    - e.g. mesh, star, ring, bus
+- Transmission mode
+    - e.g. simplex, half duplex, full duplex
+
+================================================================
+Data Link Layer (Layer 2)
+
+    transforms the physical layer, a raw transmission facility, to a reliable link
+    defines the protocol to establish and terminate a connection between two physically connected devices
+
+- Framing
+    divides the stream of bits received from the network layer into manageable data units called frames
+
+- Physical addressing ?? mac
+- Flow Control
+    - e.g.
+        if receiver data rate < sender data rate
+        the data link layer imposes a flow control mechanism to prevent overwhelming the receiver
+- Error control (detects and possibly corrects errors)
+    - detect and retransmit damaged or lost frames
+    - recognize duplicate frames
+    - normally achieved through a trailer added to the end of the frame ???
+
+================================================================
+Network Layer (Layer 3)
+
+    responsible for the source-to-destination delivery of a packet
+
+data link layer oversees the delivery of the packet between two systems on the same network (link)
+network layer ensures that each packet gets from its point of origin to its final destination
+if system are on same link, there is no need for network layer
+
+- Logical addressing
+    - .e.g. IP ???
+- Routing
+    - routers or switch
+
+================================================================
+Transport Layer (layer 4)
+
+    responsible for process-to-process delivery of the entire message
+
+network layer oversees source-to-destination delivery of individual packets, does not recognize any relationship between those packets
+transport layer ensures that the whole message arrives intact and in order
+
+- Service-point addressing
+    - service-point address (port address)
+- Segmentation and reassembly
+    - message is divided into transmittable segments
+    - each segment contains a sequence number
+    - sequence numbers helps to reassemble the message correctly at destination
+        - identify and replace packets that were lost in transmission
+- Connection control
+    .e.g. connectionless , connection-oriented
+- Flow control  (process-to-process)
+- Error control (process-to-process)
+
+================================================================
+Session Layer (layer 5)
+
+    provides the mechanism for opening, closing and managing a session between end-user application processes
+
+- Dialog control
+    - deciding whose turn it is to talk
+        - halfduplex or full-duplex
+        Simplex Sessions - TV Broadcasting, Radio Broadcasting, etc
+        Half Duplex Sessions - CB Radio (Police Wireless), Walkie Talkie, etc
+        Full Duplex Sessions - Telephone, Audio or Video Conferencing, etc
+        identification of mode of communication for a session is called Dialog Control
+    - dialog management is implemented via use of a data token
+        - the token is sent back and forth, and a user may transmit only when it possesses the token
+- Synchronization
+    - move the two session entities into a known state
+    - responsible for session checkpointing and recovery
+    - transport layer handles only communication errors, synchronization deals with upper layer errors
+      e.g.
+        in a file transfer, the transport layer might deliver data correctly,
+        but the application layer might be unable to write the file because the file system is full
+    - Synchronization is achieved through the use of sequence numbers. The ISO protocols provide both major and minor synchronization points.
+        When resynchronizing, one can only go back as far as the previous major synchronization point.
+        In addition, major synchronization points are acknowledged through explicit messages (making their use expensive)
+    e.g. if a system is sending a file of 2,000 pages,
+        it is advisable to insert checkpoints after every 100 pages to ensure that each 100-page unit is received and acknowledged independently
+        In this case,if a crash happens during the transmission of page 523, the only pages that need to be resent after system recovery are pages 501 to 523
+        Pages previous to 501 need not be resent
+    e.g.
+        web conferencing, in which the streams of audio and video must be synchronous to avoid so-called lip sync problems
+        TV programs, where streams of audio and video need to be seamlessly merged and transitioned from one to the other to avoid silent airtime or excessive overlap.
+
+================================================================
+Presentation Layer (layer 6)
+
+    define the data format and encryption
+
+- Encoding
+    - responsible for interoperability between different encoding methods
+        presentation layer(sender) information (sender-dependent format) => common format
+        presentation layer(reciver) common format => information (receiver-dependent format)
+- Encryption
+- Compression
+
+================================================================
+Application Layer (layer 7)
+
+    real process to process information
+
+================================================================
+
+session layer (along with the presentation layer) add services to the transport layer that are likely to be of use to applications,
+so that each application doesn't have to provide its own implementation
+
+################################################################
+* TCP/IP model
+
+TCP/IP Protocol Suite is normally shown as a five-layer stack
+it only defines the three upper layers
+    network, transport, and application layers
+
+no specific protocol for the physical layer
+no specific protocol for the data link layer
+    supports all of the standard and proprietary protocols
+    communication is also between two hops or nodes
+
+    node to node
+
+network layer
+    internet protocol (IP)
+
+    responsible for sending individual datagrams
+    datagrams travel independently of each other
+    no track of routes
+    no facility for reordering once they arrive at destination
+
+    end to end
+    network layers of the routers can inspect the source and destination of the packet for
+    finding the best route, but they are not allowed to change the contents of the packet
+
+    every node need to have network layer
+
+transport layer
+    User Datagram Protocol (UDP)
+    Transmission Control Protocol (TCP)
+    Stream Control Transmission Protocol (SCTP)
+
+    responsible for delivering the whole message
+
+    end to end
+    only end nodes(computers) need to have transport layer
+
+no session or presentation layer
+    if some of the functionalities mentioned in the session and presentation are needed
+    it can be included in the development of that piece of software
+
+application layer
+    end to end
+===============================================================
+
+physical layer      - bit
+data link layer     - frame                                 -   physical address
+network layer       - datagram                              -   logical address
+transport layer     - segment or user datagram or packet    -   port address
+application layer   - message                               -   application specific address
+
+===============================================================
+
+end to end / node to node
+        in node to node, packet may be changed various time in between
+        in end to end, packet remains same
+
+################################################################
+* Addressing
+
+    Four levels of addresses are used in TCP/IP protocols:
+        1. physical address ( link address )
+        2. logical address
+        3. port address
+        4. application-specific address
+
+physical address
+    e.g. mac address
+    - address of node in network
+    - size and format varies dependending on network
+    - unicast or multicast or broadcast (supports depends on network)
+    - changes from hop to hop
+
+logical address
+    e.g. ip
+    - address of host in network
+    - 32 bit (IPv4), 64 bit (IPv6)
+    - unicast or multicast or broadcast (limitations on broadcast address ???)
+    - remains same
+
+port address
+    - address of process
+    - 16 bits in length
+    - remains same
+
+application-specific address
+    e.g. mail ids, urls
+
+################################################################
+* Project 802
+
+    project of the Institute of Electrical and Electronics Engineers (IEEE)
+    for defining LAN and WAN standards and technologies
+
+    IEEE divides data link layer into 2 sublayers:
+        1. logical link control (LLC)
+        2. media access control (MAC)
+
+- Medium access control (MAC) layer
+    responsible for gaining access to a medium and permission to transmit data
+
+- Logical link control (LLC) layer
+    responsible for identifying and encapsulating network layer protocols
+    controls error checking
+    frame synchronization
+
+=================================================================
+Ethernet 802.3 (Carrier Sense Multiple Access with Collision Detection)
+
+- unreliable medium
+    does not provide any mechanism for acknowledging received frames
+
+- Ethernet frame
+
+    64 bytes - 1518 bytes (without preamble and SFD)
+
+    contains seven fields:
+        1. preamble                     - 7 bytes   (physical layer header)
+        2. Start frame delimiter        - 1 byte    (physical layer header)
+        3. Destination address          - 6 byte
+        4. Sourde address               - 6 byte
+        5. length or type of data unit  - 2 bytes
+        6. upper-layer data             - 46 - 1500 bytes
+        7. CRC                          - 4 bytes
+
+    Preamble
+        - alerts the receiving system to the coming frame & enables it to synchronize its input timing
+        - pattern provides only an alert and a timing pulse
+        - pattern allows the stations to miss some bits at the beginning of the frame
+        - actually added at the physical layer and is not (formally) part of the frame
+
+    Start frame delimiter (SFD)
+        - signals beginning of the frame , fixed e.g, 10101011
+        - warns the station or stations that this is the last chance for synchronization
+        - last 2 bits are 11 and alert the receiver that the next field is the destination address
+        - SFD is added at the physical layer
+
+    Destination address
+    Source address
+
+    Length or type
+        - original ethernet uses this field as type to define upper layer via MAC frame
+        - IEEE standard uses it to denote length of data
+
+    Data
+
+    CRC
+        - contains error detection information
+
+Each station on an Ethernet network has its own network interface card (NIC)
+    - 6 byte physical address (48 bits) (normally written in hexadecimal notation)
+    - data link address / physical address / MAC address (Media Access Control)
+
+The least significant bit of the first byte defines the type of address
+    0 => unicast
+    1 => multicast
+
+    all 48 bits are 1 => broadcast
+
+=================================================================
+original Ethernet with 10-Mbps which is history
+    - access method for traditional ethernet
+        CSMA/CD carrier sense multiple access with collision detection
+    - rarely used
+
+    - logical topology is always a bus
+    - medium is shared between stations and only one station at a time can use it
+        all stations receive a frame sent by a station
+        real destination keeps the frame while the rest drop it
+
+    - requires that each station first listen to the medium
+
+    - collision may happen due to propagation delay
+        a station may sense the medium and find it idle,
+        only because the first bit sent by another station has not yet been received
+
+    - if there is a collision, the frame is sent again.
+    - each station continues to send bits in the frame until it detects the collision
+
+    - for CSMA/CD to work, need a restriction on the frame size
+    - before sending the last bit of the frame
+        the sending station must detect a collision if any and abort the transmission
+    - b/c once the entire frame is sent, does not keep a copy of the frame and does not monitor the line for collision detection
+
+    - transmission time must be at least two times the maximum propagation time
+
+    e.g.
+        if maximum propagation time is 25.6 micro second
+            frame transmission time = 25.6 micro second * 2 = 51.2 us
+            min size of fram  = 10M bps * 51.2 us
+                              = 10 * 10^6 bps * 51.2 * 10^-6 us
+                              = 512 bits
+                              = 64 bytes
+
+Standard Ethernet implementations:
+
+Characteristics     10Base5             10Base2         10Base-T        10Base-F
+Medium              Thick Coax          Thin coax       2 UTP           2 Fiber
+Maximum length      500 m                185 m          100 m           2000 m
+
+UTP unshielded twist pair
+=================================================================
+
+Fast Ethernet (802.3u) 1995 - 100Mbps
+    - only star topology is kept
+        half-duplex approach
+            the stations are connected via a hub
+            access method is the same (CSMA/CD)
+        full-duplex approach
+            the connection is made via a switch with buffers at each port
+            no need for CSMA/CD
+            implementations keep CSMA/CD for backward compatibility
+
+    - autonegotiation
+        allows two devices to negotiate the mode or data rate of operation
+        e.g.
+            10Mbps can communicate with 100Mbps
+        allow one device to have multiple capabilities
+        allow a station to check a hub’s capabilities
+
+Gigabit Ethernet (802.3z) 1998 - 1000Mbps
+    - half duplex is rare
+
+Ten-Gigabit Ethernet (802.3ae) 2002-06 - 10 Gbps
+
+==================================================================
+Frame Bursting
+
+to allow longer network , min frame length is increased (Carrier extension)
+and if shorter data to be sent padding will be needed
+
+Carrier extension is very inefficient if we have a series of short frames to send
+to improve efficiency, frame bursting is used
+Instead of adding an extension to each frame, multiple frames are sent with padding between frames
+
+==================================================================
+Wireless LAN 802.11
+
+The standard defines two kinds of services:
+    1. basic service set (BSS)
+    2. extended service set (ESS)
+
+BSS
+    - building block of a wireless LAN
+    - made of
+            stationary or mobile wireless stations and
+            an optional central base station, known as the access point (AP)
+
+    - ad hoc architecture
+        BSS without AP (stand alone network)
+        cannot send data to other BSSs
+
+        stations can form a network without the need of an AP
+        they can locate one another and agree to be part of a BSS
+
+        stations within BSS can communicate with each other
+
+    - iinfrastructure network
+        BSS with an AP
+
+ESS
+    - made up of two or more BSS with APs
+    - APs are connected through a distribution system, which can be any LAN such as ethernet
+
+
+Stations cna be of three types based on their mobility:
+    no-transition           - within on BSS
+    BSS-transition          - moving across BSSs but within ESS
+    ESS-transition mobility - moving across ESSs
+
+Wireless LANs cannot implement CSMA/CD for three reasons:
+    1. costly and increased bandwidth requirement
+            as station must be able to send data and receive collision signals at the same time
+    2. hidden station problem
+    3. Signal fading due to distance
+            could prevent a station at one end from hearing a collision at the other end
+
+==================================================================
+CSMA/CA (carrier sense multiple access with collision avoidance)
+
+    before sending frame
+    source station senses the medium by checking the energy level at the carrier frequency
+    if medium is continuously idle for DCF Interframe Space (DIFS) duration
+        then the station sends a control frame called the request to send (RTS)
+
+    after receiving the RTS
+        destination station sends a control frame clear to send (CTS)
+        after SIFS
+
+    source station sends data after SIFS
+
+    destination station sends an acknowledgment after SIFS
+
+Short Interframe Space (SIFS)
+    ??? not understanded properly
+    amount of time in microseconds required for a wireless interface to process a received frame
+    and to respond with a response frame
+
+Network Allocation Vector (NAV)
+
+    - other stations defer sending their data if one station acquires access
+
+    - station includes duration of time it needs to occupy, while sending an RTS frame
+    - stations affected by this transmission create a timer called a network allocation vector (NAV)
+        - which shows how much time must pass before these stations are allowed to check for idleness
+
+In case collision during the time when RTS or CTS control frames are in transition (handshaking period)
+CTS won't be received and sender will try again
+
+Fragmentation
+    division of a large frame into smaller ones
+
+==================================================================
+802.11 Frame format ???
+Addressing  ???
+==================================================================
+Hidden Station Problem
+    it is solved
+
+    B==A==C
+    lets say B is in range of A but not C and vice versa
+    C will never know about B RTS
+    buy when A send CTS , it will also be recived by C
+    and C will know that some hidden node is sending data and C will not send data
+
+Exposed Station Problem
+    not solved
+
+    B==A==C==D
+    if A wants to send data to B and C to D
+    only one can send
+
+==================================================================
+Bluetooth (802.15) , wireless personal area network (PAN) operable in room or hall
+    - ad-hoc network
+    - bluetooth network can not be large
+
+2 types of networks
+    1. Piconet
+    2. Scatternet
+
+Piconet
+    - upto 8 stations
+        - one is primary
+        - rest are secondary
+    - all synchronize their clocks and hopping sequence with primary
+    - additional 8 secondaries can be in parked state
+    - communication can be one-to-one or one-to-many
+
+Scatternet
+    - piconet combined to form scatternet
+    - secondary Station in one piconet can be primary in another piconet
+
+Frame format ???
+
+#########################################################################
+56K Modems ???
+DSL ( Digital subscriber line) ???
+ADSL (asymmetric DSL) ???
+Cable Modem ???
+T lines ???
+SONET (Synchronous Optical Network) ???
+PPP (Point-to-Point Protocol ) ???
+
+#########################################################################
+Switched WANS ???
+    X.25 ??
+    Frame Relay ???
+    ATM (asynchronous tranfer mode) ???
+
+#########################################################################
+Devices
+
+Router or 3 layered switch      3 layered device (physical, datalink, network)
+Bridge or 2 layered switch      2 layered device (physical, data link)
+Repeater or hub                 1 layer device (physical)
+
+Repeater
+    - receives signal before it becomes too weak or corrupted,
+      regenerates and sends the refreshed signal
+    - no intelligence / filtering capabilities
+    - just egenerate the corrupted bits and send them out from every port
+
+Bridge
+    - regenerates the signal it receives
+    - bridge can check the physical addresses
+    - has table to take filtering decisions
+
+    Transparent bridge
+        - has dynamic table (learns from frame movements)
+
+two-layer switch
+    - sophisticated bridge with faster forwarding capability
+
+Router
+    - regenerates the signal it receives
+    - checks the physical addresses
+    - checks the network layer addresses
+    - internetworking device
+    - has a physical and logical (IP) address for each of its interfaces
+    - changes the physical address of the packet (both source and destination) when it forwards the packet
+
+three-layer switch
+    - low cost, high port, for offices, ???
+
+A repeater or a bridge connects segments of a LAN.
+A router connects independent LANs or WANs to create an internetwork (internet)
+
+        bridge                            switch
+do not have buffers	                has a buffer for each link connected to it
+do not perform error checking	    perform error checking
+
+#########################################################################

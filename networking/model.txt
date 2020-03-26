@@ -1,21 +1,3 @@
-
-OSI model:
-
-Application layer - DNS, HTTP, Telnet, SSH, FTP, SNMP, SMTP, DHCP, RDP, NTP etc
-Layer 7: Application Layer  - data
-Layer 6: Presentation Layer
-Layer 5: Session Layer 
-
-Transport layer - TCP, UDP
-Layer 4: Transport Layer - segment / segment for TCP . datagram for UDP
-
-Internet layer - IP, ICMP, ARP, RARP, IGMP
-Layer 3: Network Layer  - packet
-
-Link / Network Acess layer - Ethernet, Token Ring, FDDI, X.25, Frame Relay
-Layer 2: Data Link Layer    -   bit , symbol
-Layer 1: Physical Layer - 
-
 =========================================================
 
 PDU Protocol Data Unit
@@ -35,17 +17,4 @@ Internet Layer
 Packet switching network depends upon a connectionless internetwork layer.
 Its job is to allow hosts to insert packets into any network and have them to deliver independently to the destination.
 At the destination side data packets may appear in a different order than they were sent.
-It is the job of the higher layers to rearrange them 
-
-===========================================================
-
-Ethernet - CSMA/CD (Carrier Sense Multiple Access/Collision Detection)
-
-IN CSMA/CD Access Method, every host has equal access to the medium
-can place data on the wire when the wire is free from network traffic.
-When a host wants to place data on the wire, it will check the wire to find whether another host is already using the medium.
-If there is traffic already in the medium, the host will wait and if there is no traffic,
-it will place the data in the medium.
-But, if two systems place data on the medium at the same instance, they will collide with each other, destroying the data.
-If the data is destroyed during transmission, the data will need to be retransmitted.
-After collision, each host will wait for a small interval of time and again the data will be retransmitted.
+It is the job of the higher layers to rearrange them
