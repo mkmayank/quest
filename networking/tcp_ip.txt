@@ -242,6 +242,7 @@ application-specific address
     e.g. mail ids, urls
 
 ################################################################
+################################################################
 * Project 802
 
     project of the Institute of Electrical and Electronics Engineers (IEEE)
@@ -566,3 +567,79 @@ do not have buffers	                has a buffer for each link connected to it
 do not perform error checking	    perform error checking
 
 #########################################################################
+#########################################################################
+
+Switching
+
+    decsion to select one of output port at connecting device
+
+Circuit Switching
+    - physical circuit (or channel) is established before the delivery of the message
+    - whole message is sent without being divided into packets
+    - never implemented at network layer
+    - mostly used at physical layer
+
+    e.g. old telephone lines
+
+Packet Switching
+    - todays network layer is packet-switched network
+    - message at is divided into manageable packets and assembled at destination
+
+network layer is designed as a packet-switched network
+
+connectionless service
+    - network layer protocol treats each packet independently
+    - forwarding decision is based on the destination address of the packet
+
+connection-oriented service
+    - there is a relation between all packets belonging to a message
+    - forwarding decision is based on the label of the packet
+    - a virtual connection is set up to define the path for the datagrams before delievery of datagrams
+
+    - packet must contain source, destination and flow label (virtual circuit identifier)
+
+    - there is no need for source and destination addresses, only flow label is good
+      they are there if part of route is connectionless
+
+    To create a connection-oriented servicee
+    three-phase process is used
+        1. setup
+            - source and destination addresses of the sender and receiver is used to make table entries for the connection-oriented service
+            - router creates an entry for a virtual circuit
+                - Two auxiliary packets exchanged between the sender and the receiver
+                    1. request packet
+                    2. acknowledgment packet
+
+                routers creates label in its table on recieving request packet and forwards it
+                    info in table
+                    incoming port, label_this, outgoing port
+
+                destination on recieving request packet sends back acknowledgment packet with its label
+                acknowledgment packet completes the entries in the switching tables
+
+                routers fills label in its table the recieving label and forwards it previous router
+                    info in table
+                    incoming port, label_this, outgoing port, label_next
+
+        2. data transfer
+                sender sends datagram with recieving label
+                next router read its table match with label_this and changes label to label_next and sends
+
+        3. teardown
+            - source sends special packet called a teardown packet
+            - destination responds witha confirmation packet
+            - routers deleted entries from table
+
+        e.g.
+        tables in routers
+                    Incoming            Outgoing
+                    Port Label          Port  Label
+        router1     1    14             3     66
+        router2     1    66             3     22
+        router3     1    22             4     77
+
+        source will send datagrams with label 14
+        destination will send datagrams with label 77
+
+
+===================================================================================
