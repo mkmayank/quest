@@ -241,6 +241,36 @@ port address
 application-specific address
     e.g. mail ids, urls
 
+
+########################################################################
+########################################################################
+
+Error Control
+    mechanism for detecting corrupted, lost, or duplicate datagrams
+    includes a mechanism for correcting errors after they have been detected
+
+Flow control
+    regulates the amount of data a source can send without overwhelming the receiver
+
+Congestion Control
+    in a connectionless Network
+        - signaling
+            backward signaling
+                bit is set in the acknowledgment to inform the sender
+            forward signaling
+                bit is set in the packet traveling to warn the receiver
+                receiver then may inform the upper layer protocol, which in turn may inform the source
+
+        - choke packet
+            special packet that can be sent from a router to the sender when it encounters congestion
+            e.g.
+            network layer uses ICMP packet to source to slow down
+
+        - rank the packets by their importance in the whole message
+
+    in a Connection-Oriented Network (easy)
+        - sender and the receiver may agree to a level of traffic when they setup the virtual circuit
+
 ################################################################
 ################################################################
 * Project 802
@@ -642,4 +672,267 @@ connection-oriented service
         destination will send datagrams with label 77
 
 
+Connection less service is most dominant in today's internet
+may be future
 ===================================================================================
+* Network Layer Services
+
+at the source
+
+    1. packetizing
+    2. finding the logical address of the next hop
+    3. finding the physical (MAC) address of the next hop
+    4. fragmenting the datagram if necessary.
+
+    Packetizing
+        encapsulate the data coming from the upper layer in a datagram
+            adds header which contains
+                logical source address of the packet
+                logical destination address of the packet
+                information about fragmentation
+                protocol ID of the protocol that has requested the service
+                data length, and possibly some options
+            also includes a checksum that is calculated only over the datagram header
+
+        the upper layer protocol only provides the logical destination
+        the logical source address comes from the network layer itself
+
+    Finding Logical Address of Next Hop
+        network layer consult a routing table to find the logical address of the next hop
+
+    Finding MAC Address of Next Hop
+        network layer uses another table to map the next-hop logical address to the MAC address
+        Address Resolution Protocol (ARP)
+
+    Fragmentation
+        datagram is fragmented to smaller units before being passed to the data link layer based on MTU of data link layer
+        data is fragmented and header is repeated
+            some more information added to the header to define the position of the fragment in the whole datagram
+
+    MTU Maximum transfer unit
+
+------
+
+at each router
+    finding next-hop logical address
+    finding next-hop MAC address
+    fragmentation
+    validation of datagram checksum ???
+
+-------
+
+at the destination
+    validation
+        after validating each datagram, the data is extracted from each fragment and stored
+    assembling
+        when all fragments have arrived, the data are reassembled and delivered to the upper layer
+
+    uses reassembly timer, if timer is expired ???
+        all data fragments are destroyed and an error message is sent that all the fragmented datagram need to be resent
+
+-------------------------------------------
+Error Control
+    Network layer doesn't provides
+        checksum of header prevents delievery to wrong destination
+        but not of corrupt data if it happens
+        ICMP ???
+
+Flow Control
+    Network layer doesn't provides
+        upper layers can implement buffers
+        flow control is provided in upper layers
+
+Congestion Control
+    network layer uses ICMP packet to source to slow down
+
+Routing
+    ???
+
+Security
+    IPSec ???
+
+==========================================================================
+* IPv4
+    unique in Internet
+    32 bit number
+
+    4 bytes ( 4 * 8 ) 32 bit
+
+    2^8 . 2^8 . 2^8 . 2^8
+    0-255 . 0-255 . 0-255 . 0-255
+
+    notation
+        (base 2) binary notation
+        (base 16) dotted-decimal notation
+        (base 256) hexadecimal notation
+
+    number of address between two ip addresses
+        146.102.32.255 , 146.102.29.0
+        Number of addresses
+        = (0 × 256^3 + 0 × 256^2 + 3 × 256^1 + 255 × 256^0 ) + 1 = 1024
+
+------------
+Classfull addressing (1981)
+Classless Inter-Domain Routing (1993)
+
+Classfull addressing
+    5 classes (A,B,C,D,E)
+    classes A, B, C are divided into netid and hostid
+    class D addresses are made of one block, used for multicasting
+    class E addresses was reserved for future purposes
+
+Classfull address
+    class A -   leading bits 0  -   size of nw 2^7 ( first 8 bits )     -   CIDR /8
+
+        start     0.  0.  0.  0 =   00000000.00000000.00000000.00000000
+        end     127.255.255.255 =   01111111.11111111.11111111.11111111
+                                    0nnnnnnn.HHHHHHHH.HHHHHHHH.HHHHHHHH
+
+    class B -   leading bits 10 -   size of nw 2^14 ( first 16 bits )   -   CIDR /16
+
+        start   128.  0.  0.  0 =   10000000.00000000.00000000.00000000
+        end     191.255.255.255 =   10111111.11111111.11111111.11111111
+                                    10nnnnnn.nnnnnnnn.HHHHHHHH.HHHHHHHH
+
+    class C -   leading bits 110 -  size of nw 2^21 ( first 24 bits )   -   CIDR /24
+
+        start   192.  0.  0.  0 =   11000000.00000000.00000000.00000000
+        end     223.255.255.255 =   11011111.11111111.11111111.11111111
+                                    110nnnnn.nnnnnnnn.nnnnnnnn.HHHHHHHH
+
+    class D -   leading bits 1110   -   special
+
+        start   224.  0.  0.  0 =   11100000.00000000.00000000.00000000
+        end     239.255.255.255 =   11101111.11111111.11111111.11111111
+                                    1110XXXX.XXXXXXXX.XXXXXXXX.XXXXXXXX
+
+    class E -   leading bits 1111   -   special
+
+        start   240.  0.  0.  0 =   11110000.00000000.00000000.00000000
+        end     255.255.255.255 =   11111111.11111111.11111111.11111111
+                                    1111XXXX.XXXXXXXX.XXXXXXXX.XXXXXXXX
+
+    starting and ending address are reserved in every class
+
+-----------
+
+Classless addressing
+    - no class
+    - variable-length blocks
+    - number of addresses in a block needs to be power of 2
+        block is divided into 2 parts
+            1. prefix - network
+            2. suffix - host
+    - prefix length in classless addressing can be 1 to 32
+    - need to include prefix length with every address
+        while in classfull, address tells which block it is part of and netid can be easily find
+    - slash notation (classless interdomain routing, CIDR)
+        prefix is added to address separated by dash
+    - number of addresses in the block
+        = 2^ (32 - prefix length)
+
+-------------------
+Special addresses
+
+    all zero address
+        0.0.0.0/32
+        - when host doesn't know its own address (use in DHCP protocol)
+
+    all ones address Limited Broadcast Address
+        255.255.255.255/32
+        - to send packet to all host in a local network, router discard the packet
+
+    loopback address
+        127.0.0.0/8
+        - using this address, packet never leaves the machine
+        - to pint itself
+
+    private addresses
+        10.0.0.0/8
+        172.16.0.0/12
+        169.254.0.0/16
+        192.168.0.0/16
+
+    multicast addresses
+        224.0.0.0/4
+
+no logical reason behind choosing these addresses ???
+
+Special addresses in each block
+
+    network address
+        first address defines the network address (not any host) (with suffix set all to 0s)
+
+    direct broadcast address
+        last address in block (with suffix set all to 1s)
+        usually used by router to send packet to all hosts in a network
+        can only be used as destination address
+
+-------------------
+
+Network address
+    - identifier of the network each network is identified by its network address
+
+Network Mask
+    - in classful addressing is a 32-bit number with n leftmost bits all set to 1s and (32 − n) rightmost bits all set to 0s.
+
+network address = destination address AND network mask
+
+Three-Level Addressing: Subnetting
+    - splitting a block to smaller blocks is referred to as subnetting
+    - network is divided into several smaller subnetworks (subnets) with each subnetwork having its own subnetwork address
+
+Subnet Mask
+
+Subnetting increases the length of the netid and decreases the length of hostid
+to divide a network into s subnetworks (s must be a power of 2)
+
+    subnetid length = netid length + log2 s
+
+    e.g.
+    to divide class B into 4 subnet
+        subnetid length = 16 + log2 4 = 18
+    so subnet mask = 255.255.192.0 (18 1s and 14 0s)
+
+Supernetting
+    - combine serveral class C blocks to create a larger range of addresses
+
+Supernet Mask
+
+Supernetting decreases the length of the netid and increases the length of hostid
+to combine c blocks of class C (c must be a power of 2)
+
+    supernetid length = netid length - log2 c
+    e.g.
+    to combine 8 blocks
+        supernetid length = 24 - log2 8 = 21
+    so supernet mask = 255.255.248.0 (21 1s and 11 0s)
+
+number of addresses in each subnetwork should be a power of 2
+prefix length for each subnetwork
+     = prefix length of block + log 2 (total addresses in block/ addressess in subnet)
+
+=======================
+* NAT Network Address Translation
+    provides mapping between private and universal addresses
+    allows site to use
+        internal private addresses and
+        one global internel address for communication with rest of world
+
+    private network uses private addresses
+    router that connects network to global address uses one private address and one global address
+    rest of world sees only router public address
+
+    router replaces
+        all outgoing packets source address to public address
+        all incoming packets destination address to private address
+
+    NAT table
+    private_address     private_port    external_address    external_port
+
+
+=======================
+IPv6 ???
+=======================
+
+==============================================================================
