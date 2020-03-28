@@ -936,3 +936,396 @@ IPv6 ???
 =======================
 
 ==============================================================================
+Delivery
+    sender uses the next hops IP address to find the physical address (ARP protocol)
+    and then gives datagram to data link layer
+
+    direct delievery
+    indirect delivery
+
+--------
+
+Forwarding
+    - delivery to the next hop
+
+    forwarding based on destination address of the packet
+    forwarding based on the label attached to the packet
+
+Forwarding techniques
+
+Next-Hop Method
+    - routing table holds only the address of the next hop
+      entries of a routing table must be consistent with each other
+
+host specific routin
+    - routing table holds destination host addresses
+
+Network specific method
+    - routing table holds only network addressess
+
+Default method
+    - routing table holds specific entries and default entries
+
+Routing table
+Mask    Network_Address     Next_hop_address    interface
+
+---------------
+
+MPLS
+    - Multi-Protocol Label Switching
+    can forward the packet based on the destination address
+    can forward the packet based on the label
+
+IPV4 doesn't support label
+IPV6 provides
+
+to achieve forwarding based on label
+    encapsulate the IPv4 packet in an MPLS packet
+    MPLS layer can be added in between data link and network layer
+
+============================================================================
+IP datagram
+IP is an unreliable and connectionless datagram protocol
+
+IP datagram
+    20 - 65535 bytes
+    header 20-60
+    rest is data
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |Version|  IHL  |Type of Service|          Total Length         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |         Identification        |Flags|      Fragment Offset    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Time to Live |    Protocol   |         Header Checksum       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Source Address                          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Destination Address                        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Options                    |    Padding    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+Ip datagram header  20 - 60 bytes
+
+    1. version                  4 bits
+    2. header length            4 bits
+    3. servicetype              8 bits
+    4. total length             16 bits     - 2^16 - 1 = 65535 max size of datagram
+    5. identification           16 bits
+    6. flags                    3 bits
+    7. fragmentation offset     13 bits
+    8. time to live             8 bits
+    9. protocol                 16 bits
+    10. header checksum         16 bits
+    11. source ip address       32 bits
+    12. destination ip address  32 bits
+    13. options                 0 - 40 bytes
+
+
+    identification, flags, fragmentation offset used in fragmentation
+
+    ttl is decremented by each hop
+    datagram is discarded if ttl reaches 0
+
+    protocol defines higher level protocol that uses it (TCP, UDP, ICMP, IGMP, ...)
+    specifies final destination protocol to which the IP datagram should be delivered
+
+------------------------------------------------
+Fragmentation
+    why
+        because frame size (MTU maximum transfer unit) depends upon protocol used by data link layer
+    router
+        decapsulates datagram from the frame it receives
+        process it
+        encapsulates it to another frame
+
+    due to various different implementation of physical layers at different point of route
+    fragmented datagram may itself be fragmented if it encounters a network with an even smaller MTU
+
+    datagram can be fragmented by
+        source host or
+        any router in the path
+
+    reassembly of the datagram
+        is done only by the destination host
+            because each fragment becomes an independent datagram
+
+    reassembly during transmission will have inefficiency
+
+    during fragmentation
+        - fields which are changed
+            flags
+            fragmentation offset
+            total length
+
+            checksum recalculated
+            option filed may or may not be changed
+
+        - rest fields remains same
+
+    only data in a datagram is fragmented
+
+    ----------------------
+
+    identification field
+        - identifies datagram orignating from the source host
+        - Identification + source IP uniquely define a datagram
+
+        - all fragmented datagrams have same identification
+        - all fragments having same Identification value assembled into one datagram
+
+    flags
+        1. first bit (not used)
+        2. second bit (do not fragment bit)
+            value 1 ??? when is requirement
+                datagram must not get fragmented
+                    if fragmentation is neccessary
+                        discards the datagram and send ICMP error message to source
+            value 0
+                can be fragmentated if necessary
+        3. third bit (more fragment bit)
+            value 1
+                not the last fragment, there are more fragments afer this one
+            value 0
+                this is last fragment
+
+    fragmentation offset
+        - relative position of this fragment with respect to the whole datagram
+        - offset of the data in the original datagram measured in units of 8 bytes
+        - forces to choose the size of each fragment so that the first byte number is divisible by 8
+
+        e.g.
+            datagram with data size of 4000 bytes
+            fragmenting into 3 fragments will have offset :
+                first (0 to 1399)       offset      0/8         = 0
+                second (1400 to 2799)   offset      1400/8      = 175
+                third (2800 to 3999)    offset      2800/8      = 350
+
+                lets say second fragment is also fragemented into two fragments
+
+                    second_1 (1400 - 2199)      offset  1400/8  = 175
+                    second_2 (2200 - 2799)      offset  2200/8  = 275
+
+            so 4 fragments are:
+                    bytes         offset         more fragment flag
+                0-1399             0                 1
+                1400-2199        175                 1
+                2200-2799        275                 1
+                2800-3999        350                 0
+
+            at assembly
+                first fragement
+                    will always have offset 0
+                    more fragment flag is 1, so more fragment
+                second fragment
+                    offset
+                        = total size of recieved fragments / 8
+                        = 1400 / 8 = 175
+                    so second segment is the one with offset 175
+                    more fragment flag is 1, so more fragment
+                third segment
+                    offset = 2200 / 8 = 275
+                    more fragment flag is 1, so more fragment
+                fourth segment
+                    offset = 2800 / 8 = 350
+                    more fragment flag is 0, so lats segment
+
+                reassembly done
+
+        being 13 bit 2^13 = 8192, fragmentation can not represent sequence of bytes grater than 8191
+
+---------------------------------------------------
+options of ip header (0-40 bytes)
+    not required
+    composed of
+        1. type field          1 byte
+        2. length filed        1 byte
+        3. value field         variable
+???
+Record-Route Option
+    - to record internet routers that handles the datagram
+    - upto 9 router ip addresses
+    ping -R
+strict-source-route option
+    - source to predetermine a route for the datagram
+    traceroute -G
+loose-source-route option
+    - similar to the strict source route, but it is more relaxed
+    - each router in the list must be visited, but the datagram can visit other routers as well
+    traceroute -g
+timestamp option
+    - to record the time of datagram processing by a route
+
+------------------------------------------------------
+Checksum
+To create the checksum the sender does the following:
+    ❑ The packet is divided into k sections, each of n bits.
+    ❑ All sections are added together using one’s complement arithmetic.
+    ❑ The final result is complemented to make the checksum.
+
+Checksum Calculation at the Receiver
+    packet is deivied into k sections, each of n bits
+    adds all sections
+    complements the result
+    If final result is 0
+        the packet is accepted
+    otherwise, it is
+        rejected
+
+in IP packet
+    checksum filed is set to 0
+    entrire header is divided into 16bit sections and added together
+    result is complemented and inserted into checksum field
+
+-----------------------------------------------------------------------
+Security issues:
+    Packet Sniffing
+        - cannot be stopped
+    Packet Modification
+        - can be detected using a data integrity mechanism at higher level
+    IP Spoofing
+        - can be prevented using an origin authentication mechanism
+
+IPSec ???
+
+=======================================================================
+* ARP Address Resolution Protocol
+
+before the IP protocol can deliver a packet from a source host to the destination host
+it needs to know how to deliver it to the next hop first
+
+Static mapping
+
+Dynamic Mapping
+    Address Resolution Protocol (ARP)
+        maps a logical address to a physical address
+    Reverse Address Resolution Protocol (RARP) (deprecated in favor of DHCP)
+        maps a physical address to a logical address
+
+
+IP datagram must be encapsulated in a frame to be able to pass through the physical network
+sender needs the physical address of the receiver
+
+ARP
+    - accepts a logical address from the IP protocol
+    - maps the address to the corresponding physical address
+    - pass it to the data link layer
+
+    request-response protocol
+        messages are encapsulated by a link layer protocol
+        communicated within the boundaries of a single network
+        ARP is in link layer or inbewteen network and link layer
+
+    ARP query packet, includes
+        physical and IP addresses of the sender
+        IP address of the receiver
+    query is broadcast over the network
+
+    only the intended recipient recognizes its IP address and sends back an ARP response packet
+        response packet contains
+        recipient’s IP and physical addresses
+    packet is unicast directly to the inquirer using the physical address
+
+ARP request is broadcast
+ARP reply is unicast
+
+ARP packet format
+
+    1. Hardware Type                16 bit              define type of network( e.g ethernet is 1)
+    2. Protocol Type                16 bit              for IPv4 0x0800
+    3. Hardware length              8 bit
+    4. Protocol length              8 bit
+    5. operation                    16 bit              request or reply
+    6. sender Hardware address      variable length     6 bytes for ethernet
+    7. sender protocol address      variable length     4 bytes for IP
+    8. target hardware address      variable length     6 bytes for ethernet    , 0 in case of request
+    9. target protocol address      variable length     4 bytes for IP
+
+ARP packet is encapsulated in frame as data
+frame
+    type is set to ARP type (known number , e.g 0x0806 in ethernet)
+    destination address is set to
+
+-----------------------------------
+Proxy ARP
+    used for subnetting
+    router is responsible for reply for mutiple IPs as its own hardware address
+    hosts doesn't even needs to know that subnetting is done
+
+=======================================================================
+* ICMPv4 Internet Control Message Protocol
+
+    why
+        - IP protocol has no error-reporting or error-correcting mechanism
+            - in case of router discarding a datagram because
+                it cannot find a router to the final destination, or
+                because the time-to-live field has a zero value
+            - in case final destination host must discard all fragments of a datagram because
+                it has not received all fragments within a predetermined time limit
+
+        - IP protocol lacks a mechanism for host and management queries
+            - host sometimes needs to determine if a router or another host is alive
+            - sometimes a network manager needs information from another host or router
+
+ICMP is a network layer protocol
+its messages are not passed directly to the data link layer
+messages are encapsulated inside IP datagrams before going to the lower layer
+
+value of the protocol field in the IP datagram is 1 for ICMP message
+
+ICMP always reports error messages to the original source
+    - it doesn't correct errors, but report them
+
+No ICMP error message is generated:
+    - in response to a datagram carrying an ICMP error message
+    - for a fragmented datagram that is not the first fragment
+    - for a datagram having a multicast address
+    - for a datagram having a special address such as 127.0.0.0 or 0.0.0.0
+------------
+
+ICMP messages are divided into two broad categories
+    1. error-reporting messages
+        - Destination unreachable
+        - Source quench                 - deprecated
+        - Time exceeded
+        - Parameter problem
+        - Redirection
+    2. query messages
+        - Echo request or reply
+        - Timestamp request or reply
+
+Message Format, differs for each message type ( first four bytes are common to all)
+
+    1. Type             8bits           type of message
+    2. Code             8 bits          reason for particular message types
+    3. Checksum         16 bits         checksum is calculated over the entire message
+    4. Rest of header   4 bytes         specific
+    5. Data section
+
+maximum length of ICMP messages is 576 bytes
+
+all error messages contains a data section, which includes
+    - IP header of the original datagram
+    - first 8 bytes of data in that datagram
+        (first 8 bytes tells UDP, TCP protocol , port number and sequence numbers)
+
+
+----------------
+ping
+    - sends ICMP echo request messages (type: 8, code: 0)
+    - the destination, if alive, responds with ICMP echo reply messages
+    - sets the identifier field to and keep incremented by one
+    - inserts the sending time in the data section of the message to caclulate RTT(round trip time)
+
+traceroute
+    - sends UDP packet with TTL 0, 1, 2, ...
+    - router returns time exceeded ICMP message
+    also for destination to discard
+        destination port is set to one that is not supported by the UDP protocol
+        destnation returns destination unreachable message
+
+===========================================================
