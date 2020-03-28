@@ -1329,3 +1329,40 @@ traceroute
         destnation returns destination unreachable message
 
 ===========================================================
+
+Mobile IP
+    - home address          permanent
+    - care-of address       keep changes ,as host moves
+
+    - home agent
+    - foriegn agent
+
+Double Crossing
+Triangle routing
+
+===========================================================
+===========================================================
+===========================================================
+* Routing Protocol
+    - for dynamic routing tables
+    - lets routers in the internet inform each other of changes
+
+
+Autonomous system (AS)
+    - group of networks and routers under the authority of a single administration.
+    - one routing protocol cannot handle the task of updating the routing tables of all routers
+        being internet is too large
+    - an internet is divided into autonomous systems. An autonomous system (AS) is a
+
+intra-domain routing
+    - routing inside an autonomous system
+    RIP(routing information protocol)       - distance vector protocol
+    OSPF(open shortest path first)          - link state protocol
+
+inter-domain routing
+    - routing between autonomous systems
+    BGP(Border Gatway Protocol)             - path vector protocol
+
+????
+
+####################################################################################
