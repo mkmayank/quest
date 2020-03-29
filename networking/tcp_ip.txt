@@ -1810,3 +1810,196 @@ SCTP ?????
 ########################################################################
 ########################################################################
 ########################################################################
+* DHCP Dynamic Host Configuration Protocol
+
+    server port => UDP 67
+    client port => UDP 68
+
+    four pieces of information are normally needed:
+        1. The IP address of the computer
+        2. The subnet mask of the computer
+        3. The IP address of a router
+        4. The IP address of a name server
+
+deprecated protocol prior to DHCP
+
+    RARP
+        - used the broadcast service of the data link layer
+            => RARP server must be present in each network
+        - can provide only the IP address of the computer
+            => but needs 4 piece of inform
+
+    BOOTP
+        - removed all limitations of RARP
+        - is a static configuration protocol
+
+---------
+
+DHCP client and server can either be on the same network or on different networks
+
+same network
+    1. DHCP server listens on UDP port number 67 and waits for a client
+
+    2. client sends UDP datagram
+        destination port    67
+        source port         68
+        destination ip      all 1
+        source ip           all 0
+
+    3. server responds to client via broadcast or unicast
+
+different networks
+
+    - broadcast IP datagram cannot pass through any router
+    - one host(router) is used as a relay (known as relay agent)
+    - relay agent know DHCP unicat address and listens for broadcast messages on port 67
+    - relay agent sends clietn datagrams to dhcp server
+    - dhpcp server responds to client
+
+
+reason for choosing the well-known port 68 for client
+    - to prevent a problem when the reply, from the server to the client, is broadcast
+
+
+DHCP client uses number, called the transaction ID, which is randomly chosen for each connection
+so that two hosts if request Simultaneously can differentiate
+
+Error Control
+    - uses timers and a retransmission policy if it does not receive the DHCP reply to a request.
+    - client uses a random number to set its timers
+
+
+----------------
+
+DHCP packet format
+
+    1. operation code               request/reply
+    2. Hardware type                type of physical network
+    3. Hardware length              length of physical address
+    4. Hop count                    max number of hops the packet can travel
+    5. Transacion id                to match a reply, genrated randomly
+    6. Number of seconds            number of seconds elapsed since boot
+    7. Flag                         to force broadcast reply
+    8. client ip address            0 if client doesn't know its ip address
+    9. new ip address               filled by server in reply message
+   10. server ip address            server ip address in reply message
+   11. gatway ip address            ip address of router in reply message
+   12. client hardwasre address     specified by client
+   13. server name                  optional
+   14. boot filename                optional, null terminated full pathname of boot file
+   15. options
+
+
+    options 64 byte field ( only in reply message)
+    first 4 bytes -> 99.130.83.99 (magic coookie), this is for backward compatibility with BOOTP
+    if it present then next 60 bytes are options
+
+    option
+        1 byte tag field
+        1 byte length field
+        variable length value field
+
+    tag         length          value               description
+    0                                               padding
+    1           4               subnet mask         subnet mask
+    2           4               time of day         time offset
+    3           variable        ip address          default router
+    4           variable        ip address          time server
+    5           variable        ip address          IEN 16 server
+    6           variable        ip address          DNS server
+    7           variable        ip address          Log server
+    8           variable        ip address          Quote server
+    9           variable        ip address          Print Server
+   10           variable        ip address          Impress
+   11           variable        ip address          RLP server
+   12           variable        ip address          Host name
+   13           2               integer             Boot file size
+   53           1               ----                Used for dynamic configuration
+   128-254      variable        sepcific info       vendor specific
+   255                                              end of list
+------
+
+addresses assigned from the pool are temporary addresses
+server issues a lease for a specific period of time
+on lease expires, the client must either stop using the IP address or renew the lease
+
+tag 53
+length 1
+value
+    1   DHCPDISCOVER
+    2   DHCPOFFER
+    3   DHCPREQUEST
+    4   DHCPDECLINE
+    5   DHCPACK
+    6   DHCPNACK
+    7   DHCPRELEASE
+    8   DHCPINFORM
+
+timers
+    Renewal timer       → 50% of lease time
+    Rebinding timer     → 87.5% of lease time
+    Expiration timer    → 100% of lease time
+
+
+######################################################################################
+######################################################################################
+######################################################################################
+* DNS Domain Name System
+
+fully qualified domain name (FQDN)
+partially Qualified Domain Name (PQDN)
+
+root servers
+zone
+    - What a server is responsible for or has authority over is called a zone
+    zone file  -> all the information for every node under that domain
+    e.g.
+    com is zone
+    google is domain
+
+primary server
+    - stores a file about the zone for which it is an authority
+    - responsible for creating, maintaining, and updating the zone file
+
+secondary servers
+    - transfers the complete information about a zone from another server
+    - to create redundancy
+
+
+Generic Domains
+Country Domains
+Inverse Domain
+    - used to map address to name
+    - query is called an inverse or pointer (PTR) query
+
+    IP address is reversed and two labels, in-addr and arpa, are appended
+    e.g.
+    132.34.45.121
+        becomes
+
+Mapping Names to Addresses
+Mapping Addresses to Names
+
+Recursive Resolution
+    - resolver expects the server to supply the final answer
+    - server responds from its database or request other server and keeps on
+
+Iterative Resolution
+    - if server doesn't know , it sends back next server name
+    - client requests to that server and keeps on
+
+Caching
+    TTL
+
+--------------------
+DNS message
+    query
+        header
+        question records
+    response
+        header
+        questions records
+        answer section
+        authoritative section
+        additional section
+        response
