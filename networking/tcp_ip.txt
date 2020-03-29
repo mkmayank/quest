@@ -2003,3 +2003,56 @@ DNS message
         authoritative section
         additional section
         response
+
+
+Header
+    1. Identification               used by client to match response with the query
+    2. Flags                        consists sub fileds
+            1. QR           query/response
+            2. OpCode       type of query/response (standar, inverse, server status request)
+            3. AA           to tell if server is authoritative answer (in response message)
+            4. TC           if response is truncated (used when UDP)
+            5. RD           if client desires recursion
+            6. RA           if recursion is available
+            7. Reserved
+            8. rCode        status of error in response
+    3. Number of question records
+    4. Number of answer records
+    5. Number of authoritative records
+    6. Number of additional records
+
+
+Question record
+    1. Query name           domain name
+                            format
+                                7arusank3com0
+    2. Query type
+    3. Query class
+
+
+Compression
+    - domain name is replaced by an offset pointer if it is repeated
+    e.g.
+    in a resource record the domain name is usually a repetition
+        of the domain name in the question record
+
+DNS can either use UDP or TCP
+    port 53
+
+UDP is used when the size of the response message is less than 512 bytes
+    * If the resolver has prior knowledge about the size of the response message
+            it uses UDP or TCP
+
+    * If the resolver does not know the size of the response message
+        and uses UDP
+        server truncates the message and turn on the TC bit
+        client then repeats TCP to make a request
+
+
+registrars
+Dynamic domain name system (DDNS)
+    primary servers updates the info
+    secondary servers may get a push from primary
+    or
+    secondary servers may pull periodically
+
