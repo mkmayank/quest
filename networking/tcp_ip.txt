@@ -4,7 +4,7 @@ Application layer - DNS, HTTP, Telnet, SSH, FTP, SNMP, SMTP, DHCP, RDP, NTP etc
     Layer 5: Session Layer
 
 Transport layer - TCP, UDP
-    Layer 4: Transport Layer - segment / segment for TCP . datagram for UDP
+    Layer 4: Transport Layer - segment / segment for TCP . datagram for UDP , packets, user datagram
 
 Internet layer - IP, ICMP, ARP, RARP, IGMP
     Layer 3: Network Layer  - datagram
@@ -1366,3 +1366,447 @@ inter-domain routing
 ????
 
 ####################################################################################
+####################################################################################
+####################################################################################
+
+* Transport Layer (Layer 4)
+    - process to process communication
+    - port numbers are integers between 0 and 65,535
+
+socket address
+    - combination of an IP address and a port
+
+user datagrams, segments, or packets
+
+Multiplexing (at source) and Demultiplexing (at destination)
+
+Error control at the transport layer is responsible to
+    1. Detect and discard corrupted packets.
+    2. Keep track of lost and discarded packets and resend them.
+    3. Recognize duplicate packets and discard them.
+    4. Buffer out-of-order packets until the missing packets arrive.
+
+    For error control, the sequence numbers are modulo 2^m ,
+        where m is the size of the sequence number field in bits.
+    e.g. for m = 4
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...
+
+Flow Control
+    having buffer at sender and reciever side
+
+Congestion Control
+    Open-Loop Congestion Control
+    Retransmission Policy
+    Window Policy
+    Acknowledgment Policy
+    Closed-Loop Congestion Control
+
+Stop-and-Wait protocol
+    flow control is achieved by forcing the sender to wait for an acknowledgment
+    error control is achieved by discarding corrupted packets
+        letting the sender resend unacknowledged packets when the timer expires.
+
+bandwidth-delay product
+
+Go-Back-N Protocol ???
+    send several packets before receiving acknowledgments
+    but the receiver can only buffer one packet
+    the size of the send window must be less than 2^m
+    the size of the receive window is always 1.
+
+Selective-Repeat (SR) protocol ???
+    resends only selective packets, those that are actually lost
+
+=============================================================
+
+UDP     message-oriented        non-reliable
+TCP     byte-oriented           reliable
+SCTP    message-oriented        reliable message-oriented protocol
+
+=============================================================
+* UDP User Datagram Protocol
+
+    - connectionless, unreliable transport protocol
+    - no acknowledgment for received packets
+    - if UDP detects an error in the received packet, it silently drops it
+
+    - does not add anything to the services of IP
+        except for providing process-to-process communication instead of host-to-host communication
+
+    - very simple protocol using a minimum of overhead
+    - if a process wants to send a small message and does not care much about reliability
+    - sending a small message using UDP takes much less interaction between the sender and receiver than using TCP
+
+-----------
+
+UDP user datagram (8 to 65535 bytes)
+    8 bytes header
+    data
+
+UDP packets, called user datagrams, have a fixed-size header of 8 bytes
+
+        0      7 8     15 16    23 24    31
+        +--------+--------+--------+--------+
+        |     Source      |   Destination   |
+        |      Port       |      Port       |
+        +--------+--------+--------+--------+
+        |                 |                 |
+        |     Length      |    Checksum     |
+        +--------+--------+--------+--------+
+
+
+    length  -   total length of user datagram
+                can be calculated from IP header too
+                    UDP length = IP length − IP header’s length
+
+                designers of the UDP protocol felt
+                    length in UDP header is efficient rather than caclulating from IP header
+                    also IP header is dropped in layer 3 , in UDP layer IP header info is not passed
+
+    checksum    to detect errors over the entire user datagram (header plus data)
+
+----------
+all user datagrams are independent of each other
+process can send only < 65,507 bytes (65535 - 8) of data, UDP cannot chop
+
+no flow control
+no error control
+no congestion control
+
+Checksum calculation
+    - different from the one for IP
+    - optional
+    - checksum includes three sections
+        1. pseudoheader
+                - part of IP packet in which user datagram is to be encapsulated
+                - gives protection against misrouted datagrams
+                - never transmitted, just used for checksum
+        2. UDP header
+        3. data
+
+                0      7 8     15 16    23 24    31
+                +--------+--------+--------+--------+
+                |          source address           |
+                +--------+--------+--------+--------+
+                |        destination address        |
+                +--------+--------+--------+--------+
+                |  zero  |protocol|   UDP length    |
+                +--------+--------+--------+--------+
+
+                +--------+--------+--------+--------+
+                |     Source      |   Destination   |
+                |      Port       |      Port       |
+                +--------+--------+--------+--------+
+                |                 |                 |
+                |     Length      |    Checksum     |
+                +--------+--------+--------+--------+
+
+                +--------+--------+--------+--------+
+                |               Data                |
+                |    paddig is added to make        |
+                |    data mutiple of 16             |
+                +--------+--------+--------+--------+
+
+    ???
+    https://serverfault.com/questions/910713/how-does-udp-sockets-know-which-source-address-to-respond-to
+
+Encapsulation
+    - processes                 > message + socket address, length of data      > UDP
+    - UDP       adds header     > user datagrams + socket address               > IP
+    - IP        adds header     > datagrams > data link layer                   > data link layer
+    - link      adds header     > frame                                         > physical layer
+
+Decapsulation
+    - link      drops header    > datagram                                      > IP
+    - IP        drops header    > user datagrams + sender, receiver IP          > UDP
+    - UDP       drops header    > data + socket address                         > process
+
+Queuing
+    - incoming and an outgoing queue
+    - only incoming queue
+
+---------------------------
+
+===============================================================================
+* TCP Transmission Control Protocol
+    - reliable, stream-oriented protocol
+
+    - two processes seem to be connected by an imaginary “tube” that carries their bytes across the Internet
+    - sending process produces the stream of bytes and the receiving process consumes them
+
+    - full-duplex service
+
+----------
+Sending and Receiving Buffers
+
+    sending and the receiving processes may not write or read data at the same rate
+    TCP needs buffers for storage at each side
+        1. sending buffer
+        2. receiving buffer
+
+    sender, the buffer has three types of chambers
+        1. empty area are that can be filled by the sending process
+        2. area holding bytes that have been sent but not yet acknowledged
+        3. area containing bytes to be sent
+
+    receiver, two chambers
+        1. empty area to be filled by bytes received from the network
+        2. area containing received bytes that can be read by the receiving process
+
+Segments
+    - IP needs to send data in packets and not stream of bytes
+    - TCP groups a number of bytes together into a packet called a segment
+
+    - segments are not necessarily all the same size
+
+Multiplexing and Demultiplexing
+
+Connection-Oriented Service
+
+Numbering System
+    - there is no field for a segment number in the segment header
+    - there are two fields
+        1. sequence number
+        2. acknowledgment number
+    - these two fields refer to a byte number and not a segment number
+
+    Byte Number
+        - TCP numbers all data bytes that are transmitted in a connection
+        - numbering is independent in each direction
+        - numbering starts with an arbitrarily generated number (between 0 and 2^32 -1)
+            e.g.
+            if number is 1057
+            total data is 6000 bytes
+                bytes are numbered from 1057 to 7056
+
+    Sequence Number
+        - defines the number assigned to the first data byte contained in that segment
+
+    Acknowledgment Number
+        - defines the number of the next byte a party expects to receive
+
+Flow Control
+    - byte-oriented
+
+Error Control
+    - byte oriented
+
+Congestion Control
+-----------------------------------------------------
+TCP Segment
+    header (20 - 60 bytes)
+    data
+
+        0                   1                   2                   3
+        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |          Source Port          |       Destination Port        |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |                        Sequence Number                        |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |                    Acknowledgment Number                      |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |header |           |U|A|P|R|S|F|                               |
+        |length | Reserved  |R|C|S|S|Y|I|            Window             |
+        |       |           |G|K|H|T|N|N|                               |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |           Checksum            |         Urgent Pointer        |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |                    Options                    |    Padding    |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        |                             data                              |
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    - acknowledgment and data can be piggybacked together
+
+    header length indicates number of 4 byte words (i.e 5(5*4=20) to 15(15*4=60))
+
+        URG: Urgent pointer is valid
+        ACK: Acknowledgment is valid
+        PSH: Request for push
+        RST: Reset the connection
+        SYN: Synchronize sequence numbers
+        FIN: Terminate the connection
+
+    checksum calculation is same as UDP, but mandatory
+
+-------------------------------------------------------------------
+TCP connection
+    1. connection establishment
+    2. data transfer
+    3. connection termination
+
+Connection Establishment
+    Three-Way Handshake
+
+        first segment
+            - client sends the first segment, SYN segment
+            - segment is for synchronization of sequence numbers
+            - this sequence number is called the initial sequence number(ISN)
+            - carries no data
+
+        second segment
+            - server sends the second segment, SYN + ACK segment
+            - segment has a dual purpose
+                - SYN segment for communication in the other direction
+                - acknowledges the first segment
+            - define the window size
+            - carries no data
+
+        third segment
+            - client sends the third segment, ACK segment
+            - acknowledges the second segment
+            - defines the window size
+            - carries no data ( some implementations may include data )
+
+    e.g.
+        client      ->      seg: x              S              -> server
+        client      <-      seq: y  ack: x+1, A S wnd: a       <- server
+        client      ->      seq: x  ack: y+1, A   wnd: b       -> server
+
+    Simultaneous Open ???
+        - a rare situation may occur when both processes issue an active open
+        - both TCPs transmit a SYN + ACK segment to each other
+        - one single connection is established between them
+
+    SYN Flooding Attack
+        - send a large number of SYN segments to a server by spoofing IP
+        - a denial of service attack
+        to alleviate
+            - limit connection requests during a specified period of time
+            - try to filter out datagrams coming from unwanted source addresses
+            - postpone resource allocation until the server verifies valid IP address (SCTP ???)
+
+Data Transfer
+    - bidirectional data transfer can happen
+
+    Pushing Data
+        - PSH bit
+        - program that communicates interactively with another application program on the other end
+            .e.g.
+                one site wants to send a keystroke to the application at the other site and receive an immediate response
+
+        - sender requests a push operation
+            - sending TCP must not wait for the window to be filled
+            - it must create a segment and send it immediately
+
+        - TCP can choose whether or not to use this feature
+
+    Urgent Data
+        - URG bit
+
+
+Connection Termination
+    - any party can close the connection
+    two options for connection termination
+        1. three-way handshaking
+        2. four-way handshaking with a half-close option
+
+    three-way handshaking
+
+        first segment
+            - client sends the FIN segment
+            - may include last chunk of data
+
+        second segment
+            - servers sends FIN + ACK segment
+            - may include last chunk of data
+
+        third segment
+            - client sends ACK segment
+            - cannot carry data
+
+        e.g.
+            client      ->      seg: x     ack: y      A F      -> server
+            client      <-      seq: y     ack: x+1    A F      <- server
+            client      ->      seq: x     ack: y+1    A        -> server
+
+    Half-Close
+        when one end stops sending data while still receiving data (known as half close)
+
+Connection Reset
+    any one end may
+        - deny a connection request
+        - may abort an existing connection
+        - may terminate an idle connection
+    All of these are done with the RST (reset) flag
+
+==========================================================================
+Cumulative Acknowledgment (ACK) ????
+Selective Acknowledgment (SACK) ????
+
+Flow Control ????
+    windows size can be asked to changed
+
+Error Control ????
+
+Retransmission
+    - segment is stored in a queue until it is acknowledged
+
+
+    Retransmission after RTO
+        - if retransmission time-out (RTO) times out
+            resends the segments and restart timer
+        - RTO is dynamic in TCP and is updated based on the round-trip time (RTT) of segments
+
+    Retransmission after Three Duplicate ACK Segments
+        - Fast retransmission
+        - if when the sender receives three duplicate ACKs for the first segment in the queue
+            that segment is retransmitted
+
+Silly window syndrome ????
+    - problem when sender sends or reciver consumes slow
+    - and window size becomes too low that data is smaller tha header
+        results in very inefficient transmission
+
+
+Deadlock Created by Lost Acknowledgment ?????
+    - receiver sends an acknowledgment with rwnd set to 0
+    - receiver wants to remove the restriction ans send ACK segment with window size
+    - and this ack segment lost
+    - sender will wait for an acknowledgment that announces the nonzero rwnd
+    - receiver thinks that the sender has received this and is waiting for data
+    - each end is waiting for a response from the other end and nothing is happening
+
+    - a persistence timer was designed for this ???
+
+Congestion control ???
+
+Congestion Policy
+    three phases
+        1. slow start
+        2. congestion avoidance
+        3. congestion detection
+
+    slow start phase
+        sender starts with a slow rate of transmission
+            but increases the rate rapidly to reach a threshold
+        when threshold is reached
+            the rate of increase is reduced
+        if ever congestion is detected
+            sender goes back to the slow start or congestion avoidance phase
+
+        size of the congestion window (cwnd) starts with one maximum segment size (MSS)
+            MSS is determined during connection establishment using option
+        sise of window increases one MSS each time one acknowledgment arrives or by 1
+
+    slow start algorithm
+        size of the congestion window increases exponentially until it reaches a threshold
+    congestion avoidance algorithm
+        size of the congestion window increases additively until congestion is detected
+
+=================================================================
+TCP timers ???
+    1. Retransmission Timer
+    2. Persistence Timer
+    3. Keepalive Timer
+    4. TIME-WAIT Timer
+
+options ????
+
+==================================================================
+SCTP ?????
+
+########################################################################
+########################################################################
+########################################################################
