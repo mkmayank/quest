@@ -1732,6 +1732,50 @@ Connection Reset
     All of these are done with the RST (reset) flag
 
 ==========================================================================
+TCP states
+
+    Connection
+    client          server
+
+                    LISTEN          (server stays in LISTEN state so that client can initate connection to it)
+    SYN-SENT                        (client sent syn packet to initiate connection)
+                    SYN-RECEIVED    (server responds with SYN + ACK)
+    ESTABLISHED     ESTABLISHED     (clients send ACK, server recieved client's ACK)
+
+
+-------------------------
+
+    host1           host2
+    FIN-WAIT-1                      (host1 sent FIN packet to terminate connection, waiting for FIN+ACK or ACK)
+
+    mutiple situation may occur
+        1. host2 responds with only ACK
+
+                    CLOSE-WAIT      (host2 recieved host1 FIN packet and sent ACK to it, is waiting from application to issue close request)
+    FIN-WAIT-2                      (host1 recieved ACK to its FIN packet ans is waiting for host2 to send FIN packet)
+
+          after some time host2 sends FIN
+
+                    LAST_ACK        (host2 sent FIN packet and is waiting for ACK)
+    TIME_WAIT                       (host1 sent ACK for FIN packet and will wait for max 4 minutes(known as maximum segment lifetime (MSL))
+                                        is waiting for time so that host2 recieves ACK,
+                                        as host2 may send FIN again as it may thought that FIN is lost)
+
+        2. host2 responds with FIN + ACK
+
+                    LAST_ACK        (host2 sent ACK for host1's FIN and FIN packet and is now waiting for ACK of its FIN packet)
+    TIME_WAIT                       (host1 received ACK + FIN and sent ACK of host2's FIN)
+
+        3. host2 may have sent FIN before recieving host1 FIN, i.e. simultaneous termination
+
+                    FIN-WAIT-1      (host2 sent FIN , so it will go in FIN-WAIT-1 state)
+    CLOSING                         (host1 recieved FIN but not yet recieved ACK of its FIN and is waiting for it, sent host2's FIN ACK)
+                    TIME_WAIT       (host2 recived ACK and sent host1's FIN ACK)
+    TIME_WAIT                       (host1 recieved its own FIN's ACK and is just waiting for MSL)
+
+    CLOSED          CLOSED
+
+==========================================================================
 Cumulative Acknowledgment (ACK) ????
 Selective Acknowledgment (SACK) ????
 
