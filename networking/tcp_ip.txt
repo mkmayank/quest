@@ -2100,3 +2100,166 @@ Dynamic domain name system (DDNS)
     or
     secondary servers may pull periodically
 
+
+==================================
+
+resource records
+
+    - types of information elements are categorized and organized with a list of DNS record types
+    - each record has a
+        - type (name and number)
+        - ttl
+        - a class
+            - IN (for Internet) for common DNS records involving Internet hostnames, servers, or IP addresses
+                others are
+                    Chaos (CH)
+                    Hesiod (HS)
+            - each class is an independent name space with potentially different delegations of DNS zones
+
+        - type-specific data
+    - resource records of the same type are described as a resource record set (RRset), having no special ordering
+
+--------------------------
+
+Wildcard DNS records
+    - record in a DNS zone that will match requests for non-existent domain names
+    - specified by using a * as the leftmost label (part) of a domain name, e.g. *.example.com.
+
+    e.g.
+        *.example.com.   3600 IN  MX 10 host1.example.com
+
+    it will cause DNS lookups on domain names ending in example.com that do not exist to have MX records synthesized for them
+    so lookup for the MX record for somerandomname.example.com would return an MX record pointing to host1.example.com
+
+--------------------------
+
+all records have their own format / protocol / RFCs
+
+    A
+        most commonly used to map hostnames to an IPv4 address of the host
+        but it is also used for DNSBLs, storing subnet masks in RFC 1101, etc.
+
+        can be mutiple, based on size of TCP/UDP packet
+        no restriction from DNS protocol view
+
+        $ dig  A one.com +short
+        195.47.247.9
+        195.47.247.8
+
+    AAAA
+        maps IPv6 address
+
+    CAA
+        constraining acceptable CAs for a host/domain
+        DNS Certification Authority Authorization (CAA)
+            - allows domain name holders to indicate to certificate authorities whether they are authorized to issue digital certificates for a particular domain name
+
+        $ dig CAA google.com
+        google.com.		493	IN	CAA	0 issue "pki.goog"
+
+    CNAME
+        maps one domain name (an alias) to another (the canonical name)
+        has to be another domain name
+
+    MX
+        maps a domain name to a list of message transfer agents for that domain
+
+    PTR
+        resolves an IP address to a domain or host name
+
+    SOA
+        Start of Authority record
+        contains administrative information about the zone
+
+    SRV
+        Service record
+        used for newer protocols instead of creating protocol-specific records such as MX
+
+    TXT
+        can be mutiple
+        can provide human readable information about a server, network, data center, or other accounting information
+        used by various protocols to store keys and values
+
+
+
+PTR for reverse DNS lookup
+    dig  PTR 14.161.217.172.in-addr.arpa.
+
+======================================
+
+DNSBLs Domain Name System-based Blackhole List
+    - an effort to stop email spamming
+    - "blacklist" of locations on the Internet reputed to send email spam
+
+    to check if IP against DNSBL
+        1. reverse the ip
+        2. append ip with the DNSBL
+        3. look for A record for the step2 domain
+        4. dns server either
+                - reply with NXDOMAIN as status (indicating client is not spammer)
+                or
+                - address (generally a code in form of IP) (indicating client is spammer)
+        5. TXT record can be asked to see the reason
+
+    e.g.
+        DNSBL zen.spamhaus.org
+        IP to check 127.0.0.2
+
+        $ dig   2.0.0.127.zen.spamhaus.org
+        ...
+        2.0.0.127.zen.spamhaus.org. 60	IN	A	127.0.0.10
+        2.0.0.127.zen.spamhaus.org. 60	IN	A	127.0.0.4
+        2.0.0.127.zen.spamhaus.org. 60	IN	A	127.0.0.2
+        ...
+
+
+        $ dig TXT  2.0.0.127.zen.spamhaus.org
+        ...
+        2.0.0.127.zen.spamhaus.org. 60	IN	TXT	"https://www.spamhaus.org/query/ip/127.0.0.2"
+        2.0.0.127.zen.spamhaus.org. 60	IN	TXT	"https://www.spamhaus.org/sbl/query/SBL2"
+        ...
+
+
+=======================================
+https://stackoverflow.com/a/22440611/3143562
+Domain name servers store information about part of the domain name space called a zone.
+The name server is authoritative for a particular zone. A single name server can be authoritative for many zones.
+
+A zone is simply a portion of a domain.
+e.g.
+the Domain Microsoft.com may contain all of the data for Microsoft.com, Marketing.microsoft.com and Development.microsoft.com
+However, the zone Microsoft.com contains only information for Microsoft.com and references to the authoritative name servers for the subdomains.
+
+The zone Microsoft.com can contain the data for subdomains of Microsoft.com if they have not been delegated to another server
+e.g.
+Marketing.microsoft.com may manage its own delegated zone. Development.microsoft.com may be managed by the parent, Microsoft.com.
+
+If there are no subdomains, then the zone and domain are essentially the same. In this case the zone contains all data for the domain.
+
+=========================================
+https://www.cloudflare.com/dns/dnssec/how-dnssec-works/
+
+DNSSec
+    - works by digitally signing records for DNS lookup using public-key cryptography
+
+To facilitate signature validation, DNSSEC adds a few new DNS record types:
+
+    RRSIG           Contains a cryptographic signature
+    DNSKEY          Contains a public signing key
+    DS              Contains the hash of a DNSKEY record
+    NSEC and NSEC3  For explicit denial-of-existence of a DNS record
+    CDNSKEY and CDS For a child zone requesting updates to DS record(s) in the parent zone.
+
+RRset
+    single resource record set group of all the records with the same type
+    e.g.
+    all MX records will become single MX RRset
+
+whole RRset is signed instead of signing individual record
+
+    $ dig DS  cyberciti.biz @8.8.8.8
+    ...
+    cyberciti.biz.		3600	IN	DS	2371 13 2 E44A0F0277883A307D8540DFDED378965E43BF9619E451270E5B0F0B EA77D781
+    ...
+
+name server also returns the corresponding RRSIG
