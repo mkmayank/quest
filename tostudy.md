@@ -12,3 +12,5 @@
 
 * fragementaion fault
 * page fault
+* Logical Volume Manager
+* how OOM score is calculated
