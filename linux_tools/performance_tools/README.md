@@ -16,3 +16,5 @@ packages
 vmstat iostat mpstat ps top
 tcpdump netstat nicstat pidstat sar
 ss slaptop perf_events
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/index

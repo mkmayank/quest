@@ -14,3 +14,10 @@
 * page fault
 * Logical Volume Manager
 * how OOM score is calculated
+* CPU affinity , to move running process, limit process, etc
+* raw I/O in linux
+* kernel dmesg
+* kernel ring buffer
+* systemctl
+* journalctl
+* RAID levels
