@@ -1,4 +1,11 @@
 # quest
+**Job seeker** in Linux world
+* Location Soft Preference : Remote or London
+* Location Hard Preference : None, Anywhere in world, Love to explore geography
+
+Titles I would love, but not limited to
+* Production Enginner , Site Reliability engineer (SRE) , DevOps engineer
+
 My stupid mind's state consists of a cycle of
 * swimming in Linux ocean and
 * seeking FIRE by finding ways to increase income (can't decrease expenses)
@@ -25,4 +32,4 @@ Notes are in point form (my stupid mind's context), if it can help somebody in u
 | Associate System Administrator      | [one.com gurgaon India](https://www.google.com) | Aug 2015 - Dec 2016 | **Linux**, **Bash**, Perl, HTML, CSS, MySQL, PostgreSQL, **TCP/IP**, Git, Chef, Nagios, Lxc, FluentD, Rsyslog, Apache |
 | Software Developer                  | [one.com Gurgaon India](https://www.google.com) | Jan 2017 - Mar 2018 | **NodeJs**, **ReactJs**, **Golang**  |
 | Senior Engineer                     | HFT firm Delhi India                            | Apr 2018 - Dec 2019 | **Python**, **Ansible**, **Grafana** |
-| **Analyst Production Engineer**     | HFT firm Gurgaon India                          | Jan 2020 - present  |
+| **Analyst Production Engineer**     | HFT firm Gurgaon India                          | Jan 2020 - Feb 2021 | **Python**, **Bash** |
