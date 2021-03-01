@@ -1,10 +1,10 @@
 # quest
 **Job seeker** in Linux world
-* Location Soft Preference : Remote or London
+* Location Soft Preference : Remote
 * Location Hard Preference : None, Anywhere in world, Love to explore geography
 
 Titles I would love, but not limited to
-* Production Enginner , Site Reliability engineer (SRE) , DevOps engineer
+* **Production Enginner** , **Site Reliability Engineer** (SRE) , **DevOps Engineer**
 
 My stupid mind's state consists of a cycle of
 * swimming in Linux ocean and
@@ -14,7 +14,7 @@ Every moment, my stupid mind alternate between these two states.
 
 
 ## About repo
-I revise the **Linux concepts** which I should have already know and then learn new concepts which I should have already be learned
+I revise the **Linux concepts** which I should have already known and then learn new concepts which I should have already be learned
 
 This repo is my notebook, where I note down, revise and get back whenever I need help for the concepts which I study.
 I study from ebooks, blogs, wikipedia.
