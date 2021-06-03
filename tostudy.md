@@ -21,3 +21,4 @@
 * systemctl
 * journalctl
 * RAID levels
+* polkit 
